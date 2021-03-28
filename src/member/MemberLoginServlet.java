@@ -55,7 +55,7 @@ public class MemberLoginServlet extends HttpServlet {
 		if (check == 1) {
 			HttpSession session = request.getSession();
 				session.setAttribute("id", id);
-				response.sendRedirect("index.html");
+				response.sendRedirect("index.jsp");
 		}
 		else if (check == 0) {
 		   //history.go(-1) >> 이전페이지로 -2가되면  이전 이전 페이지로
