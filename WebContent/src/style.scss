@@ -1,28 +1,6 @@
 @import "fonts.scss";
 @import "variable.scss";
 
-//ck editor(글쓰기 에디터)에 대한 스타일 정의 시작
-.ck.ck-editor {
-	max-width: 500px;
-}
-
-.ck-editor__editable {
-	min-height: 350px;
-}
-.ck-content .image > figcaption {
-    display: table-caption;
-    caption-side: bottom;
-    word-break: break-word;
-    color: hsl(0, 0%, 20%);
-    background-color: hsl(0, 0%, 97%);
-    padding: .0em;
-    font-size: .75em;
-    outline-offset: -1px;
-    height: 0;
-}
-//ck editor(글쓰기 에디터)에 대한 스타일 정의 끝
-
-
 @mixin brand_text($font, $leter_spacing, $font_weight,$float: left) {
   font-size: $font;
   text-transform: uppercase;

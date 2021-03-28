@@ -8,6 +8,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+import file.FileBean;
 import state.CheckState;
 
 public class BoardDAO {
@@ -60,15 +61,15 @@ public class BoardDAO {
 		try {
 			Connection con = getConnection();
 
-			String sql = "insert into board(name,pass,subject,content,readcount,date) " + "values(?,?,?,?,?,?)";
+			String sql = "insert into board(name,subject,content,readcount,date) " + "values(?,?,?,?,?)";
 			PreparedStatement pstmt = con.prepareStatement(sql);
 //			pstmt.setInt(1, num);
 			pstmt.setString(1, name);
-			pstmt.setString(2, pass);
-			pstmt.setString(3, subject);
-			pstmt.setString(4, content);
-			pstmt.setInt(5, readcount);
-			pstmt.setTimestamp(6, date);
+//			pstmt.setString(2, pass);
+			pstmt.setString(2, subject);
+			pstmt.setString(3, content);
+			pstmt.setInt(4, readcount);
+			pstmt.setTimestamp(5, date);
 			pstmt.executeUpdate();
 		} catch (Exception e) {
 			// 에러 발생하면 에러메시지 출력

@@ -40,21 +40,25 @@ public class MemberLoginServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		request.setCharacterEncoding("utf-8");
 		doGet(request, response);
 		
 		String id = request.getParameter("id");
 		String pass = request.getParameter("password");
-
+		
 		response.setContentType("text/html; charset=euc-kr");
 		   PrintWriter out = response.getWriter();
 		
 		MemberDAO dao = new MemberDAO();
-		int check = dao.userCheck(id, pass);
-				
+//		int check = dao.userCheck(id, pass);
+		MemberBean mb = dao.getMember(id);
+		int check = dao.userCheck(mb, id, pass);		
+		
 		// 1 : id,pw 일치, 0 : id일치 pw틀림, -1 : id 불일치
 		if (check == 1) {
 			HttpSession session = request.getSession();
 				session.setAttribute("id", id);
+				session.setAttribute("name", mb.getName());
 				response.sendRedirect("index.jsp");
 		}
 		else if (check == 0) {

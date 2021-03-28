@@ -145,6 +145,27 @@ public class MemberDAO {
 		// 1 : id,pw 일치, 0 : id일치 pw틀림, -1 : id 불일치
 		if (id.equals(mb.getId()) && pass.equals(mb.getPass())) {
 			System.out.println("id, pw 일치");
+			
+			result = 1;
+		} else if (id.equals(mb.getId()) && pass.equals(mb.getPass()) == false) {
+			System.out.println("id일치, pw 불일치");
+			result = 0;
+		}
+
+		return result;
+	}
+	
+	public int userCheck(MemberBean mb, String id, String pass) {
+		int result = -1;
+
+		if (mb.getId() == null) {
+			System.out.println("id불일치");
+			return result;
+		}
+		// 1 : id,pw 일치, 0 : id일치 pw틀림, -1 : id 불일치
+		if (id.equals(mb.getId()) && pass.equals(mb.getPass())) {
+			System.out.println("id, pw 일치");
+			
 			result = 1;
 		} else if (id.equals(mb.getId()) && pass.equals(mb.getPass()) == false) {
 			System.out.println("id일치, pw 불일치");

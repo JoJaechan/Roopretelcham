@@ -6,6 +6,12 @@
 <!DOCTYPE html>
 <html>
 <head>
+<style>
+.ck-editor__editable {
+	min-height: 510px;
+}
+</style>
+
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport"
@@ -16,10 +22,10 @@
 <meta name="keyword"
 	content="magz, html5, css3, template, magazine template">
 <!-- Shareable -->
-<!-- 		<meta property="og:title" content="HTML5 & CSS3 magazine template is based on Bootstrap 3" /> -->
-<!-- 		<meta property="og:type" content="article" /> -->
-<!-- 		<meta property="og:url" content="http://github.com/nauvalazhar/Magz" /> -->
-<!-- 		<meta property="og:image" content="https://raw.githubusercontent.com/nauvalazhar/Magz/master/images/preview.png" /> -->
+		<meta property="og:title" content="HTML5 & CSS3 magazine template is based on Bootstrap 3" />
+		<meta property="og:type" content="article" />
+		<meta property="og:url" content="http://github.com/nauvalazhar/Magz" />
+		<meta property="og:image" content="https://raw.githubusercontent.com/nauvalazhar/Magz/master/images/preview.png" />
 <title>Magz &mdash; Responsive HTML5 &amp; CSS3 Magazine
 	Template</title>
 <!-- Bootstrap -->
@@ -53,6 +59,7 @@
 	<!-- 글쓰기 전 id세션값 먼저 체크 -->
 	<%
 	String id = (String) session.getAttribute("id");
+	String name = (String) session.getAttribute("name");
 	// 세션값이 없으면 "../member/login.jsp" 이동
 	if (id == null) {
 	%>
@@ -82,35 +89,32 @@
 
 						<h1>글 작성</h1>
 						<!--     <textarea name="content" id="editor"></textarea> -->
+						<form action="BoardWrite" method="post" id="join">
+							<div class="form-group">
+								<!-- 								<label>작성자 이름</label>  -->
+								<input type="hidden" name="name" value=<%=name%>
+									class="form-control">
+							</div>
+							<div class="form-group">
+								<label>제목</label> <input type="text" name="subject"
+									class="form-control">
+							</div>
+							<div class="form-group">
+								<label>내용</label>
+								<textarea name="content" class="form-control"></textarea>
+							</div>
 
-						<article class="col-md-12 article-list">
-							<form action="../partUploadPro2" method="POST"
-								enctype="multipart/form-data">
-								<div class="form-group">
-									<label>제목</label> <input type="text" name="subject"
-										class="form-control">
-								</div>
-								<div class="form-group">
-									<label>글내용</label>
-									<textarea name="content" id="editor" rows="10" cols="250"
-										class="form-control"></textarea>
-								</div>
+							<div class="form-group text-right">
+								<button class="btn btn-primary btn-block">글 작성</button>
+							</div>
+						</form>
+						<div class="col-md-2">
+							<button class="btn btn-primary btn-block"
+								onclick="location.href='community.jsp'">작성 취소</button>
 
-								<div class="title-line"></div>
 
-								<div class="col-md-2">
-									<button class="btn btn-primary btn-block" type="submit" 
-										onclick="location.href='writeForm.jsp'">글쓰기</button>
-								</div>
-								<div class="col-md-2">
-									<button class="btn btn-primary btn-block"
-										onclick="location.href='community.jsp'">작성 취소</button>
-								</div>
-
-							</form>
-
-							<script src="/ckeditor5/ckeditor.js"></script>
-							<script src="/ckeditor5/translations/ko.js"></script>
+							<script src="ckeditor5/ckeditor.js"></script>
+							<script src="ckeditor5/translations/ko.js"></script>
 							<script>
 			 ClassicEditor
 			 .create( document.querySelector( '#editor' ),{  // textarea의 id
@@ -126,27 +130,7 @@
 		            console.error( err.stack );
 		        } );
     </script>
-
-							<script type="text/javascript"
-								src="https://code.jquery.com/jquery-3.2.0.min.js"></script>
-							<script type="text/javascript">
-$(function(){
-    $("#partFile1").change(function(){
-    fileList = $("#partFile1")[0].files;
-    fileListTag = '';
-    for(i = 0; i < fileList.length; i++){
-        fileListTag += "<li>"+fileList[i].name+"</li>";
-    }
-    $('#fileList').html(fileListTag);
-});
-});
-</script>
-
-							<div class="clear"></div>
-							<div id="page_control"></div>
-						</article>
-						<!-- 						글 끝 -->
-
+						</div>
 					</div>
 				</div>
 			</div>
@@ -171,6 +155,8 @@ $(function(){
 
 	<!-- JS -->
 	<script src="js/jquery.js"></script>
+<!-- 	<script src="js/jquery-3.6.0.js"></script> -->
+
 	<script src="js/jquery.migrate.js"></script>
 	<script src="scripts/bootstrap/bootstrap.min.js"></script>
 	<script>
