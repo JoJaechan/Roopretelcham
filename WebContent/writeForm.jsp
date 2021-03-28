@@ -96,12 +96,12 @@
 									class="form-control">
 							</div>
 							<div class="form-group">
-								<label>제목</label> <input type="text" name="subject"
+								<label>제목</label> <input type="text" name="subject" maxlength="50"
 									class="form-control">
 							</div>
 							<div class="form-group">
 								<label>내용</label>
-								<textarea name="content" class="form-control"></textarea>
+								<textarea name="content"  maxlength="500" rows="50" id="editor2" class="form-control"></textarea>
 							</div>
 
 							<div class="form-group text-right">
@@ -136,6 +136,7 @@
 			</div>
 		</div>
 	</section>
+	
 
 	<!-- Start footer -->
 	<footer class="footer">
