@@ -100,6 +100,30 @@ public class BoardDAO {
 		}
 		return bbList;
 	}
+	
+	public List<BoardBean> selectBoard(String tableName) throws Exception {
+		Connection con = getConnection();
+		// 3단계 디비연결정보를 이용해서 SQL구문(select)을 만들고 실행할 준비
+		String sql = "select * from " + tableName + " order by num desc";
+		PreparedStatement pstmt = con.prepareStatement(sql);
+		// 4단계 SQL구문을 실행 (select 형태) 결과를 ResultSet내장객체 저장
+		ResultSet rs = pstmt.executeQuery();
+
+		List<BoardBean> bbList = new ArrayList<BoardBean>();
+//		int columnCount = rs.getMetaData().getColumnCount();
+
+		while (rs.next()) {
+			BoardBean bb = new BoardBean();
+			bb.setNum(rs.getInt("num"));
+			bb.setDate(rs.getTimestamp("date"));
+			bb.setName(rs.getString("name"));
+			bb.setReadcount(rs.getInt("readcount"));
+			bb.setSubject(rs.getString("subject"));
+			bb.setContent(rs.getString("content"));
+			bbList.add(bb);
+		}
+		return bbList;
+	}
 
 	public BoardBean getArticle(int num) {
 		BoardBean bb = new BoardBean();
@@ -251,7 +275,7 @@ public class BoardDAO {
 //		int file_idx = fb.getFile_idx();
 //		int post_idx = fb.getPost_idx();
 		String name = bb.getName();
-		String pass = bb.getPass();
+//		String pass = bb.getPass();
 		String subject = bb.getSubject();
 		String content = bb.getContent();
 		int readcount = bb.getReadcount();
@@ -267,7 +291,7 @@ public class BoardDAO {
 			PreparedStatement pstmt = con.prepareStatement(sql1);
 //			pstmt.setInt(1, num);
 			pstmt.setString(1, name);
-			pstmt.setString(2, pass);
+//			pstmt.setString(2, pass);
 			pstmt.setString(3, subject);
 			pstmt.setString(4, content);
 			pstmt.setInt(5, readcount);
@@ -283,6 +307,65 @@ public class BoardDAO {
 			}
 			System.out.println("LAST_INSERT_ID() : " + n);
 			String insertSQL = "insert into file" + "(post_idx,file_name,file_path,uploaded) " + "values(?,?,?,?)";
+			PreparedStatement pstmt3 = con.prepareStatement(insertSQL);
+
+			for (FileBean f : fbList) {
+				String file_name = f.getFile_name();
+				String file_path = f.getFile_path();
+				Timestamp uploaded = f.getDate();
+
+				System.out.println("fbList -> " + file_name);
+				pstmt3.setInt(1, n);
+				pstmt3.setString(2, file_name);
+				pstmt3.setString(3, file_path);
+				pstmt3.setTimestamp(4, uploaded);
+				pstmt3.executeUpdate();
+			}
+//			pstmt3.executeBatch();
+//			con.commit();
+
+		} catch (Exception e) {
+			// 에러 발생하면 에러메시지 출력
+			e.printStackTrace();
+		}
+	}
+	
+	public void articleInsertImage(List<FileBean> fbList, BoardBean bb) {
+//		int file_idx = fb.getFile_idx();
+//		int post_idx = fb.getPost_idx();
+		String name = bb.getName();
+//		String pass = bb.getPass();
+		String subject = bb.getSubject();
+		String content = bb.getContent();
+		int readcount = bb.getReadcount();
+		Timestamp date = bb.getDate();
+
+		System.out.println("articleInsertFile");
+		// 외부에 있는 파일,데이터베이스 서버에 접근하기 위해서는
+		// 예기치 못한 에러가 발생하면 자바코드중에 자동으로 에러를 처리
+		try {
+			Connection con = getConnection();
+
+			String sql1 = "insert into board_gallery(name,subject,content,readcount,date) " + "values(?,?,?,?,?)";
+			PreparedStatement pstmt = con.prepareStatement(sql1);
+//			pstmt.setInt(1, num);
+			pstmt.setString(1, name);
+//			pstmt.setString(2, pass);
+			pstmt.setString(2, subject);
+			pstmt.setString(3, content);
+			pstmt.setInt(4, readcount);
+			pstmt.setTimestamp(5, date);
+			pstmt.executeUpdate();
+
+			String sqlGetId = "SELECT LAST_INSERT_ID()";
+			PreparedStatement pstmt2 = con.prepareStatement(sqlGetId);
+			ResultSet rs = pstmt2.executeQuery();
+			int n = -1;
+			if (rs.next()) {
+				n = rs.getInt("LAST_INSERT_ID()");
+			}
+			System.out.println("LAST_INSERT_ID() : " + n);
+			String insertSQL = "insert into file_gallery" + "(post_idx,file_name,file_path,uploaded) " + "values(?,?,?,?)";
 			PreparedStatement pstmt3 = con.prepareStatement(insertSQL);
 
 			for (FileBean f : fbList) {
@@ -339,6 +422,28 @@ public class BoardDAO {
 	
 	public FileBean getArticleThumbFile(int post_idx) {
 		String sql = "select * from file where file_name like '%jpg%' and post_idx=? limit 1;";
+		
+		FileBean fb = new FileBean();
+		
+		try {
+			Connection con = getConnection();
+			PreparedStatement pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, post_idx);
+			// 4단계 SQL구문을 실행 (select 형태) 결과를 ResultSet내장객체 저장
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.next()) {
+				fb.setFile_name(rs.getString("file_name"));
+				fb.setFile_path(rs.getString("file_path"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return fb;
+	}
+	
+	public FileBean getArticleThumbFile(int post_idx, String tableName) {
+		String sql = "select * from " + tableName + " where file_name like '%jpg%' and post_idx=? limit 1;";
 		
 		FileBean fb = new FileBean();
 		
