@@ -115,7 +115,7 @@ public class BoardDAO {
 				// num 멤버변수 <- 디비에서 가져온 rs.getInt("num") 저장
 				bb.setNum(rs.getInt("num"));
 				bb.setName(rs.getString("name"));
-				bb.setPass(rs.getString("pass"));
+//				bb.setPass(rs.getString("pass"));
 				bb.setSubject(rs.getString("subject"));
 				bb.setContent(rs.getString("content"));
 				bb.setReadcount(rs.getInt("readcount"));
@@ -156,7 +156,29 @@ public class BoardDAO {
 
 		return CheckState.WRONG_PASSWORD;
 	}
+	
+	public CheckState articleCheck(String id, int num) {
+		BoardBean bb = getArticle(num);
+		System.out.println("boardBean name : " + bb.getName());
+		;
 
+		if (bb.getNum() == 0) {
+			System.out.println("num 없음");
+			return CheckState.NO_NUM_VALUE;
+		}
+		// 1 : id,pw 일치, 0 : id일치 pw틀림, -1 : id 불일치
+		if (num == bb.getNum() && id.equals( bb.getName() ) ) {
+			System.out.println("id, pw 일치");
+			return CheckState.OK;
+		} else if (id.equals( bb.getName() ) == false) {
+			System.out.println("세션값 아이디와 불일치");
+			return CheckState.WRONG_ID;
+		}
+
+		return CheckState.WRONG_ID;
+	}
+
+	
 	public void articleUpdate(BoardBean bb) {
 //		String sql2 = "update board set name=?,subject=?,content=? where num=?";
 		System.out.println("articleUpdate() subject : " + bb.getSubject());
@@ -179,6 +201,19 @@ public class BoardDAO {
 	}
 
 	public void articleDelete(int num, String pass) {
+		try {
+			Connection con = getConnection();
+			String sql2 = "delete from board where num=?";
+			System.out.println("articleDelete -> " + sql2.replace("=?", "=" + num));
+			PreparedStatement pstmt2 = con.prepareStatement(sql2);
+			pstmt2.setInt(1, num);
+			pstmt2.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void articleDelete(int num) {
 		try {
 			Connection con = getConnection();
 			String sql2 = "delete from board where num=?";

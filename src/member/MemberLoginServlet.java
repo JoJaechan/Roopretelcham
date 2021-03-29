@@ -46,7 +46,7 @@ public class MemberLoginServlet extends HttpServlet {
 		String id = request.getParameter("id");
 		String pass = request.getParameter("password");
 		
-		response.setContentType("text/html; charset=euc-kr");
+		response.setContentType("text/html; charset=utf-8");
 		   PrintWriter out = response.getWriter();
 		
 		MemberDAO dao = new MemberDAO();

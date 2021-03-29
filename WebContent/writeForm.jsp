@@ -10,6 +10,16 @@
 .ck-editor__editable {
 	min-height: 510px;
 }
+iframe:focus {
+  outline: none;
+}
+iframe {
+  overflow: hidden;
+}
+
+iframe[seamless] {
+  display: block;
+}
 </style>
 
 <meta charset="utf-8">
@@ -22,10 +32,12 @@
 <meta name="keyword"
 	content="magz, html5, css3, template, magazine template">
 <!-- Shareable -->
-		<meta property="og:title" content="HTML5 & CSS3 magazine template is based on Bootstrap 3" />
-		<meta property="og:type" content="article" />
-		<meta property="og:url" content="http://github.com/nauvalazhar/Magz" />
-		<meta property="og:image" content="https://raw.githubusercontent.com/nauvalazhar/Magz/master/images/preview.png" />
+<meta property="og:title"
+	content="HTML5 & CSS3 magazine template is based on Bootstrap 3" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://github.com/nauvalazhar/Magz" />
+<meta property="og:image"
+	content="https://raw.githubusercontent.com/nauvalazhar/Magz/master/images/preview.png" />
 <title>Magz &mdash; Responsive HTML5 &amp; CSS3 Magazine
 	Template</title>
 <!-- Bootstrap -->
@@ -89,54 +101,41 @@
 
 						<h1>글 작성</h1>
 						<!--     <textarea name="content" id="editor"></textarea> -->
-						<form action="BoardWrite" method="post" id="join">
-							<div class="form-group">
-								<!-- 								<label>작성자 이름</label>  -->
-								<input type="hidden" name="name" value=<%=name%>
-									class="form-control">
-							</div>
-							<div class="form-group">
-								<label>제목</label> <input type="text" name="subject" maxlength="50"
-									class="form-control">
-							</div>
-							<div class="form-group">
-								<label>내용</label>
-								<textarea name="content"  maxlength="500" rows="50" id="editor2" class="form-control"></textarea>
-							</div>
+						<!-- 						<form action="BoardWrite" method="post" id="join"> -->
+						<!-- 							<div class="form-group"> -->
+						<!-- 																<label>작성자 이름</label>  -->
+						<%-- 								<input type="hidden" name="name" value=<%=name%> --%>
+						<!-- 									class="form-control"> -->
+						<!-- 							</div> -->
+						<!-- 							<div class="form-group"> -->
+						<!-- 								<label>제목</label> <input type="text" name="subject" maxlength="50" -->
+						<!-- 									class="form-control"> -->
+						<!-- 							</div> -->
+						<!-- 							<div class="form-group"> -->
+						<!-- 								<label>내용</label> -->
+						<!-- 								<textarea name="content"  maxlength="500" rows="50" id="editor2" class="form-control"></textarea> -->
+						<!-- 							</div> -->
 
-							<div class="form-group text-right">
-								<button class="btn btn-primary btn-block">글 작성</button>
-							</div>
-						</form>
+						<!-- 							<div class="form-group text-right"> -->
+						<!-- 								<button class="btn btn-primary btn-block">글 작성</button> -->
+						<!-- 							</div> -->
+						<!-- 						</form> -->
+<%-- 						<jsp:include page="editor.jsp" /> --%>
+						<iframe src="editor.jsp" style="width:100%; height:600px"  ></iframe>
+						
 						<div class="col-md-2">
 							<button class="btn btn-primary btn-block"
 								onclick="location.href='community.jsp'">작성 취소</button>
 
 
-							<script src="ckeditor5/ckeditor.js"></script>
-							<script src="ckeditor5/translations/ko.js"></script>
-							<script>
-			 ClassicEditor
-			 .create( document.querySelector( '#editor' ),{  // textarea의 id
-					language: 'ko',        
-					ckfinder: {
-				        uploadUrl: 'FileServlet' // 내가 지정한 업로드 url (post로 요청감)
-				    }
-				} )
-		        .then( editor => {
-		            window.editor = editor;
-		        } )
-		        .catch( err => {
-		            console.error( err.stack );
-		        } );
-    </script>
+							
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</section>
-	
+
 
 	<!-- Start footer -->
 	<footer class="footer">
@@ -156,7 +155,7 @@
 
 	<!-- JS -->
 	<script src="js/jquery.js"></script>
-<!-- 	<script src="js/jquery-3.6.0.js"></script> -->
+	<!-- 	<script src="js/jquery-3.6.0.js"></script> -->
 
 	<script src="js/jquery.migrate.js"></script>
 	<script src="scripts/bootstrap/bootstrap.min.js"></script>
