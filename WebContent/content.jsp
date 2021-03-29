@@ -110,7 +110,11 @@
 							<div class="col">
 								<a href="#" class="love"><i
 									class="ion-android-favorite-outline"></i>
+<<<<<<< HEAD
 									<div><%=bb.getReadcount() %></div></a>
+=======
+									<div>1220</div></a>
+>>>>>>> branch 'master' of https://github.com/imrutel/Roopretelcham.git
 							</div>
 						</footer>
 					</article>
