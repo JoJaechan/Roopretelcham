@@ -25,7 +25,8 @@
 <meta property="og:url" content="http://github.com/nauvalazhar/Magz" />
 <meta property="og:image"
 	content="https://raw.githubusercontent.com/nauvalazhar/Magz/master/images/preview.png" />
-<title>Roopretelcham</title>
+<title>Magz &mdash; Responsive HTML5 &amp; CSS3 Magazine
+	Template</title>
 <!-- Bootstrap -->
 <link rel="stylesheet" href="scripts/bootstrap/bootstrap.min.css">
 <!-- IonIcons -->
@@ -107,7 +108,7 @@
 <!-- 													</div> -->
 <!-- 												</form> -->
 
-						<iframe src="editor.jsp" seamless="seamless" scrolling="no" frameborder="0" style="width:100%; height:750px"  ></iframe>
+						<iframe src="editor2.jsp" seamless="seamless" scrolling="no" frameborder="0" style="width:100%; height:850px"  ></iframe>
 						
 						<div class="col-md-2">
 							<button class="btn btn-primary btn-block"

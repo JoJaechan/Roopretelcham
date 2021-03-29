@@ -1,3 +1,4 @@
+<%@page import="file.FileBean"%>
 <%@page import="board.BoardBean"%>
 <%@page import="java.util.List"%>
 <%@page import="board.BoardDAO"%>
@@ -15,11 +16,14 @@
 <meta name="author" content="Kodinger">
 <meta name="keyword"
 	content="magz, html5, css3, template, magazine template">
-<!-- Shareable -->
-<!-- 		<meta property="og:title" content="HTML5 & CSS3 magazine template is based on Bootstrap 3" /> -->
-<!-- 		<meta property="og:type" content="article" /> -->
-<!-- 		<meta property="og:url" content="http://github.com/nauvalazhar/Magz" /> -->
-<!-- 		<meta property="og:image" content="https://raw.githubusercontent.com/nauvalazhar/Magz/master/images/preview.png" /> -->
+<!-- <!-- Shareable -->
+<!-- <meta property="og:title" -->
+<!-- 	content="HTML5 & CSS3 magazine template is based on Bootstrap 3" /> -->
+<!-- <meta property="og:type" content="article" /> -->
+<!-- <meta property="og:url" content="http://github.com/nauvalazhar/Magz" /> -->
+<!-- <meta property="og:image" -->
+<!-- 	content="https://raw.githubusercontent.com/nauvalazhar/Magz/master/images/preview.png" /> -->
+
 <title>Roopretelcham</title>
 <!-- Bootstrap -->
 <link rel="stylesheet" href="scripts/bootstrap/bootstrap.min.css">
@@ -42,107 +46,103 @@
 <link rel="stylesheet" href="css/demo.css">
 </head>
 
-<body>
+<body class="skin-orange">
 	<!-- 헤더파일들어가는 곳 -->
 	<jsp:include page="top.jsp"></jsp:include>
 	<!-- 헤더파일들어가는 곳 -->
 
-	<section class="category">
+	<section class="home">
 		<div class="container">
 			<div class="row">
-				<div class="col-md-12 text-left">
+				<div class="col-md-12 col-sm-12 col-xs-12">
 					<div class="row">
 						<div class="col-md-12">
 							<ol class="breadcrumb">
 								<li><a href="#">메인</a></li>
-								<li class="active">커뮤니티</li>
+								<li class="active">갤러리</li>
 							</ol>
 						</div>
 					</div>
 
 					<div class="col-md-2">
 						<button class="btn btn-primary btn-block"
-							onclick="location.href='writeForm.jsp'">글쓰기</button>
+							onclick="location.href='WriteFormGallery.jsp'">글쓰기</button>
 					</div>
 					<div class="line"></div>
 					<div class="row">
-						<!-- 					글 시작 -->
 						<%
 						BoardDAO boardDAO = new BoardDAO();
-						List<BoardBean> bbList = boardDAO.selectBoard();
-
-						if (bbList != null) {
+						List<BoardBean> bbList = boardDAO.selectBoard("board_gallery");
+						%>
+						<div class="row">
+							<!-- 갤러리 표시 시작 -->
+							<%
 							for (BoardBean b : bbList) {
-						%>
-						<article class="col-md-12">
-							<!-- 							<div class="inner"> -->
-							<!-- 								<figure> -->
-							<!-- 									<a href="single.jsp"> <img src="images/news/img01.jpg"> -->
-							<!-- 									</a> -->
-							<!-- 								</figure> -->
-							<div class="details">
-								<div class="detail">
-									<div class="category">
-										<!-- 										<a href="category.jsp">Film</a> -->
-										<%=b.getName() %>
-									</div>
-									<div class="time"><%=b.getDate()%></div>
-								</div>
-								<h1>
-									<a href="content.jsp?num=<%=b.getNum()%>"><%=b.getSubject()%></a>
-								</h1>
+								FileBean fb = boardDAO.getArticleThumbFile(b.getNum(), "file_gallery");
+								String thumbPath = fb.getFile_name();
+								System.out.println(thumbPath);
+							%>
+							<!-- 						<div class="col-md-4 col-sm-6 col-xs-12"> -->
+							<div class="col">
 
-								<%-- 								<p><%=b.getContent()%></p> --%>
+								<article class="article col-md-4">
+									<div class="inner">
+										<figure>
+											<a href="content_gallery.jsp?num=<%=b.getNum()%>"> <!-- 											<img src="images/news/img10.jpg" alt="Sample Article"> -->
+												<img
+												src="${pageContext.request.contextPath}/upload/<%=thumbPath%>" />
+											</a>
+										</figure>
 
-								<footer>
-									<a href="#" class="love"><i
-										class="ion-android-favorite-outline"></i>
-										<div>237</div></a> <a class="btn btn-primary more"
-										href="single.jsp">
-										<div>더 보기</div>
-										<div>
-											<i class="ion-ios-arrow-thin-right"></i>
+										<div class="padding">
+											<div class="detail">
+												<div class="time"><%=b.getDate()%></div>
+												<div class="category">
+													<a href="#"><%=b.getName() %></a>
+												</div>
+											</div>
+											<h2>
+												<a href="#"><%=b.getSubject()%></a>
+											</h2>
+											<!-- 											<p>Lorem ipsum dolor sit amet, consectetur adipiscing -->
+											<!-- 												elit, sed do eiusmod tempor incididunt ut labore et dolore -->
+											<!-- 												magna aliqua. Ut enim ad minim veniam.</p> -->
+											<footer>
+												<a href="#" class="love"><i
+													class="ion-android-favorite-outline"></i>
+													<div><%=b.getReadcount()%></div></a> <a
+													class="btn btn-primary more" href="#">
+													<div>More</div>
+													<div>
+														<i class="ion-ios-arrow-thin-right"></i>
+													</div>
+												</a>
+											</footer>
 										</div>
-									</a>
-								</footer>
+									</div>
+								</article>
+
 							</div>
+							<!-- 						</div> -->
+							<%
+							}
+							%>
 
-							<!-- 							</div> -->
-						</article>
-						<%
-						}
-						}
-						%>
-
-						<div class="col-md-12 text-center">
-							<ul class="pagination">
-								<li class="prev"><a href="#"><i
-										class="ion-ios-arrow-left"></i></a></li>
-								<li class="active"><a href="#">1</a></li>
-								<li><a href="#">2</a></li>
-								<li><a href="#">3</a></li>
-								<li><a href="#">...</a></li>
-								<li><a href="#">97</a></li>
-								<li class="next"><a href="#"><i
-										class="ion-ios-arrow-right"></i></a></li>
-							</ul>
-							<div class="pagination-help-text">Showing 8 results of 776
-								&mdash; Page 1</div>
 						</div>
+
 					</div>
 				</div>
-
-
 			</div>
-		</div>
 	</section>
+	<!-- 					갤러리 끝 -->
+
 
 	<!-- Start footer -->
 	<footer class="footer">
 		<div class="row">
 			<div class="col-md-12">
 				<div class="copyright">
-					COPYRIGHT &copy; RUTEL 2021. ALL RIGHT RESERVED.
+					COPYRIGHT &copy; MAGZ 2017. ALL RIGHT RESERVED.
 					<div>
 						Made with <i class="ion-heart"></i> by <a
 							href="http://kodinger.com">Kodinger</a>

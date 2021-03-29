@@ -47,7 +47,7 @@ public class FileServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		doGet(request, response);
+		//doGet(request, response);
 		request.setCharacterEncoding("UTF-8");
 		String path = "/upload"; // 개발자 지정 폴더
 		String real_save_path = request.getServletContext().getRealPath(path);

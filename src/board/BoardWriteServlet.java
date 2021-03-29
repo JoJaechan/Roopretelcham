@@ -2,12 +2,19 @@ package board;
 
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.lang.model.util.Elements;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
 /**
  * Servlet implementation class BoardWrite
@@ -60,7 +67,19 @@ public class BoardWriteServlet extends HttpServlet {
 		bean.setDate(date);
 
 		dao.articleWrite(bean);
+
+		String htmlTable= content;
+		Document doc = Jsoup.parse(htmlTable);
+
+		// then use something like this to get your element:
+		org.jsoup.select.Elements imgs = doc.getElementsByTag("img");
+		
+		 for (Element element : imgs) {
+			 System.out.println("imgs : " + element.attr("src"));
+		}
+		
 		response.sendRedirect("community.jsp");
 	}
 
+	
 }
