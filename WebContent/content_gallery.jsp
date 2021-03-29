@@ -75,7 +75,7 @@
 				<div class="col-md-12">
 					<ol class="breadcrumb">
 						<li><a href="#">메인</a></li>
-						<li class="active">커뮤니티</li>
+						<li class="active">갤러리</li>
 					</ol>
 					<article class="article main-article">
 

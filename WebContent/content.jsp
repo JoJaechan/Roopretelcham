@@ -92,7 +92,10 @@
 						<!-- 글 본문 -->
 						<div class="main"></div>
 
+						<textarea name="content" id="editor" readonly
+								rows="10" cols="350">
 						<%=bb.getContent()%>
+						</textarea>
 
 						<!-- 글 본문 -->
 
@@ -110,11 +113,10 @@
 							<div class="col">
 								<a href="#" class="love"><i
 									class="ion-android-favorite-outline"></i>
-<<<<<<< HEAD
+
 									<div><%=bb.getReadcount() %></div></a>
-=======
+
 									<div>1220</div></a>
->>>>>>> branch 'master' of https://github.com/imrutel/Roopretelcham.git
 							</div>
 						</footer>
 					</article>
@@ -278,7 +280,40 @@
 		</div>
 	</footer>
 	<!-- End Footer -->
+<!-- ckeditor5 -->
+			<script src="ckeditor5/ckeditor.js"></script>
+			<script src="ckeditor5/translations/ko.js"></script>
+			<script>
+			 ClassicEditor
+		        .create( document.querySelector( '#editor' ), {
+		        	ckfinder: {
+		        		uploadUrl: '/fileupload'	
+		        	},
+		            language: 'ko'
+		        } )
+		        .then( editor => {
+		            window.editor = editor;
+		            editor.isReadOnly = true;
+		            const toolbarContainer = editor.ui.view.stickyPanel;
+		            editor.ui.view.top.remove( toolbarContainer );
 
+		        } )
+		        .catch( err => {
+		            console.error( err.stack );
+		        } );
+    </script>
+			<script>
+    document.querySelectorAll( 'oembed[url]' ).forEach( element => {
+        // Create the <a href="..." class="embedly-card"></a> element that Embedly uses
+        // to discover the media.
+        const anchor = document.createElement( 'a' );
+
+        anchor.setAttribute( 'href', element.getAttribute( 'url' ) );
+        anchor.className = 'embedly-card';
+
+        element.appendChild( anchor );
+    } );
+</script>
 	<!-- JS -->
 	<script src="js/jquery.js"></script>
 	<script src="js/jquery.migrate.js"></script>

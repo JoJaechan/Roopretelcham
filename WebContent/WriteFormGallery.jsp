@@ -77,7 +77,7 @@
 					<aside>
 						<ol class="breadcrumb">
 							<li><a href="#">메인</a></li>
-							<li class="active">커뮤니티</li>
+							<li class="active">갤러리</li>
 						</ol>
 					</aside>
 				</div>
@@ -108,12 +108,8 @@
 <!-- 													</div> -->
 <!-- 												</form> -->
 
-<<<<<<< HEAD
-						<iframe src="editor2.jsp" seamless="seamless" scrolling="no" frameborder="0" style="width:100%; height:850px"  ></iframe>
-=======
-						<iframe src="editor.jsp" seamless="seamless" scrolling="no" frameborder="0" style="width:100%; height:750px"  ></iframe>
->>>>>>> branch 'master' of https://github.com/imrutel/Roopretelcham.git
-						
+						<iframe src="editor2.jsp" seamless="seamless" scrolling="no" frameborder="0" style="width:100%; height:750px"  ></iframe>
+		
 						<div class="col-md-2">
 							<button class="btn btn-primary btn-block"
 								onclick="location.href='community.jsp'">작성 취소</button>
