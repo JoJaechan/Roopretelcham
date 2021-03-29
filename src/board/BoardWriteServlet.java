@@ -45,7 +45,7 @@ public class BoardWriteServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		doGet(request, response);
+//		doGet(request, response);
 		request.setCharacterEncoding("utf-8");
 		String name = request.getParameter("name");
 //		String pass = request.getParameter("pass");

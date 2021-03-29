@@ -86,27 +86,6 @@
 						<!-- 					글 시작 -->
 
 						<h1>글 작성</h1>
-<!-- 						    <textarea name="content" id="editor"></textarea> -->
-<!-- 												<form action="BoardWrite" method="post" id="join"> -->
-<!-- 													<div class="form-group"> -->
-<!-- 																						<label>작성자 이름</label>  -->
-<%-- 														<input type="hidden" name="name" value=<%=name%> --%>
-<!-- 															class="form-control"> -->
-<!-- 													</div> -->
-<!-- 													<div class="form-group"> -->
-<!-- 														<label>제목</label> <input type="text" name="subject" maxlength="50" -->
-<!-- 															class="form-control"> -->
-<!-- 													</div> -->
-<!-- 													<div class="form-group"> -->
-<!-- 														<label>내용</label> -->
-<!-- 														<textarea name="content"  maxlength="500" rows="50" id="editor2" class="form-control"></textarea> -->
-<!-- 													</div> -->
-
-<!-- 													<div class="form-group text-right"> -->
-<!-- 														<button class="btn btn-primary btn-block">글 작성</button> -->
-<!-- 													</div> -->
-<!-- 												</form> -->
-
 						<iframe src="editor.jsp" seamless="seamless" scrolling="no" frameborder="0" style="width:100%; height:750px"  ></iframe>
 						
 						<div class="col-md-2">
@@ -123,7 +102,7 @@
 	</section>
 <script type="text/javascript">
 var sumitSendForm = function() {
- var frmObj = document.getElementById("test").contentWindow.document.sendform;
+ var frmObj = document.getElementById("iframe").contentWindow.document.sendform;
  frmObj.submit();
 }
 </script>
