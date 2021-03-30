@@ -12,19 +12,12 @@
 	min-height: 550px;
 	max-height: 550px;
 }
-
-iframe {
-	padding: 0;
-	margin: 0;
-	border: 2px solid #ccc;;
-	width: 100%; /* 아이프레임 가로 넓이 */
-	height: 50px; /* 아이프레임 세로 넓이 */
-}
 </style>
 
 <meta charset="UTF-8">
 
 <title>Insert title here</title>
+<link rel="stylesheet" href="css/editor.css">
 
 </head>
 <body>
@@ -61,12 +54,12 @@ iframe {
 					</tr>
 				</table>
 
-				<div id="table_search">
-					<input type="submit" value="글쓰기" onClick="checkForm()" class="btn">
-					<!-- 					글 등록안할 시 업로드파일 제거 처리 필요  -->
-					<input type="button" value="글목록" class="btn"
-						onclick="location.href='notice.jsp'">
-				</div>
+				<button type="submit" onClick="checkForm()">글쓰기</button>
+				<!-- 					글 등록안할 시 업로드파일 제거 처리 필요  -->
+				<button type="button" onClick="cancleForm()">작성취소</button>
+
+
+
 			</form>
 			<script>
 // iframe parent window 
@@ -74,7 +67,12 @@ function checkForm(){
     document.content_form.target="_parent"; 
     document.content_form.submit(); 
 } 
-
+function cancleForm(){ 
+	if (confirm("글쓰기를 취소하시겠습니까?")) {
+		document.content_form.target="_parent";
+	    window.parent.history.back(); //이전페이지로 가기
+	}
+}
 </script>
 			<script src="ckeditor5/ckeditor.js"></script>
 			<script src="ckeditor5/translations/ko.js"></script>

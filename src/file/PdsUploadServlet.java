@@ -24,17 +24,17 @@ import table.Table;
 /**
  * Servlet implementation class PartUploadPro2Servlet
  */
-@WebServlet("/partUploadPro2")
+@WebServlet("/fileUpload")
 @MultipartConfig(fileSizeThreshold = 0)
-public class PartUploadPro2Servlet extends HttpServlet {
+public class PdsUploadServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public PartUploadPro2Servlet() {
+	public PdsUploadServlet() {
 		super();
-		System.out.println("PartUploadPro2Servlet()");
+		System.out.println("PartUploadPro3Servlet() -> PDS FILE UPLOAD");
 	}
 
 	/**
@@ -92,9 +92,9 @@ public class PartUploadPro2Servlet extends HttpServlet {
 				}
 			}
 		}
-		dao.articleInsertFile(fbList, bean, Table.BOARD_GALLERY, Table.FILE);
+		dao.articleInsertFile(fbList, bean, Table.BOARD_PDS, Table.FILE_PDS);
 		out.println(uploadFileNameList); // + "파일 업로드 완료.");
 
-		response.sendRedirect("/Roopretelcham/gallery.jsp");
+		response.sendRedirect("/Roopretelcham/download.jsp");
 	}
 }

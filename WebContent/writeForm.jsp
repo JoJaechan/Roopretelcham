@@ -19,12 +19,12 @@
 <meta name="keyword"
 	content="magz, html5, css3, template, magazine template">
 <!-- Shareable -->
-<meta property="og:title"
-	content="HTML5 & CSS3 magazine template is based on Bootstrap 3" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="http://github.com/nauvalazhar/Magz" />
-<meta property="og:image"
-	content="https://raw.githubusercontent.com/nauvalazhar/Magz/master/images/preview.png" />
+<!-- <meta property="og:title" -->
+<!-- 	content="HTML5 & CSS3 magazine template is based on Bootstrap 3" /> -->
+<!-- <meta property="og:type" content="article" /> -->
+<!-- <meta property="og:url" content="http://github.com/nauvalazhar/Magz" /> -->
+<!-- <meta property="og:image" -->
+<!-- 	content="https://raw.githubusercontent.com/nauvalazhar/Magz/master/images/preview.png" /> -->
 <title>Roopretelcham</title>
 <!-- Bootstrap -->
 <link rel="stylesheet" href="scripts/bootstrap/bootstrap.min.css">
@@ -87,14 +87,7 @@
 
 						<h1>글 작성</h1>
 						<iframe src="editor.jsp" seamless="seamless" scrolling="no" frameborder="0" style="width:100%; height:750px"  ></iframe>
-						
-						<div class="col-md-2">
-							<button class="btn btn-primary btn-block"
-								onclick="location.href='community.jsp'">작성 취소</button>
-
-
-							
-						</div>
+												
 					</div>
 				</div>
 			</div>

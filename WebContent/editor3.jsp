@@ -12,20 +12,11 @@
 	min-height: 550px;
 	max-height: 550px;
 }
-
-iframe {
-	padding: 0;
-	margin: 0;
-	border: 2px solid #ccc;;
-	width: 100%; /* 아이프레임 가로 넓이 */
-	height: 50px; /* 아이프레임 세로 넓이 */
-}
 </style>
-
 <meta charset="UTF-8">
-
 <title>Insert title here</title>
 
+<link rel="stylesheet" href="css/editor.css">
 </head>
 <body>
 	<div id="wrap">
@@ -44,9 +35,9 @@ iframe {
 
 		<!-- 게시판 -->
 		<article>
-			<form action="partUploadPro2" method="POST"
+			<form action="fileUpload" method="POST" name="content_form"
 				enctype="multipart/form-data">
-				<table id="notice">
+				<table id="pds">
 					<tr>
 						<td><input type="hidden" name="name" value="<%=id%>" readonly></td>
 					</tr>
@@ -55,58 +46,43 @@ iframe {
 					</tr>
 					<tr>
 						<td><input type="text" maxlength="50" width="100%"
-							name="subject"></td>
+							required="required" name="subject"></td>
 					</tr>
 					<tr>
-						<td><textarea name="content" maxlength="5000" id="editor"></textarea></td>
+						<td><textarea name="content" required="required"
+								maxlength="5000" id="editor"></textarea></td>
 					</tr>
 				</table>
 				<p>
 					<label for="partFile1">파일 첨부 : </label><input type="file"
 						multiple="multiple" onchange="fileUpload(this)" name="partFile1"
-						id="partFile1" accept=".jpg, .gif">
-					<!-- 						.zip,.pdf,.mp4,.mp3,.avi,  -->
+						id="partFile1" accept=".jpg, .gif, .zip,.pdf,.mp4,.mp3,.avi,">				
 					<br>
 				</p>
 
 				<label for="partFile1">첨부파일목록 ▼</label>
 				<ul id="fileList"></ul>
 
-				<div id="table_search">
-					<input type="submit" value="글쓰기" onClick="checkForm()" class="btn">
-					<!-- 					글 등록안할 시 업로드파일 제거 처리 필요  -->
-					<input type="button" value="글목록" class="btn"
-						onclick="location.href='notice.jsp'">
-				</div>
+				<button type="submit" onClick="checkForm()">글쓰기</button>
+				<!-- 					글 등록안할 시 업로드파일 제거 처리 필요  -->
+				<button type="button" onClick="cancleForm()">작성취소</button>
+
+
 			</form>
 			<script>
 // iframe parent window 
 function checkForm(){ 
     document.content_form.target="_parent"; 
     document.content_form.submit(); 
-} 
+}
+function cancleForm(){ 
+	if (confirm("글쓰기를 취소하시겠습니까?")) {
+		document.content_form.target="_parent";
+	    window.parent.history.back(); //이전페이지로 가기
+	}
+}
+
 </script>
-
-			<!-- 			<script src="ckeditor5/ckeditor.js"></script> -->
-			<script
-				src="https://cdn.ckeditor.com/ckeditor5/27.0.0/classic/ckeditor.js"></script>
-			<!-- 			<script src="ckeditor5/translations/ko.js"></script> -->
-			<script>
-			 ClassicEditor
-			 .create( document.querySelector( '#editor' ),{  // textarea의 id
-					language: 'ko',        
-					ckfinder: {
-				        uploadUrl: 'FileServlet' // 내가 지정한 업로드 url (post로 요청감)
-				    }
-				} )
-// 		        .then( editor => {
-// 		            window.editor = editor;
-// 		        } )
-		        .catch( err => {
-		            console.error( err.stack );
-		        } );
-    </script>
-
 			<script type="text/javascript"
 				src="https://code.jquery.com/jquery-3.2.0.min.js"></script>
 			<script type="text/javascript">
@@ -122,8 +98,27 @@ $(function(){
 });
 </script>
 
+			<script src="ckeditor5/ckeditor.js"></script>
+			<script src="ckeditor5/translations/ko.js"></script>
+			<script>
+			 ClassicEditor
+			 .create( document.querySelector( '#editor' ),{  // textarea의 id
+					language: 'ko',        
+					ckfinder: {
+				        uploadUrl: 'FileServlet' // 내가 지정한 업로드 url (post로 요청감)
+				    }
+				} )
+		        .then( editor => {
+		            window.editor = editor;
+		        } )
+		        .catch( err => {
+		            console.error( err.stack );
+		        } );
+    </script>
+
 		</article>
-		<!-- 게시판 -->
+
+
 	</div>
 </body>
 </html>

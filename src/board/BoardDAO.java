@@ -10,6 +10,7 @@ import java.util.List;
 
 import file.FileBean;
 import state.CheckState;
+import table.Table;
 
 public class BoardDAO {
 	// 회원관련 데이터베이스 작업
@@ -357,7 +358,7 @@ public class BoardDAO {
 		}
 	}
 	
-	public void articleInsertImage(List<FileBean> fbList, BoardBean bb) {
+	public void articleInsertFile(List<FileBean> fbList, BoardBean bb, Table boardTable, Table fileTable) {
 //		int file_idx = fb.getFile_idx();
 //		int post_idx = fb.getPost_idx();
 		String name = bb.getName();
@@ -373,8 +374,12 @@ public class BoardDAO {
 		try {
 			Connection con = getConnection();
 
-			String sql1 = "insert into board_gallery(name,subject,content,readcount,date) " + "values(?,?,?,?,?)";
+			String sql1 = "insert into "
+					+ boardTable.name()
+					+ "(name,subject,content,readcount,date) " + "values(?,?,?,?,?)";
 			PreparedStatement pstmt = con.prepareStatement(sql1);
+			System.out.println("articleInsertFile -> sql : " + sql1);
+			
 //			pstmt.setInt(1, num);
 			pstmt.setString(1, name);
 //			pstmt.setString(2, pass);
@@ -392,9 +397,12 @@ public class BoardDAO {
 				n = rs.getInt("LAST_INSERT_ID()");
 			}
 			System.out.println("LAST_INSERT_ID() : " + n);
-			String insertSQL = "insert into file_gallery" + "(post_idx,file_name,file_path,uploaded) " + "values(?,?,?,?)";
+			String insertSQL = "insert into "
+					+ fileTable.name() 
+					+ "(post_idx,file_name,file_path,uploaded) " + "values(?,?,?,?)";
 			PreparedStatement pstmt3 = con.prepareStatement(insertSQL);
-
+			System.out.println("insertSQL -> sql : " + insertSQL);
+			
 			for (FileBean f : fbList) {
 				String file_name = f.getFile_name();
 				String file_path = f.getFile_path();

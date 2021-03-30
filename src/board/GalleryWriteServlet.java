@@ -20,6 +20,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import file.FileBean;
+import table.Table;
 
 /**
  * Servlet implementation class GalleryWriteServlet
@@ -103,7 +104,7 @@ public class GalleryWriteServlet extends HttpServlet {
 			fbList.add(fb);
 			System.out.println("imgs : " + src);
 		}
-		dao.articleInsertImage(fbList, bean);
+		dao.articleInsertFile(fbList, bean, Table.BOARD_GALLERY, Table.FILE_GALLERY);
 
 		response.sendRedirect("gallery.jsp");
 	}

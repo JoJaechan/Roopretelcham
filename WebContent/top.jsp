@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,7 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-<header class="primary">
+	<header class="primary">
 		<div class="firstbar">
 			<div class="container">
 				<div class="row">
@@ -45,7 +45,11 @@
 							</div>
 						</form>
 					</div>
-
+					<%
+					// String id = 세션값 가져와서 변수에 저장
+					String id = (String) session.getAttribute("id");
+					//세션값 없으면 로그인/가입 표시
+					if (id == null) {%>					
 					<div class="col-md-3 col-sm-12 text-right">
 						<ul class="nav-icons">
 							<li><a href="register.jsp"><i class="ion-person-add"></i>
@@ -54,18 +58,28 @@
 									<div>로그인</div></a></li>
 						</ul>
 					</div>
+					<% } else { %>
+					<div class="col-md-3 col-sm-12 text-right">
+						<ul class="nav-icons">
+							<li><%=id%>님 |</li>
+<!-- 							<li><a href="#"><i class="icon ion-person"></i> 회원정보수정</a></li> -->
+							<li><a href="#"><i class="icon ion-log-out"></i> 로그아웃</a></li>							
+						</ul>
+					</div>
+					<% }
+					%>
+
 
 				</div>
 			</div>
-		</div>
-
+		</div>		
 		<!-- Start nav -->
 		<nav class="menu">
 			<div class="container">
 				<div class="brand">
 					<!-- 					<a href="#"> <img src="images/logo.png" alt="Magz Logo"> -->
 					<!-- 					</a> -->
-					<h5 >
+					<h5>
 						<a href="index.jsp"><sub>Roopretelcham</sub> </a>
 					</h5>
 				</div>
@@ -102,14 +116,14 @@
 						<!-- 									</ul></li> -->
 						<!-- 							</ul></li> -->
 
-						<li class="dropdown magz-dropdown"><a href="#">회원 정보 보기 <i
+						<li class="dropdown magz-dropdown"><a href="#">회원 정보 관리 <i
 								class="ion-ios-arrow-right"></i>
 						</a>
 							<ul class="dropdown-menu">
 								<li><a href="#"><i class="icon ion-person"></i> 내 정보 보기</a></li>
-								<li><a href="#"><i class="icon ion-heart"></i> 작성 글 보기</a></li>
+<!-- 								<li><a href="#"><i class="icon ion-heart"></i> 작성 글 보기</a></li> -->
 								<li><a href="#"><i class="icon ion-chatbox"></i> 작성
-										댓글목록</a></li>
+										글 보기</a></li>
 								<li><a href="#"><i class="icon ion-key"></i> 비밀번호 변경</a></li>
 								<!-- 								<li><a href="#"><i class="icon ion-settings"></i> -->
 								<!-- 										Settings</a></li> -->

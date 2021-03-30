@@ -15,8 +15,7 @@
 </style>
 
 <meta charset="UTF-8">
-<!-- <link href="../css/default.css" rel="stylesheet" type="text/css"> -->
-<!-- <link href="../css/subpage.css" rel="stylesheet" type="text/css"> -->
+<link rel="stylesheet" href="css/editor.css">
 
 </head>
 <body>
@@ -51,19 +50,17 @@
 					</tr>
 					<tr>
 						<td><input type="text" maxlength="50" width="100%"
-							name="subject"></td>
+							required="required" name="subject"></td>
 					</tr>
 					<tr>
-						<td><textarea name="content" maxlength="5000" id="editor"></textarea></td>
+						<td><textarea name="content" required="required"
+								maxlength="5000" id="editor"></textarea></td>
 					</tr>
 				</table>
 
-				<div id="table_search">
-					<input type="submit" onClick="checkForm()" value="글쓰기" class="btn">
-					<!-- 					글 등록안할 시 업로드파일 제거 처리 필요  -->
-					<!-- 					<input type="button" value="글목록" class="btn" -->
-					<!-- 						onclick="location.href='notice.jsp'"> -->
-				</div>
+				<button type="submit" onClick="checkForm()">글쓰기</button>
+				<!-- 					글 등록안할 시 업로드파일 제거 처리 필요  -->
+				<button type="button" onClick="cancleForm()">작성취소</button>
 
 			</form>
 			<script>
@@ -71,9 +68,15 @@
 function checkForm(){ 
     document.content_form.target="_parent"; 
     document.content_form.submit(); 
-} 
-</script>
+}
+function cancleForm(){ 
+	if (confirm("글쓰기를 취소하시겠습니까?")) {
+		document.content_form.target="_parent";
+	    window.parent.history.back(); //이전페이지로 가기
+	}
+}
 
+</script>
 			<script src="ckeditor5/ckeditor.js"></script>
 			<script src="ckeditor5/translations/ko.js"></script>
 			<script>

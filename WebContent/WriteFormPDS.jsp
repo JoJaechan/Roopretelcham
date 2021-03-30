@@ -77,7 +77,7 @@
 					<aside>
 						<ol class="breadcrumb">
 							<li><a href="#">메인</a></li>
-							<li class="active">갤러리</li>
+							<li class="active">자료실</li>
 						</ol>
 					</aside>
 				</div>
@@ -87,19 +87,20 @@
 						<!-- 					글 시작 -->
 
 						<h1>글 작성</h1>
-						<iframe src="editor2.jsp" id="iframe" seamless="seamless" scrolling="no" frameborder="0" style="width:100%; height:750px"  ></iframe>
-		
+						<iframe src="editor3.jsp" id="iframe" seamless="seamless"
+							scrolling="no" frameborder="0" style="width: 100%; height: 950px"></iframe>
+						
 					</div>
 				</div>
 			</div>
 		</div>
 	</section>
-<script type="text/javascript">
-var sumitSendForm = function() {
- var frmObj = document.getElementById("iframe").contentWindow.document.sendform;
- frmObj.submit();
-}
-</script>
+	<script type="text/javascript">
+		var sumitSendForm = function() {
+			var frmObj = document.getElementById("iframe").contentWindow.document.sendform;
+			frmObj.submit();
+		}
+	</script>
 
 
 	<!-- Start footer -->
