@@ -45,7 +45,8 @@ public class PdsUploadServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		request.setCharacterEncoding("UTF-8");
-
+		response.setContentType("text/html; charset=utf-8");
+		
 		Collection<Part> parts = request.getParts();
 		String realPath = request.getServletContext().getRealPath("/upload");
 
@@ -95,6 +96,6 @@ public class PdsUploadServlet extends HttpServlet {
 		dao.articleInsertFile(fbList, bean, Table.BOARD_PDS, Table.FILE_PDS);
 		out.println(uploadFileNameList); // + "파일 업로드 완료.");
 
-		response.sendRedirect("/Roopretelcham/download.jsp");
+		response.sendRedirect("/Roopretelcham/pds.jsp");
 	}
 }

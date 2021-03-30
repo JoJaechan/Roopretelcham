@@ -456,7 +456,10 @@ public class BoardDAO {
 	}
 	
 	public FileBean getArticleThumbFile(int post_idx) {
-		String sql = "select * from file where file_name like '%jpg%' and post_idx=? limit 1;";
+		String sql = "select * from"
+				+ "file_pds "
+				+ "WHERE post_idx=? and file_name REGEXP ('jfif|jpg|gif|png') LIMIT 1;";
+//				"select * from file where file_name like '%jpg%' and post_idx=? limit 1;";
 		
 		FileBean fb = new FileBean();
 		
@@ -478,7 +481,10 @@ public class BoardDAO {
 	}
 	
 	public FileBean getArticleThumbFile(int post_idx, String tableName) {
-		String sql = "select * from " + tableName + " where file_name like '%jpg%' and post_idx=? limit 1;";
+		String sql = "select * from "
+				+ tableName
+				+ " WHERE post_idx=? and file_name REGEXP ('jfif|jpg|gif|png') LIMIT 1;";
+//				"select * from " + tableName + " where file_name like '%jpg%' and post_idx=? limit 1;";
 		
 		FileBean fb = new FileBean();
 		
