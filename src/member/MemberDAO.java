@@ -26,7 +26,9 @@ public class MemberDAO {
 
 	// 회원가입 기능(회원가입 메서드)
 	// public void insertMember(전달받은 값을 저장하는 변수)
-	public void insertMember(MemberBean mem) {
+	public boolean insertMember(MemberBean mem) {
+		boolean isOk = false;
+		
 		String id = mem.getId();
 		String pass = mem.getPass();
 		String name = mem.getName();
@@ -63,10 +65,13 @@ public class MemberDAO {
 			pstmt.setString(8, mobile);
 			// 4단계 SQL구문을 실행 (insert형태)
 			pstmt.executeUpdate();
+			isOk = true;
 		} catch (Exception e) {
-			// 에러 발생하면 에러메시지 출력
+			// 에러 발생하면 에러메시지 출력			
 			e.printStackTrace();
+			return isOk;
 		}
+		return isOk;
 	}
 
 	public MemberBean getMember(String id) {

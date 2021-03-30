@@ -1,3 +1,4 @@
+﻿
 package member;
 
 import java.io.IOException;
@@ -41,13 +42,13 @@ public class MemberLoginServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		request.setCharacterEncoding("utf-8");
-		doGet(request, response);
+		response.setContentType("text/html; charset=utf-8");
 		
 		String id = request.getParameter("id");
 		String pass = request.getParameter("password");
 		
-		response.setContentType("text/html; charset=utf-8");
-		   PrintWriter out = response.getWriter();
+		
+		PrintWriter out = response.getWriter();		
 		
 		MemberDAO dao = new MemberDAO();
 //		int check = dao.userCheck(id, pass);

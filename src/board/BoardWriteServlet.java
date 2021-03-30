@@ -47,6 +47,7 @@ public class BoardWriteServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 //		doGet(request, response);
 		request.setCharacterEncoding("utf-8");
+		response.setContentType("text/html; charset=utf-8");
 		String name = request.getParameter("name");
 //		String pass = request.getParameter("pass");
 //		String id = request.getParameter("id");
