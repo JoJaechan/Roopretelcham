@@ -65,7 +65,7 @@
 							</p>
 						</div>
 					</div>
-					
+
 					<div class="col-md-2">
 						<button class="btn btn-primary btn-block"
 							onclick="location.href='WriteFormPDS.jsp'">글쓰기</button>
@@ -83,33 +83,63 @@
 						for (BoardBean b : bbList) {
 							FileBean fb = boardDAO.getArticleThumbFile(b.getNum(), "file_pds");
 							String thumbPath = fb.getFile_name();
-							System.out.println(thumbPath);
+							System.out.println("thumbPath : " + thumbPath);
+							List<FileBean> fbList = boardDAO.getArticleFileList(b.getNum());
 						%>
 
 						<article class="col-md-12 article-list">
 							<div class="inner">
 								<figure>
+									<%
+									if (thumbPath != null) {
+									%>
 									<a href="content_download.jsp?num=<%=b.getNum()%>"> <!-- 											<img src="images/news/img10.jpg" alt="Sample Article"> -->
 										<img
 										src="${pageContext.request.contextPath}/upload/<%=thumbPath%>" />
 									</a>
+									<br>
+									<%
+									} else { System.out.println("이미지없음, 대체이미지 표시");
+									%>
+									<a href="content_download.jsp?num=<%=b.getNum()%>"> <!-- 											<img src="images/news/img10.jpg" alt="Sample Article"> -->
+										<img
+										src="images/noimg.gif" />
+									</a>
+									<br>
+									<%
+									}
+									%>
 								</figure>
 								<div class="details">
 									<div class="detail">
 										<div class="category">
-											<a href="#"><%=b.getName() %></a>
+											<a href="#"><%=b.getName()%></a>
 										</div>
 										<div class="time"><%=b.getDate()%></div>
 									</div>
 									<h1>
 										<a href="#"><%=b.getSubject()%></a>
 									</h1>
-									<p><%=b.getContent() %></p>
+
+									<%-- 									<p><%=b.getContent()%></p> --%>
+									<!-- 게시물에 대한 파일리스트 표시시작 -->
+									<%
+									for (FileBean file : fbList) {
+										String filename = file.getFile_name();
+									%>
+									<a
+										href="${pageContext.request.contextPath}/upload/<%=filename%>">
+										<%=filename%>
+									</a><br>
+									<%
+									}
+									%>
+
 									<footer>
 										<a href="#" class="love"><i
 											class="ion-android-favorite-outline"></i>
-											<div><%=b.getReadcount()%></div></a> <a class="btn btn-primary more"
-											href="single.html">
+											<div><%=b.getReadcount()%></div></a> <a
+											class="btn btn-primary more" href="single.html">
 											<div>더 보기</div>
 											<div>
 												<i class="ion-ios-arrow-thin-right"></i>

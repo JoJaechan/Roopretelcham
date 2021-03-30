@@ -430,7 +430,7 @@ public class BoardDAO {
 
 		try {
 			Connection con = getConnection();
-			String sql = "select * from file where post_idx=?";
+			String sql = "select * from file_pds where post_idx=?";
 			PreparedStatement pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, post_idx);
 			// 4단계 SQL구문을 실행 (select 형태) 결과를 ResultSet내장객체 저장
