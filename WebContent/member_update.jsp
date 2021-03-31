@@ -218,12 +218,19 @@
 								</div>
 								<!-- 주소 영역 끝 -->
 								<div class="form-group">
+<<<<<<< HEAD
 									<label>집 전화 번호</label> <input type="tel"
 										value="<%=mb.getPhone()%>" name="phone"><br>
 								</div>
 								<div class="form-group">
 									<label>휴대전화 번호</label> <input type="tel"
 										value="<%=mb.getMobile()%>" name="mobile">
+=======
+									<label>집 전화 번호</label> <input type="tel" value="<%=mb.getPhone() %>" name="phone"><br>
+								</div>
+								<div class="form-group">
+									<label>휴대전화 번호</label> <input type="tel" value="<%=mb.getMobile() %>" name="mobile">
+>>>>>>> branch 'master' of https://github.com/imrutel/Roopretelcham
 								</div>
 							</fieldset>
 							<!-- 								옵션 영역 끝 -->

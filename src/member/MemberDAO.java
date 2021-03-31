@@ -261,6 +261,10 @@ public class MemberDAO {
 			e.printStackTrace();
 		}
 		return mb;
+<<<<<<< HEAD
 	}
+=======
+	}	
+>>>>>>> branch 'master' of https://github.com/imrutel/Roopretelcham
 
 }
