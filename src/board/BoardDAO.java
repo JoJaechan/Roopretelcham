@@ -289,6 +289,20 @@ public class BoardDAO {
 			e.printStackTrace();
 		}
 	}
+	
+	public void articleUpdateReadCount(int num, Table table) {
+		try {
+			Connection con = getConnection();
+			String sql2 = "update "
+					+ table.name()
+					+ " set readcount = readcount +1 where num=?";
+			PreparedStatement pstmt2 = con.prepareStatement(sql2);
+			pstmt2.setInt(1, num);
+			pstmt2.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 //	CREATE TABLE IF NOT EXISTS `file` ( 
 //			  file_idx int(11) AUTO_INCREMENT, 

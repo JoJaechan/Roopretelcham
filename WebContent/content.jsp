@@ -101,23 +101,21 @@
 						<!-- 글 본문 -->
 
 						<footer>
+<!-- 						게시물 태그 표시 시작 -->
 							<div class="col">
 								<ul class="tags">
 									<li><a href="#">Free Themes</a></li>
 									<li><a href="#">Bootstrap 3</a></li>
-									<li><a href="#">Responsive Web Design</a></li>
-									<li><a href="#">HTML5</a></li>
-									<li><a href="#">CSS3</a></li>
-									<li><a href="#">Web Design</a></li>
 								</ul>
 							</div>
+							<!-- 						게시물 태그 표시 끝 -->
 							<div class="col">
 								<a href="#" class="love"><i
 									class="ion-android-favorite-outline"></i>
 
 									<div><%=bb.getReadcount()%></div></a>
 
-								<div>1220</div>
+								<div>조회수</div>
 								</a>
 							</div>
 						</footer>
@@ -193,6 +191,7 @@
 							<input type="hidden" id="id" name="id" value=<%=id %>>
 							<input type="hidden" id="no" name="no" value=<%=bb.getNum() %>>
 							<input type="hidden" id="nick" name="nick" value=<%=bb.getName() %>>
+							<input type="hidden" id="tableName" name="tableName" value=<%=Table.BOARD_COMMENT.name() %>>
 							
 							<div class="form-group col-md-4">
 								<label for="nick">이름 <span class="required"></span></label> <input
