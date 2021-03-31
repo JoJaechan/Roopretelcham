@@ -59,7 +59,7 @@
 								<li><a href="#">메인</a></li>
 								<li class="active">자료실</li>
 							</ol>
-<!-- 							<h1 class="page-title">자료실</h1> -->
+							<!-- 							<h1 class="page-title">자료실</h1> -->
 							<p class="page-subtitle">
 								원하는 자료를 <i>업로드</i>하거나 <i>다운로드</i>할 수 있습니다.
 							</p>
@@ -99,11 +99,11 @@
 									</a>
 									<br>
 									<%
-									} else { System.out.println("이미지없음, 대체이미지 표시");
+									} else {
+									System.out.println("이미지없음, 대체이미지 표시");
 									%>
 									<a href="content_download.jsp?num=<%=b.getNum()%>"> <!-- 											<img src="images/news/img10.jpg" alt="Sample Article"> -->
-										<img
-										src="images/noimg.gif" />
+										<img src="images/noimg.gif" />
 									</a>
 									<br>
 									<%

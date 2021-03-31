@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -44,9 +44,9 @@
 </head>
 
 <body class="skin-orange">
-<!-- 헤더파일들어가는 곳 -->
-<jsp:include page="top.jsp"></jsp:include>
-<!-- 헤더파일들어가는 곳 -->
+	<!-- 헤더파일들어가는 곳 -->
+	<jsp:include page="top.jsp"></jsp:include>
+	<!-- 헤더파일들어가는 곳 -->
 
 	<section class="home">
 		<div class="container">

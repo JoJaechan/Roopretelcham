@@ -2,7 +2,6 @@ package member;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Timestamp;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,16 +10,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class MemberRegistServlet
+ * Servlet implementation class MemberUpdateServlet
  */
-@WebServlet("/RegistServlet")
-public class MemberRegistServlet extends HttpServlet {
+@WebServlet("/userUpdate")
+public class MemberUpdateServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public MemberRegistServlet() {
+	public MemberUpdateServlet() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -33,6 +32,7 @@ public class MemberRegistServlet extends HttpServlet {
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
+
 	}
 
 	/**
@@ -43,44 +43,58 @@ public class MemberRegistServlet extends HttpServlet {
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 //		doGet(request, response);
+
 		request.setCharacterEncoding("utf-8");
 		response.setContentType("text/html; charset=utf-8");
 		PrintWriter out = response.getWriter();
 
+		request.setCharacterEncoding("utf-8");
+		MemberDAO md = new MemberDAO();
+		MemberBean mb = new MemberBean();
 		String id = request.getParameter("id");
+
+		String origin_pass = request.getParameter("origin_pass");
 		String pass = request.getParameter("pass");
-		String name = request.getParameter("name");
-		String email = request.getParameter("email");
-		// String address=request.getParameter("address");
+
+		String originAddress = request.getParameter("address");
 		String address = request.getParameter("sample6_address");
 
 		System.out.println("address : " + address);
 		address = address + " " + request.getParameter("sample6_detailAddress");
+		System.out.println("sample6_detailAddress : " + address);
 
-		String phone = request.getParameter("phone");
-		String mobile = request.getParameter("mobile");
+		if (address == null || address == "") {
+			System.out.println("새 주소가 없으므로 기존주소 사용");
+			address = originAddress;
+		}
 
-		// date 현 시각
-		Timestamp date = new Timestamp(System.currentTimeMillis());
-
-		MemberBean mb = new MemberBean();
-		mb.setId(id);
-		mb.setPass(pass);
-		mb.setName(name);
-		mb.setEmail(email);
-		mb.setAddress(address);
-		mb.setPhone(phone);
-		mb.setMobile(mobile);
-		mb.setDate(date);
-
-		MemberDAO dao = new MemberDAO();
-		boolean isOk = dao.insertMember(mb);
-
-		if (isOk) {
-			// 로그인 페이지 로 이동
+		int check = md.userCheck(id, origin_pass);
+		// check==0 이면 자바스크립트 "비밀번호 틀림" 뒤로이동
+		// check==-1 이면(나머지) 자바스크립트 "아이디없음" 뒤로이
+		if (check == 1) {
+			mb.setId(id);
+			mb.setPass(pass);
+			mb.setName(request.getParameter("name"));
+			mb.setEmail(request.getParameter("email"));
+			mb.setAddress(address);
+			mb.setPhone(request.getParameter("phone"));
+			mb.setMobile(request.getParameter("mobile"));
+			md.updateMember(mb);
+			// main.jsp 이동
 			response.sendRedirect("login.jsp");
-		} else {
-			String msg = "가입에 실패하였습니다!";
+		}
+		if (check == 0) {
+			String msg = "기존 비밀번호가 올바르지 않습니다";
+			String str = "";
+			str = "<script language='javascript'>";
+			str += "alert('" + msg + "');"; // 얼럿창 띄우기
+			str += "history.go(-1);"; // 이전페이지로 가기
+			str += "</script>";
+			out.print(str);
+
+		}
+		if (check == -1) {
+			String msg = "해당 아이디가 존재하지 않습니다";
 			String str = "";
 			str = "<script language='javascript'>";
 			str += "alert('" + msg + "');"; // 얼럿창 띄우기

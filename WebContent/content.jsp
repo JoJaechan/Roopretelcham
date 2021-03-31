@@ -1,3 +1,5 @@
+<%@page import="board.CommentBean"%>
+<%@page import="table.Table"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
 <%@page import="java.text.SimpleDateFormat"%>
@@ -92,8 +94,7 @@
 						<!-- 글 본문 -->
 						<div class="main"></div>
 
-						<textarea name="content" id="editor" readonly
-								rows="10" cols="350">
+						<textarea name="content" id="editor" readonly rows="10" cols="350">
 						<%=bb.getContent()%>
 						</textarea>
 
@@ -114,9 +115,10 @@
 								<a href="#" class="love"><i
 									class="ion-android-favorite-outline"></i>
 
-									<div><%=bb.getReadcount() %></div></a>
+									<div><%=bb.getReadcount()%></div></a>
 
-									<div>1220</div></a>
+								<div>1220</div>
+								</a>
 							</div>
 						</footer>
 					</article>
@@ -134,7 +136,7 @@
 						<input type="button" class="btn btn-primary btn-block" value="글삭제"
 							class="btn" onclick="next(<%=bb.getNum()%>)">
 					</div>
-					
+
 					<script>
 						function next(no) {
 							if (confirm("정말 글을 삭제하시겠습니까?")) {
@@ -145,118 +147,72 @@
 						}
 					</script>
 
+					<!-- 댓글 영역 시작 -->
+					<%
+					List<CommentBean> listComment = boardDAO.getArticleComment(bb.getNum(), Table.BOARD_COMMENT.name());
+					int numOfComment = listComment.size();
+					String id = (String) session.getAttribute("id");
+					
+					%>
 					<div class="line thin"></div>
 					<div class="comments">
 						<h2 class="title">
-							3 Responses <a href="#">Write a Response</a>
+							<%=numOfComment%>
+							개의 댓글 <a href="#">댓글 달기</a>
 						</h2>
 						<div class="comment-list">
+							<%
+								for (CommentBean c : listComment) {
+
+							%>
+							<!-- 						개별 댓글 표시 시작 -->
 							<div class="item">
 								<div class="user">
 									<figure>
 										<img src="images/img01.jpg">
 									</figure>
 									<div class="details">
-										<h5 class="name">Mark Otto</h5>
-										<div class="time">24 Hours</div>
+										<h5 class="name"><%=c.getComment_id() %></h5>
+										<div class="time"><%=c.getComment_date() %></div>
 										<div class="description">
-											Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed
-											do eiusmod tempor incididunt ut labore et dolore <a href="#">magna</a>
-											aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-											ullamco laboris nisi ut aliquip ex ea commodo.
+											<%=c.getComment_content() %>
 										</div>
 										<footer>
-											<a href="#">Reply</a>
+											<a href="#response">Reply</a>
 										</footer>
 									</div>
 								</div>
-							</div>
-							<div class="item">
-								<div class="user">
-									<figure>
-										<img src="images/img01.jpg">
-									</figure>
-									<div class="details">
-										<h5 class="name">Mark Otto</h5>
-										<div class="time">24 Hours</div>
-										<div class="description">
-											Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed
-											do eiusmod tempor incididunt ut labore et dolore <a href="#">magna</a>
-											aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-											ullamco laboris nisi ut aliquip ex ea commodo.
-										</div>
-										<footer>
-											<a href="#">Reply</a>
-										</footer>
-									</div>
-								</div>
-								<div class="reply-list">
-									<div class="item">
-										<div class="user">
-											<figure>
-												<img src="images/img01.jpg">
-											</figure>
-											<div class="details">
-												<h5 class="name">Mark Otto</h5>
-												<div class="time">24 Hours</div>
-												<div class="description">Quis nostrud exercitation
-													ullamco laboris nisi ut aliquip ex ea commodo consequat.
-													Duis aute irure dolor in reprehenderit in voluptate velit
-													esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
-													occaecat cupidatat non proident, sunt in culpa qui officia
-													deserunt mollit anim id est laborum.</div>
-												<footer>
-													<a href="#">Reply</a>
-												</footer>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="item">
-								<div class="user">
-									<figure>
-										<img src="images/img01.jpg">
-									</figure>
-									<div class="details">
-										<h5 class="name">Mark Otto</h5>
-										<div class="time">24 Hours</div>
-										<div class="description">
-											Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed
-											do eiusmod tempor incididunt ut labore et dolore <a href="#">magna</a>
-											aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-											ullamco laboris nisi ut aliquip ex ea commodo.
-										</div>
-										<footer>
-											<a href="#">Reply</a>
-										</footer>
-									</div>
-								</div>
-							</div>
+							</div> <% } %>
+							<!-- 						개별 댓글 표시 끝 -->
+
 						</div>
-						<form class="row">
+						<form class="row" action=writeComment method="post" id="response">
 							<div class="col-md-12">
-								<h3 class="title">Leave Your Response</h3>
+								<h3 class="title">댓글을 남겨주세요</h3>
 							</div>
+							<input type="hidden" id="id" name="id" value=<%=id %>>
+							<input type="hidden" id="no" name="no" value=<%=bb.getNum() %>>
+							<input type="hidden" id="nick" name="nick" value=<%=bb.getName() %>>
+							
 							<div class="form-group col-md-4">
-								<label for="name">Name <span class="required"></span></label> <input
-									type="text" id="name" name="" class="form-control">
+								<label for="nick">이름 <span class="required"></span></label> <input
+									type="text" readonly="readonly"  value=<%=bb.getName() %> id="nick" name="" class="form-control">
 							</div>
-							<div class="form-group col-md-4">
-								<label for="email">Email <span class="required"></span></label>
-								<input type="email" id="email" name="" class="form-control">
-							</div>
-							<div class="form-group col-md-4">
-								<label for="website">Website</label> <input type="url"
-									id="website" name="" class="form-control">
+<!-- 							<div class="form-group col-md-4"> -->
+<!-- 								<label for="email">Email <span class="required"></span></label> -->
+<!-- 								<input type="email" id="email" name="" class="form-control"> -->
+<!-- 							</div> -->
+<!-- 							<div class="form-group col-md-4"> -->
+<!-- 								<label for="website">Website</label> <input type="url" -->
+<!-- 									id="website" name="" class="form-control"> -->
+<!-- 							</div> -->
+							<div class="form-group col-md-12">
+								<label for="comment_content">댓글 내용 <span class="required"></span></label>
+								<textarea class="form-control" name="comment_content"
+									placeholder="여기에 댓글 내용을 써주세요"></textarea>
 							</div>
 							<div class="form-group col-md-12">
-								<label for="message">Response <span class="required"></span></label>
-								<textarea class="form-control" name="message"
-									placeholder="Write your response ..."></textarea>
-							</div>
-							<div class="form-group col-md-12">
-								<button class="btn btn-primary">Send Response</button>
+								<button class="btn btn-primary">댓글 쓰기</button>
 							</div>
 						</form>
 					</div>
@@ -280,10 +236,10 @@
 		</div>
 	</footer>
 	<!-- End Footer -->
-<!-- ckeditor5 -->
-			<script src="ckeditor5/ckeditor.js"></script>
-			<script src="ckeditor5/translations/ko.js"></script>
-			<script>
+	<!-- ckeditor5 -->
+	<script src="ckeditor5/ckeditor.js"></script>
+	<script src="ckeditor5/translations/ko.js"></script>
+	<script>
 			 ClassicEditor
 		        .create( document.querySelector( '#editor' ), {
 		        	ckfinder: {
@@ -302,7 +258,7 @@
 		            console.error( err.stack );
 		        } );
     </script>
-			<script>
+	<script>
     document.querySelectorAll( 'oembed[url]' ).forEach( element => {
         // Create the <a href="..." class="embedly-card"></a> element that Embedly uses
         // to discover the media.

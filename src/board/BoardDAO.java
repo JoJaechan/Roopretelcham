@@ -504,5 +504,61 @@ public class BoardDAO {
 		
 		return fb;
 	}
+	
+	public List<CommentBean> getArticleComment(int post_idx, String tableName) {
+		String sql = "select * from "
+				+ tableName
+				+ " WHERE comment_board = ?"
+				+ post_idx;
+		
+		List<CommentBean> commentList = new ArrayList<CommentBean>();
+		
+		try {
+			Connection con = getConnection();
+			PreparedStatement pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, post_idx);
+			// 4단계 SQL구문을 실행 (select 형태) 결과를 ResultSet내장객체 저장
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.next()) {
+				CommentBean cb = new CommentBean();
+				cb.setComment_board(post_idx);
+				cb.setComment_content(rs.getString(ColumnName.COMMENT_CONTENT.name()));				
+				cb.setComment_date(rs.getTimestamp(ColumnName.COMMENT_DATE.name()));
+				cb.setComment_id(rs.getString(ColumnName.COMMENT_ID.name()));
+				cb.setComment_num(rs.getInt(ColumnName.COMMENT_NUM.name()));
+				cb.setComment_parent(0);
+				commentList.add(cb);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return commentList; 
+	}
+	
+	public void writeComment(CommentBean cb, String tableName) {
+		String name = cb.getComment_id();
+		String content = cb.getComment_content();
+		int articleID = cb.getComment_board();
+		Timestamp date = cb.getComment_date();
+
+		try {
+			Connection con = getConnection();
+
+			String sql = "insert into "
+					+ tableName
+					+ "(COMMENT_BOARD, COMMENT_ID, COMMENT_DATE, COMMENT_CONTENT) " 
+					+ "values(?,?,?,?)";
+			PreparedStatement pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, articleID);
+			pstmt.setString(2, name);	
+			pstmt.setTimestamp(3, date);
+			pstmt.setString(4, content);
+			pstmt.executeUpdate();
+		} catch (Exception e) {
+			// 에러 발생하면 에러메시지 출력
+			e.printStackTrace();
+		}
+	}
 
 }

@@ -8,4 +8,5 @@ public enum Table {
 	FILE_GALLERY,
 	FILE_PDS,
 	MEMBER,
+	BOARD_COMMENT,
 }

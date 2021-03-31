@@ -201,6 +201,22 @@ public class MemberDAO {
 			e.printStackTrace();
 		}
 	}
+	
+	public boolean updateMemberPassword(String newPassword, String id) {
+		// 3단계 update //4단계 실행 // main.jsp 이동
+		try {
+			Connection con = getConnection();
+			String sql2 = "update member set pass=? where id=?";
+			PreparedStatement pstmt2 = con.prepareStatement(sql2);
+			pstmt2.setString(1, newPassword);
+			pstmt2.setString(2,  id);
+			pstmt2.executeUpdate();
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
 
 	// 리턴값 없음 mdao.deleteMember(mb);
 	public void deleteMember(MemberBean mb) {
@@ -215,6 +231,36 @@ public class MemberDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public MemberBean getMemberInfoByEmail(String email) {
+		MemberBean mb = new MemberBean();
+		try {
+			Connection con = getConnection();
+
+			String sql = "select * from member where email=?";
+			PreparedStatement pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, email);
+			ResultSet rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				mb.setDate(rs.getTimestamp("date"));
+				mb.setId(rs.getString("id"));
+				mb.setName(rs.getString("name"));
+				mb.setPass(rs.getString("pass"));
+				
+				mb.setAddress(rs.getString("address"));
+				mb.setEmail(rs.getString("email"));
+				mb.setMobile(rs.getString("mobile"));
+				mb.setPhone(rs.getString("phone"));
+			}
+			System.out.println("date : " + mb.getDate());
+
+		} catch (Exception e) {
+			// 에러 발생하면 에러메시지 출력
+			e.printStackTrace();
+		}
+		return mb;
 	}
 
 }
