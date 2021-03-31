@@ -508,9 +508,8 @@ public class BoardDAO {
 	public List<CommentBean> getArticleComment(int post_idx, String tableName) {
 		String sql = "select * from "
 				+ tableName
-				+ " WHERE comment_board = ?"
-				+ post_idx;
-		
+				+ " WHERE comment_board = ?";
+		System.out.println("getArticleComment() : " + sql);
 		List<CommentBean> commentList = new ArrayList<CommentBean>();
 		
 		try {
