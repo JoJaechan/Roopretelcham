@@ -46,37 +46,28 @@
 	<!-- 헤더파일들어가는 곳 -->
 
 	<section class="login first grey">
-		<div class="container">
-			<div class="box-wrapper">
-				<div class="box box-border">
-					<div class="box-body">
-						<h4>Login</h4>
-						<form action="login" method="post" id="join">
-							<div class="form-group">
-								<label>아이디</label> <input type="text" name="id"
-									class="form-control">
-							</div>
-							<div class="form-group">
-								<label class="fw">비밀번호 <a href="forgot.jsp"
-									class="pull-right">비밀번호를 잊으셨나요?</a>
-								</label> <input type="password" name="password" class="form-control">
-							</div>
-							<div class="form-group text-right">
-								<button class="btn btn-primary btn-block">로그인</button>
-							</div>
-							<div class="form-group text-center">
-								<span class="text-muted">계정이 없으신가요?</span> <a
-									href="register.jsp"> 계정 만들기</a>
-							</div>
-							<div class="title-line">or</div>
-							<a href="#" class="btn btn-social btn-block facebook"><i
-								class="ion-social-facebook"></i> Login with Facebook</a>
-						</form>
+			<div class="container">
+				<div class="box-wrapper">				
+					<div class="box box-border">
+						<div class="box-body">
+							<h4>비밀번호 분실</h4>
+							<form action="emailSend" method="post" id="join">
+								<div class="form-group">
+									<label>Email 주소</label>
+									<input type="email" required="required" maxlength="30" name="receiver" class="form-control">
+								</div>
+								<div class="form-group text-right">
+									<button class="btn btn-primary btn-block">비밀번호 재설정</button>
+								</div>
+								<div class="form-group text-center">
+									<span class="text-muted">로그인 화면으로 돌아갈까요?</span> <a href="login.jsp">Login</a>
+								</div>
+							</form>
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-	</section>
+		</section>
 
 	<!-- Start footer -->
 	<footer class="footer">

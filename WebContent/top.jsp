@@ -49,7 +49,7 @@
 					// String id = 세션값 가져와서 변수에 저장
 					String id = (String) session.getAttribute("id");
 					//세션값 없으면 로그인/가입 표시
-					if (id == null) {%>					
+					if (id == null) {%>
 					<div class="col-md-3 col-sm-12 text-right">
 						<ul class="nav-icons">
 							<li><a href="register.jsp"><i class="ion-person-add"></i>
@@ -62,8 +62,9 @@
 					<div class="col-md-3 col-sm-12 text-right">
 						<ul class="nav-icons">
 							<li><%=id%>님 |</li>
-<!-- 							<li><a href="#"><i class="icon ion-person"></i> 회원정보수정</a></li> -->
-							<li><a href="logout"><i class="icon ion-log-out"></i> 로그아웃</a></li>							
+							<!-- 							<li><a href="#"><i class="icon ion-person"></i> 회원정보수정</a></li> -->
+							<li><a href="logout"><i class="icon ion-log-out"></i>
+									로그아웃</a></li>
 						</ul>
 					</div>
 					<% }
@@ -72,7 +73,7 @@
 
 				</div>
 			</div>
-		</div>		
+		</div>
 		<!-- Start nav -->
 		<nav class="menu">
 			<div class="container">
@@ -115,21 +116,26 @@
 						<!-- 										<li><a href="503.jsp">503</a></li> -->
 						<!-- 									</ul></li> -->
 						<!-- 							</ul></li> -->
-
+						<% if (id != null) {%>
 						<li class="dropdown magz-dropdown"><a href="#">회원 정보 관리 <i
 								class="ion-ios-arrow-right"></i>
 						</a>
 							<ul class="dropdown-menu">
-								<li><a href="#"><i class="icon ion-person"></i> 내 정보 보기</a></li>
-<!-- 								<li><a href="#"><i class="icon ion-heart"></i> 작성 글 보기</a></li> -->
-								<li><a href="#"><i class="icon ion-chatbox"></i> 작성
-										글 보기</a></li>
-								<li><a href="#"><i class="icon ion-key"></i> 비밀번호 변경</a></li>
+								<li><a href="member_update.jsp"><i
+										class="icon ion-person"></i> 회원 정보 수정</a></li>
+								<!-- 								<li><a href="#"><i class="icon ion-heart"></i> 작성 글 보기</a></li> -->
+								<li><a href="#"><i class="icon ion-chatbox"></i> 작성 글
+										보기</a></li>
+								<!-- 								<li><a href="#"><i class="icon ion-key"></i> 비밀번호 분실</a></li> -->
 								<!-- 								<li><a href="#"><i class="icon ion-settings"></i> -->
 								<!-- 										Settings</a></li> -->
 								<li class="divider"></li>
-								<li><a href="#"><i class="icon ion-log-out"></i> 로그아웃</a></li>
+
+<!-- 								<li><a href="logout"><i class="icon ion-log-out"></i> -->
+<!-- 										로그아웃</a></li> -->
+
 							</ul></li>
+							<%}	%>
 					</ul>
 				</div>
 			</div>
