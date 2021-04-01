@@ -44,13 +44,13 @@
 
 <link rel="stylesheet" href="/js/vegas/vegas.min.css">
 </head>
-<body class="skin-orange" >
+<body >
 	<!-- 헤더파일들어가는 곳 -->
 	<div >
 		<header class="primary" >
-			<div class="firstbar" >
-				<div class="container" id="ShowSlideShowHere" >
-					<div class="row">
+			<div class="firstbar" id="ShowSlideShowHere">
+				<div class="container" >
+					<div class="row"   >
 						<div class="col-md-3 col-sm-12" >
 							<div class="brand">
 								<!-- 									<img src="images/logo.png" alt="Magz Logo"> -->
@@ -60,7 +60,7 @@
 							</div>
 						</div>
 
-						<div class="col-md-4 col-sm-12">
+						<div class="col-md-4 col-sm-12" >
 							<form class="search" autocomplete="off">
 								<div class="form-group">
 									<div class="input-group">
@@ -123,7 +123,7 @@
 			
 
 			<!-- Start nav -->
-			<nav class="menu">
+			<nav class="menu" >
 				<div class="container">
 					<div class="brand">
 						<!-- 					<a href="#"> <img src="images/logo.png" alt="Magz Logo"> -->
@@ -147,8 +147,8 @@
 							<li class="for-tablet"><a href="/member/register.jsp">회원
 									가입</a></li>
 							<li><a href="/community/community.jsp">커뮤니티</a></li>
-							<li><a href="/gallery.jsp">갤러리</a></li>
-							<li><a href="/pds.jsp">자료실</a></li>
+							<li><a href="/gallery/gallery.jsp">갤러리</a></li>
+							<li><a href="/download/download.jsp">자료실</a></li>
 
 							<!-- 						<li class="dropdown magz-dropdown"><a href="category.jsp">커뮤니티 -->
 							<!-- 								<i class="ion-ios-arrow-right"></i> -->
@@ -472,68 +472,45 @@
 	<!-- End Footer -->
 
 	<!-- JS -->
-	<script src="js/jquery.js"></script>
-	<script src="js/jquery.migrate.js"></script>
-	<script src="scripts/bootstrap/bootstrap.min.js"></script>
+	<script src="/js/jquery.js"></script>
+	<script src="/js/jquery.migrate.js"></script>
+	<script src="/scripts/bootstrap/bootstrap.min.js"></script>
 	<script>
 		var $target_end = $(".best-of-the-week");
 	</script>
-	<script src="scripts/jquery-number/jquery.number.min.js"></script>
-	<script src="scripts/owlcarousel/dist/owl.carousel.min.js"></script>
-	<script src="scripts/magnific-popup/dist/jquery.magnific-popup.min.js"></script>
-	<script src="scripts/easescroll/jquery.easeScroll.js"></script>
-	<script src="scripts/sweetalert/dist/sweetalert.min.js"></script>
-	<script src="scripts/toast/jquery.toast.min.js"></script>
-	<script src="js/demo.js"></script>
-	<script src="js/e-magz.js"></script>
+	<script src="/scripts/jquery-number/jquery.number.min.js"></script>
+	<script src="/scripts/owlcarousel/dist/owl.carousel.min.js"></script>
+	<script src="/scripts/magnific-popup/dist/jquery.magnific-popup.min.js"></script>
+	<script src="/scripts/easescroll/jquery.easeScroll.js"></script>
+	<script src="/scripts/sweetalert/dist/sweetalert.min.js"></script>
+	<script src="/scripts/toast/jquery.toast.min.js"></script>
+	<script src="/js/demo.js"></script>
+	<script src="/js/e-magz.js"></script>
 	
 <!-- 	<script src="http://code.jquery.com/jquery.min.js"></script> -->
 <script src="/js/vegas/vegas.min.js"></script>
-	
+	 
 	<script>
 	$(document).ready(function() 
-			  {
-			    var imagecollection = [
-			        {src: 'images/noimg.gif'},
-			        {src: 'images/img02.jpg'},
-			        {src: 'images/img03.jpg'},
-			        {src: 'images/img04.jpg'}
-			        /* Slideshow not working? Check your image links. */
-			    ];
+			  { 
+			    var imagecollection = [ 
+			    	{src: 'images/bg.jpg'}, 
+			        {src: 'images/bg2.gif'},
+			        {src: 'images/bg3.gif'},
+			    ]; 
 
-			    $("#ShowSlideShowHere").vegas({
-			        slides: imagecollection,
-			        transition: 'fade',
-			        preloadImage: true,
-			        timer: true,
-			        shuffle: false,
-			        delay: 5000,
-			        animation: 'kenburns',
-			        cover: true
-			    });
+			    $("#ShowSlideShowHere").vegas({ 
+			        slides: imagecollection, 
+			        transition: 'fade', 
+			        preloadImage: true, 
+			        timer: true, 
+			        shuffle: true,
+			        delay: 5000, 
+			        animation: 'kenburns', 
+			        cover: true 
+			    }); 
 			  });
-// 	$("#slider1, body").vegas({
-// 					delay : 7000,
-// 					timer : false,
-// 					shuffle : false,
-// 					firstTransition : 'fade',
-// 					firstTransitionDuration : 5000,
-// 					transition : 'fade',
-// 					transitionDuration : 2000,
-// 					slides : [ {
-// 						src : "/images/nu.gif"
-// 					}
-// 					//, 
-// 					// 				{
-// 					// 					src : "/img/sv2.jpg"
-// 					// 				}, {
-// 					// 					src : "/img/svm3.jpg"
-// 					// 				}, {
-// 					// 					src : "/img/svm4.jpg"
-// 					// 				} 
-// 					]
-// 				});
-			</script>
+</script>
 	
 </body>
 </html>

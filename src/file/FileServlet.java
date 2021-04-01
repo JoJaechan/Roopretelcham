@@ -70,6 +70,7 @@ public class FileServlet extends HttpServlet {
 		
 		String url = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/" + fileName;
 		outData.put("url", url);
+		System.out.println("FileServlet -Upload : " + url);
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().print(outData.toString());

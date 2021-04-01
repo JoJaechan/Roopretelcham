@@ -35,7 +35,7 @@
 
 		<!-- 게시판 -->
 		<article>
-			<form action="fileUpload" method="POST" name="content_form"
+			<form action="/fileUpload" method="POST" name="content_form"
 				enctype="multipart/form-data">
 				<table id="pds">
 					<tr>
@@ -98,8 +98,8 @@ $(function(){
 });
 </script>
 
-			<script src="ckeditor5/ckeditor.js"></script>
-			<script src="ckeditor5/translations/ko.js"></script>
+			<script src="/ckeditor5/ckeditor.js"></script>
+			<script src="/ckeditor5/translations/ko.js"></script>
 			<script>
 			 ClassicEditor
 			 .create( document.querySelector( '#editor' ),{  // textarea의 id

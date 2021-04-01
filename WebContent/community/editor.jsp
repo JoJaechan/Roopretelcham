@@ -28,7 +28,7 @@
 		%>
 		<script type="text/javascript">
 	alert("글쓰기를 하려면 먼저 로그인해주세요");
-	location.href="../member/login.jsp";</script>
+	location.href="/member/login.jsp";</script>
 		<%
 		}
 		%>
@@ -84,7 +84,7 @@ function cancleForm(){
 			 .create( document.querySelector( '#editor' ),{  // textarea의 id
 					language: 'ko',        
 					ckfinder: {
-				        uploadUrl: 'FileServlet' // 내가 지정한 업로드 url (post로 요청감)
+				        uploadUrl: '/FileServlet' // 내가 지정한 업로드 url (post로 요청감)
 				    }
 				} )
 		        .then( editor => {

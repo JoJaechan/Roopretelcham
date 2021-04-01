@@ -126,19 +126,20 @@
 					<!-- 					본문 글 끝 -->
 
 					<div class="col-md-2">
-						<input type="button" class="btn btn-primary btn-block" value="글수정"
+						<input type="button" class="btn btn-primary btn-block" value="글 수정"
 							class="btn"
 							onclick="location.href='/updateForm.jsp?num=<%=bb.getNum()%>'">
 					</div>
 					<div class="col-md-2">
-						<input type="button" class="btn btn-primary btn-block" value="글삭제"
+						<input type="button" class="btn btn-primary btn-block" value="글 삭제"
 							class="btn" onclick="next(<%=bb.getNum()%>)">
 					</div>
 
 					<script>
 						function next(no) {
 							if (confirm("정말 글을 삭제하시겠습니까?")) {
-								location.href = "/deletePro.jsp?num=" + no;
+								var boardName = "BOARD";
+								location.href = "/deletePro.jsp?num=" + no + "&tableName=" + boardName;
 							} else {
 // 								alert('아니오를 누르셨습니다');
 							}

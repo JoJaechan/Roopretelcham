@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import state.CheckState;
+import table.Table;
 
 /**
  * Servlet implementation class BoardDeleteServlet
@@ -39,15 +40,18 @@ public class BoardDeleteServlet extends HttpServlet {
 		
 		int num = Integer.parseInt(request.getParameter("num"));
 		String pass = request.getParameter("pass");
+		String tableName = request.getParameter("tableName");		
+		
+		Table tableEnum = Table.valueOf(tableName);
 		BoardDAO dao = new BoardDAO();
 
 		response.setContentType("text/html; charset=utf-8");
 		PrintWriter out = response.getWriter();
 
-		CheckState state = dao.articleCheck(num, pass);
+		CheckState state = dao.articleCheck(num, pass, tableEnum);
 
 		if (state == CheckState.OK) {
-			dao.articleDelete(num, pass);
+			dao.articleDelete(num, pass, tableEnum);
 			response.sendRedirect("notice.jsp");
 		} else if (state == CheckState.WRONG_PASSWORD) {
 

@@ -206,10 +206,34 @@ public class BoardDAO {
 	// check==1 수정 list.jsp 이동
 	// check==0 "비밀번호틀림" 뒤로이동
 	// check==-1 "num없음" 뒤로이동
-	public CheckState articleCheck(int num, String pass) {
+	public CheckState articleCheck(int num, String pass, Table table) {
 
 		System.out.println("userCheck() num :" + num + ", pass : " + pass);
-		BoardBean bb = getArticle(num);
+		BoardBean bb = getArticle(num, table.name());
+
+		System.out.println("boardBean pass : " + bb.getPass());
+		System.out.println("boardBean name : " + bb.getName());
+
+		if (bb.getNum() == 0) {
+			System.out.println("num 없음");
+			return CheckState.NO_NUM_VALUE;
+		}
+		// 1 : id,pw 일치, 0 : id일치 pw틀림, -1 : id 불일치
+		if (num == bb.getNum() && pass.equals(bb.getPass())) {
+			System.out.println("id, pw 일치");
+			return CheckState.OK;
+		} else if (pass.equals(bb.getPass()) == false) {
+			System.out.println("pw 불일치");
+			return CheckState.WRONG_PASSWORD;
+		}
+
+		return CheckState.WRONG_PASSWORD;
+	}
+	
+	public CheckState articleCheck(int num, Table table) {
+
+		System.out.println("userCheck() num :" + num + ", pass : " + pass);
+		BoardBean bb = getArticle(num, table.name());
 
 		System.out.println("boardBean pass : " + bb.getPass());
 		System.out.println("boardBean name : " + bb.getName());
@@ -230,8 +254,8 @@ public class BoardDAO {
 		return CheckState.WRONG_PASSWORD;
 	}
 
-	public CheckState articleCheck(String id, int num) {
-		BoardBean bb = getArticle(num);
+	public CheckState articleCheck(String id, int num, Table table) {
+		BoardBean bb = getArticle(num, table.name());
 		System.out.println("boardBean name : " + bb.getName());
 		;
 
@@ -272,18 +296,18 @@ public class BoardDAO {
 		}
 	}
 
-	public void articleDelete(int num, String pass) {
-		try {
-			Connection con = getConnection();
-			String sql2 = "delete from board where num=?";
-			System.out.println("articleDelete -> " + sql2.replace("=?", "=" + num));
-			PreparedStatement pstmt2 = con.prepareStatement(sql2);
-			pstmt2.setInt(1, num);
-			pstmt2.executeUpdate();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+//	public void articleDelete(int num, String pass) {
+//		try {
+//			Connection con = getConnection();
+//			String sql2 = "delete from board where num=?";
+//			System.out.println("articleDelete -> " + sql2.replace("=?", "=" + num));
+//			PreparedStatement pstmt2 = con.prepareStatement(sql2);
+//			pstmt2.setInt(1, num);
+//			pstmt2.executeUpdate();
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//	}
 
 	public void articleDelete(int num) {
 		try {
@@ -296,6 +320,49 @@ public class BoardDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public CheckState articleDelete(int num, String pass, Table tableName) {
+		CheckState result = CheckState.NO_NUM_VALUE;
+		
+		try {
+			Connection con = getConnection();
+			String sql2 = "delete from "
+					+ tableName.name()
+					+ "where num=? and pass=?";
+			
+			System.out.println("articleDelete -> " + sql2.replace("=?", "=" + num));
+			PreparedStatement pstmt2 = con.prepareStatement(sql2);
+			pstmt2.setInt(1, num);
+			pstmt2.setString(2, pass);
+			pstmt2.executeUpdate();
+			result = CheckState.OK;
+			return result;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	public CheckState articleDelete(int num, Table tableName) {
+		CheckState result = CheckState.NO_NUM_VALUE;
+		
+		try {
+			Connection con = getConnection();
+			String sql2 = "delete from "
+					+ tableName.name()
+					+ " where num=?";
+			
+			System.out.println("articleDelete -> " + sql2.replace("=?", "=" + num));
+			PreparedStatement pstmt2 = con.prepareStatement(sql2);
+			pstmt2.setInt(1, num);
+			pstmt2.executeUpdate();
+			result = CheckState.OK;
+			return result;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
 	}
 
 	public void articleUpdateReadCount(int num) {

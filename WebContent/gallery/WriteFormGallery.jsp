@@ -28,31 +28,29 @@
 <title>Magz &mdash; Responsive HTML5 &amp; CSS3 Magazine
 	Template</title>
 <!-- Bootstrap -->
-<link rel="stylesheet" href="scripts/bootstrap/bootstrap.min.css">
+<link rel="stylesheet" href="/scripts/bootstrap/bootstrap.min.css">
 <!-- IonIcons -->
-<link rel="stylesheet" href="scripts/ionicons/css/ionicons.min.css">
+<link rel="stylesheet" href="/scripts/ionicons/css/ionicons.min.css">
 <!-- Toast -->
-<link rel="stylesheet" href="scripts/toast/jquery.toast.min.css">
+<link rel="stylesheet" href="/scripts/toast/jquery.toast.min.css">
 <!-- OwlCarousel -->
 <link rel="stylesheet"
-	href="scripts/owlcarousel/dist/assets/owl.carousel.min.css">
+	href="/scripts/owlcarousel/dist/assets/owl.carousel.min.css">
 <link rel="stylesheet"
-	href="scripts/owlcarousel/dist/assets/owl.theme.default.min.css">
+	href="/scripts/owlcarousel/dist/assets/owl.theme.default.min.css">
 <!-- Magnific Popup -->
 <link rel="stylesheet"
-	href="scripts/magnific-popup/dist/magnific-popup.css">
-<link rel="stylesheet" href="scripts/sweetalert/dist/sweetalert.css">
-<!-- iCheck -->
-<link rel="stylesheet" href="scripts/icheck/skins/all.css">
+	href="/scripts/magnific-popup/dist/magnific-popup.css">
+<link rel="stylesheet" href="/scripts/sweetalert/dist/sweetalert.css">
 <!-- Custom style -->
-<link rel="stylesheet" href="css/style.css">
-<link rel="stylesheet" href="css/skins/all.css">
-<link rel="stylesheet" href="css/demo.css">
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/skins/all.css">
+<link rel="stylesheet" href="/css/demo.css">
 </head>
 
 <body>
 	<!-- 헤더파일들어가는 곳 -->
-	<jsp:include page="top.jsp"></jsp:include>
+	<jsp:include page="/top.jsp"></jsp:include>
 	<!-- 헤더파일들어가는 곳 -->
 
 	<!-- 글쓰기 전 id세션값 먼저 체크 -->

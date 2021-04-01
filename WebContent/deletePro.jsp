@@ -1,3 +1,4 @@
+<%@page import="table.Table"%>
 <%@page import="state.CheckState"%>
 <%@page import="board.BoardDAO"%>
 <%@page import="java.sql.ResultSet"%>
@@ -13,18 +14,30 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h1>jsp6/deletePro.jsp</h1>
 	<%
 	//request 파라미터 num  pass  가져오기
-		int num = Integer.parseInt(request.getParameter("num"));	
-		BoardDAO dao = new BoardDAO();
-		String id = (String) session.getAttribute("id");
-		CheckState state = dao.articleCheck(id, num);
+	int num = Integer.parseInt(request.getParameter("num"));
+	String tableName = request.getParameter("tableName");
 
-		if (state == CheckState.OK) {
-			dao.articleDelete(num);		
-			response.sendRedirect("community.jsp");
-		} else if (state == CheckState.WRONG_PASSWORD) {
+	BoardDAO dao = new BoardDAO();
+	String id = (String) session.getAttribute("id");
+	Table tableEnum = Table.valueOf(tableName);
+	CheckState state = dao.articleCheck(id, num,tableEnum);
+
+	if (state == CheckState.OK) {
+		dao.articleDelete(num, tableEnum);
+
+		if (tableEnum == Table.BOARD) {
+			response.sendRedirect("/community/community.jsp");
+		}
+		else if (tableEnum == Table.BOARD_GALLERY) {
+			response.sendRedirect("/gallery/gallery.jsp");
+		}
+		else if (tableEnum == Table.BOARD_PDS) {
+			response.sendRedirect("/pds/download.jsp");
+		}
+		
+	} else if (state == CheckState.WRONG_PASSWORD) {
 	%>
 	<script type="text/javascript">
 		alert("비밀번호틀림");

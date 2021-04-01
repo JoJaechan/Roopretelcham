@@ -109,8 +109,8 @@
 							<li class="for-tablet"><a href="/member/register.jsp">회원
 									가입</a></li>
 							<li><a href="/community/community.jsp">커뮤니티</a></li>
-							<li><a href="/gallery.jsp">갤러리</a></li>
-							<li><a href="/pds.jsp">자료실</a></li>
+							<li><a href="/gallery/gallery.jsp">갤러리</a></li>
+							<li><a href="/pds/download.jsp">자료실</a></li>
 
 							<!-- 						<li class="dropdown magz-dropdown"><a href="category.jsp">커뮤니티 -->
 							<!-- 								<i class="ion-ios-arrow-right"></i> -->
