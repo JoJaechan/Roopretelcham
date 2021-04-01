@@ -35,7 +35,7 @@
 
 		<!-- 게시판 -->
 		<article>
-			<form action="BoardWrite" method="POST" name="content_form">
+			<form action="/BoardWrite" method="POST" name="content_form">
 				<table id="community">
 					<tr>
 						<!-- 						<td>글쓴이</td> -->
@@ -77,8 +77,8 @@ function cancleForm(){
 }
 
 </script>
-			<script src="ckeditor5/ckeditor.js"></script>
-			<script src="ckeditor5/translations/ko.js"></script>
+			<script src="/ckeditor5/ckeditor.js"></script>
+			<script src="/ckeditor5/translations/ko.js"></script>
 			<script>
 			 ClassicEditor
 			 .create( document.querySelector( '#editor' ),{  // textarea의 id

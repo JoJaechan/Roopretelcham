@@ -1,6 +1,6 @@
 eclipse.preferences.version=1
-encoding//WebContent/community.jsp=UTF-8
+encoding//WebContent/community/community.jsp=UTF-8
 encoding//WebContent/gallery.jsp=UTF-8
 encoding//WebContent/index.jsp=UTF-8
-encoding//WebContent/login.jsp=UTF-8
-encoding//WebContent/register.jsp=UTF-8
+encoding//WebContent/member/login.jsp=UTF-8
+encoding//WebContent/member/register.jsp=UTF-8

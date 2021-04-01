@@ -107,7 +107,7 @@ public class GalleryWriteServlet extends HttpServlet {
 		}
 		dao.articleInsertFile(fbList, bean, Table.BOARD_GALLERY, Table.FILE_GALLERY);
 
-		response.sendRedirect("gallery.jsp");
+		response.sendRedirect("/gallery.jsp");
 	}
 
 }

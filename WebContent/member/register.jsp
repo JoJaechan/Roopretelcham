@@ -1,4 +1,4 @@
-<%@page import="member.MemberBean"%>
+<%@page import="state.CheckState"%>
 <%@page import="member.MemberDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
@@ -22,100 +22,104 @@
 <title>Magz &mdash; Responsive HTML5 &amp; CSS3 Magazine
 	Template</title>
 <!-- Bootstrap -->
-<link rel="stylesheet" href="scripts/bootstrap/bootstrap.min.css">
+<link rel="stylesheet" href="/scripts/bootstrap/bootstrap.min.css">
 <!-- IonIcons -->
-<link rel="stylesheet" href="scripts/ionicons/css/ionicons.min.css">
+<link rel="stylesheet" href="/scripts/ionicons/css/ionicons.min.css">
 <!-- Toast -->
-<link rel="stylesheet" href="scripts/toast/jquery.toast.min.css">
+<link rel="stylesheet" href="/scripts/toast/jquery.toast.min.css">
 <!-- OwlCarousel -->
 <link rel="stylesheet"
-	href="scripts/owlcarousel/dist/assets/owl.carousel.min.css">
+	href="/scripts/owlcarousel/dist/assets/owl.carousel.min.css">
 <link rel="stylesheet"
-	href="scripts/owlcarousel/dist/assets/owl.theme.default.min.css">
+	href="/scripts/owlcarousel/dist/assets/owl.theme.default.min.css">
 <!-- Magnific Popup -->
 <link rel="stylesheet"
-	href="scripts/magnific-popup/dist/magnific-popup.css">
-<link rel="stylesheet" href="scripts/sweetalert/dist/sweetalert.css">
+	href="/scripts/magnific-popup/dist/magnific-popup.css">
+<link rel="stylesheet" href="/scripts/sweetalert/dist/sweetalert.css">
 <!-- Custom style -->
-<link rel="stylesheet" href="css/style.css">
-<link rel="stylesheet" href="css/skins/all.css">
-<link rel="stylesheet" href="css/demo.css">
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/skins/all.css">
+<link rel="stylesheet" href="/css/demo.css">
+
 </head>
 
 <body>
 	<!-- 헤더파일들어가는 곳 -->
-	<jsp:include page="top.jsp"></jsp:include>
+	<jsp:include page="../top.jsp"></jsp:include>
 	<!-- 헤더파일들어가는 곳 -->
-
-	<%
-	MemberDAO md = new MemberDAO();
-	String id = session.getAttribute("id").toString();
-
-	if (id == null) {
-		response.sendRedirect("login.jsp");
-	}
-
-	//getMember
-	MemberBean mb = md.getMember(id);
-
-	if (mb == null) {
-		response.sendRedirect("login.jsp");
-	}
-
-	String strID = mb.getId();
-	String name = mb.getName();
-	String address = mb.getAddress();
-
-	if (address == null) {
-		address = "";
-	}
-
-	String email = mb.getEmail();
-	String phone = mb.getPhone();
-	String mobile = mb.getMobile();
-	%>
 
 	<section class="login first grey">
 		<div class="container">
 			<div class="box-wrapper">
 				<div class="box box-border">
 					<div class="box-body">
-						<h4>회원정보 수정</h4>
+						<h4>회원 가입</h4>
 						<!-- 회원가입 폼 시작-->
-						<form action="userUpdate" method="post" id="join">
+						<!-- 아이디 중복확인 -->
+						<form action="RegistServlet" method="post" id="join">
 							<div class="form-group">
-								<label>아이디 (*아이디는 변경할 수 없습니다)</label> <input type="text"
-									value="<%=strID%>" readonly="readonly" name="id"
-									class="form-control">
+								<label>아이디</label> <input type="text" id="id" required name="id"
+									value="<?= $_GET['name'] ?>" class="form-control">
 							</div>
+							<input type="button" value="중복 확인" class="dup"
+								onclick="idcheck()"><br>
+							<script type="text/javascript">
+								function idcheck() {
+									// id 텍스상자 입력여부 확인
+									if (document.fr.id.value == "") {
+										alert("아이디 입력하세요");
+										document.fr.id.focus();
+										return;
+									}
+									
+									// id상자 입력 되어있으면 창열고 아이디 중복체크
+									var id = document.fr.id.value;
+									window.open("idcheck.jsp?id=" + id, "",
+											"width=400,height=300");
+								}
+							</script>
+							<%
+							// 							MemberDAO dao = new MemberDAO();
+							// 							CheckState checkResult = dao.userCheck(id);
+							// 							if (checkResult == CheckState.OK) {
+
+							// 							}
+							%>
+							<script type="text/JavaScript"
+								src="http://code.jquery.com/jquery-1.7.min.js"></script>
+							<script type="text/JavaScript">
+								function self_introduction($name, $email) {
+									jQuery('#name_text').val($name);
+								}
+							</script>
+
+							<button class="btn btn-success"
+								onclick="swal('Alert Title', 'Your content here', 'success');">Success</button>
+							<button class="btn btn-danger"
+								onclick="swal('Alert Title', 'Your content here', 'error');">Error</button>
+
 
 							<div class="form-group">
-								<label class="fw">기존 비밀번호 입력</label> <input type="password"
-									name="origin_pass" required class="form-control">
-							</div>
-
-							<div class="form-group">
-								<label class="fw">변경할 비밀번호</label> <input type="password"
+								<label class="fw">비밀번호</label> <input type="password"
 									name="pass" required class="form-control">
 							</div>
-
 							<div class="form-group">
-								<label class="fw">변경할 비밀번호 확인입력</label> <input type="password"
+								<label class="fw">비밀번호 확인입력</label> <input type="password"
 									name="pass2" required class="form-control">
 							</div>
 
 							<div class="form-group">
 								<label>닉네임</label> <input type="text" required name="name"
-									value="<%=name%>" class="form-control">
+									class="form-control">
 							</div>
 
 							<div class="form-group">
 								<label>E-Mail</label> <input type="email" required name="email"
-									value=<%=email%> class="form-control">
+									class="form-control">
 							</div>
 							<div class="form-group">
-								<label>E-Mail 확인입력</label> <input type="email" value=<%=email%>
-									required name="email2" class="form-control">
+								<label>E-Mail 확인입력</label> <input type="email" required
+									name="email2" class="form-control">
 							</div>
 
 							<!-- 							<div class="form-group"> -->
@@ -128,12 +132,7 @@
 								<legend>선택 기입사항</legend>
 								<!-- 	주소 영역 시작 -->
 								<div class="form-group">
-									<label>기존 주소</label>
-									<textarea readonly="readonly" cols=45 id="origin_addr"><%=address%></textarea>
-								</div>
-
-								<div class="form-group">
-									<label>새 주소</label><br>
+									<label>주소</label>
 									<!-- <input type="text" name="address"><br> -->
 									<!-- 	주소 영역 시작 -->
 									<!-- id 값만 정의해주면 submit을 해도 form태그 내 input 인식하지 못하므로 name도 정의 -->
@@ -218,25 +217,20 @@
 								</div>
 								<!-- 주소 영역 끝 -->
 								<div class="form-group">
-<<<<<<< HEAD
-									<label>집 전화 번호</label> <input type="tel"
-										value="<%=mb.getPhone()%>" name="phone"><br>
+									<label>집 전화 번호</label> <input type="tel" name="phone"><br>
 								</div>
 								<div class="form-group">
-									<label>휴대전화 번호</label> <input type="tel"
-										value="<%=mb.getMobile()%>" name="mobile">
-=======
-									<label>집 전화 번호</label> <input type="tel" value="<%=mb.getPhone() %>" name="phone"><br>
-								</div>
-								<div class="form-group">
-									<label>휴대전화 번호</label> <input type="tel" value="<%=mb.getMobile() %>" name="mobile">
->>>>>>> branch 'master' of https://github.com/imrutel/Roopretelcham
+									<label>휴대전화 번호</label> <input type="tel" name="mobile">
 								</div>
 							</fieldset>
 							<!-- 								옵션 영역 끝 -->
 
 							<div class="form-group text-right">
-								<button class="btn btn-primary btn-block">회원정보 수정</button>
+								<button class="btn btn-primary btn-block">가입하기</button>
+							</div>
+							<div class="form-group text-center">
+								<span class="text-muted">이미 계정이 있으신가요?</span> <a
+									href="login.html">로그인</a>
 							</div>
 						</form>
 						<!-- 회원가입 폼 끝-->
@@ -264,19 +258,20 @@
 	<!-- End Footer -->
 
 	<!-- JS -->
-	<script src="js/jquery.js"></script>
-	<script src="js/jquery.migrate.js"></script>
-	<script src="scripts/bootstrap/bootstrap.min.js"></script>
+	<script src="../js/jquery.js"></script>
+	<script src="../js/jquery.migrate.js"></script>
+	<script src="../scripts/bootstrap/bootstrap.min.js"></script>
 	<script>
 		var $target_end = $(".best-of-the-week");
 	</script>
-	<script src="scripts/jquery-number/jquery.number.min.js"></script>
-	<script src="scripts/owlcarousel/dist/owl.carousel.min.js"></script>
-	<script src="scripts/magnific-popup/dist/jquery.magnific-popup.min.js"></script>
-	<script src="scripts/easescroll/jquery.easeScroll.js"></script>
-	<script src="scripts/sweetalert/dist/sweetalert.min.js"></script>
-	<script src="scripts/toast/jquery.toast.min.js"></script>
-	<script src="js/demo.js"></script>
-	<script src="js/e-magz.js"></script>
+	<script src="../scripts/jquery-number/jquery.number.min.js"></script>
+	<script src="../scripts/owlcarousel/dist/owl.carousel.min.js"></script>
+	<script
+		src="../scripts/magnific-popup/dist/jquery.magnific-popup.min.js"></script>
+	<script src="../scripts/easescroll/jquery.easeScroll.js"></script>
+	<script src="../scripts/sweetalert/dist/sweetalert.min.js"></script>
+	<script src="../scripts/toast/jquery.toast.min.js"></script>
+	<script src="../js/demo.js"></script>
+	<script src="../js/e-magz.js"></script>
 </body>
 </html>

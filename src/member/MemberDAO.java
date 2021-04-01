@@ -8,9 +8,11 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+import state.CheckState;
+
 public class MemberDAO {
 	// 회원관련 데이터베이스 작업
-	private Connection getConnection() throws Exception {		
+	private Connection getConnection() throws Exception {
 		// 예기치 못한 에러가 발생한는 코드
 		// 1단계 JDBC프로그램 불러오기 com\mysql\jdbc Driver.class
 		Class.forName("com.mysql.jdbc.Driver");
@@ -28,7 +30,7 @@ public class MemberDAO {
 	// public void insertMember(전달받은 값을 저장하는 변수)
 	public boolean insertMember(MemberBean mem) {
 		boolean isOk = false;
-		
+
 		String id = mem.getId();
 		String pass = mem.getPass();
 		String name = mem.getName();
@@ -36,8 +38,8 @@ public class MemberDAO {
 		String email = mem.getEmail();
 		String address = mem.getAddress();
 		String phone = mem.getPhone();
-		String mobile = mem.getMobile();		
-		
+		String mobile = mem.getMobile();
+
 		System.out.println("전달받은 아이디 : " + id);
 		System.out.println("전달받은 비밀번호 : " + pass);
 		System.out.println("전달받은 이름 : " + name);
@@ -67,7 +69,7 @@ public class MemberDAO {
 			pstmt.executeUpdate();
 			isOk = true;
 		} catch (Exception e) {
-			// 에러 발생하면 에러메시지 출력			
+			// 에러 발생하면 에러메시지 출력
 			e.printStackTrace();
 			return isOk;
 		}
@@ -92,7 +94,7 @@ public class MemberDAO {
 				mb.setId(rs.getString("id"));
 				mb.setName(rs.getString("name"));
 				mb.setPass(rs.getString("pass"));
-				
+
 				mb.setAddress(rs.getString("address"));
 				mb.setEmail(rs.getString("email"));
 				mb.setMobile(rs.getString("mobile"));
@@ -105,12 +107,12 @@ public class MemberDAO {
 			e.printStackTrace();
 		}
 		return mb;
-	}	
-	
+	}
+
 	public List<MemberBean> getMemberList() {
 		MemberBean mb = new MemberBean();
 		List<MemberBean> mbList = new ArrayList<MemberBean>();
-		
+
 		try {
 			Connection con = getConnection();
 			String sql = "select * from member";
@@ -123,13 +125,13 @@ public class MemberDAO {
 				mb.setId(rs.getString("id"));
 				mb.setName(rs.getString("name"));
 				mb.setPass(rs.getString("pass"));
-				
+
 				mb.setAddress(rs.getString("address"));
 				mb.setEmail(rs.getString("email"));
 				mb.setMobile(rs.getString("mobile"));
 				mb.setPhone(rs.getString("phone"));
 				mbList.add(mb);
-			}			
+			}
 
 		} catch (Exception e) {
 			// 에러 발생하면 에러메시지 출력
@@ -150,7 +152,7 @@ public class MemberDAO {
 		// 1 : id,pw 일치, 0 : id일치 pw틀림, -1 : id 불일치
 		if (id.equals(mb.getId()) && pass.equals(mb.getPass())) {
 			System.out.println("id, pw 일치");
-			
+
 			result = 1;
 		} else if (id.equals(mb.getId()) && pass.equals(mb.getPass()) == false) {
 			System.out.println("id일치, pw 불일치");
@@ -159,7 +161,21 @@ public class MemberDAO {
 
 		return result;
 	}
-	
+
+	public CheckState userCheck(String id) {
+		CheckState result = CheckState.WRONG_ID;
+		System.out.println("userCheck() id :" + id);
+		MemberBean mb = getMember(id);
+
+		if (mb.getId() == null) {
+			System.out.println("중복 아이디 없음");
+			result = CheckState.OK;
+			return result;
+		}
+
+		return result;
+	}
+
 	public int userCheck(MemberBean mb, String id, String pass) {
 		int result = -1;
 
@@ -170,7 +186,7 @@ public class MemberDAO {
 		// 1 : id,pw 일치, 0 : id일치 pw틀림, -1 : id 불일치
 		if (id.equals(mb.getId()) && pass.equals(mb.getPass())) {
 			System.out.println("id, pw 일치");
-			
+
 			result = 1;
 		} else if (id.equals(mb.getId()) && pass.equals(mb.getPass()) == false) {
 			System.out.println("id일치, pw 불일치");
@@ -184,9 +200,7 @@ public class MemberDAO {
 		// 3단계 update //4단계 실행 // main.jsp 이동
 		try {
 			Connection con = getConnection();
-			String sql2 = "update member set name=?,"
-					+ "pass=?, email=?, address=?, phone=?,"
-					+ "mobile=? where id=?";
+			String sql2 = "update member set name=?," + "pass=?, email=?, address=?, phone=?," + "mobile=? where id=?";
 			PreparedStatement pstmt2 = con.prepareStatement(sql2);
 			pstmt2.setString(1, mb.getName());
 			pstmt2.setString(2, mb.getPass());
@@ -194,14 +208,14 @@ public class MemberDAO {
 			pstmt2.setString(4, mb.getAddress());
 			pstmt2.setString(5, mb.getPhone());
 			pstmt2.setString(6, mb.getMobile());
-			
+
 			pstmt2.setString(7, mb.getId());
 			pstmt2.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public boolean updateMemberPassword(String newPassword, String id) {
 		// 3단계 update //4단계 실행 // main.jsp 이동
 		try {
@@ -209,7 +223,7 @@ public class MemberDAO {
 			String sql2 = "update member set pass=? where id=?";
 			PreparedStatement pstmt2 = con.prepareStatement(sql2);
 			pstmt2.setString(1, newPassword);
-			pstmt2.setString(2,  id);
+			pstmt2.setString(2, id);
 			pstmt2.executeUpdate();
 			return true;
 		} catch (Exception e) {
@@ -232,7 +246,7 @@ public class MemberDAO {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public MemberBean getMemberInfoByEmail(String email) {
 		MemberBean mb = new MemberBean();
 		try {
@@ -248,7 +262,7 @@ public class MemberDAO {
 				mb.setId(rs.getString("id"));
 				mb.setName(rs.getString("name"));
 				mb.setPass(rs.getString("pass"));
-				
+
 				mb.setAddress(rs.getString("address"));
 				mb.setEmail(rs.getString("email"));
 				mb.setMobile(rs.getString("mobile"));
@@ -261,10 +275,5 @@ public class MemberDAO {
 			e.printStackTrace();
 		}
 		return mb;
-<<<<<<< HEAD
 	}
-=======
-	}	
->>>>>>> branch 'master' of https://github.com/imrutel/Roopretelcham
-
 }

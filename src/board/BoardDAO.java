@@ -101,7 +101,7 @@ public class BoardDAO {
 		}
 		return bbList;
 	}
-	
+
 	public List<BoardBean> selectBoard(String tableName) throws Exception {
 		Connection con = getConnection();
 		// 3단계 디비연결정보를 이용해서 SQL구문(select)을 만들고 실행할 준비
@@ -111,7 +111,30 @@ public class BoardDAO {
 		ResultSet rs = pstmt.executeQuery();
 
 		List<BoardBean> bbList = new ArrayList<BoardBean>();
-//		int columnCount = rs.getMetaData().getColumnCount();
+
+		while (rs.next()) {
+			BoardBean bb = new BoardBean();
+			bb.setNum(rs.getInt("num"));
+			bb.setDate(rs.getTimestamp("date"));
+			bb.setName(rs.getString("name"));
+			bb.setReadcount(rs.getInt("readcount"));
+			bb.setSubject(rs.getString("subject"));
+			bb.setContent(rs.getString("content"));
+			bbList.add(bb);
+		}
+		return bbList;
+	}
+
+	public List<BoardBean> selectBoard(String tableName, int startRow, int pageSize) throws Exception {
+		Connection con = getConnection();
+		// 3단계 디비연결정보를 이용해서 SQL구문(select)을 만들고 실행할 준비
+		String sql = "select * from " + tableName + " order by num desc limit ?,?";
+		PreparedStatement pstmt = con.prepareStatement(sql);
+		pstmt.setInt(1, startRow - 1);
+		pstmt.setInt(2, pageSize);
+		ResultSet rs = pstmt.executeQuery();
+
+		List<BoardBean> bbList = new ArrayList<BoardBean>();
 
 		while (rs.next()) {
 			BoardBean bb = new BoardBean();
@@ -152,7 +175,7 @@ public class BoardDAO {
 
 		return bb;
 	}
-	
+
 	public BoardBean getArticle(int num, String tableName) {
 		BoardBean bb = new BoardBean();
 
@@ -189,9 +212,7 @@ public class BoardDAO {
 		BoardBean bb = getArticle(num);
 
 		System.out.println("boardBean pass : " + bb.getPass());
-		;
 		System.out.println("boardBean name : " + bb.getName());
-		;
 
 		if (bb.getNum() == 0) {
 			System.out.println("num 없음");
@@ -208,7 +229,7 @@ public class BoardDAO {
 
 		return CheckState.WRONG_PASSWORD;
 	}
-	
+
 	public CheckState articleCheck(String id, int num) {
 		BoardBean bb = getArticle(num);
 		System.out.println("boardBean name : " + bb.getName());
@@ -219,10 +240,10 @@ public class BoardDAO {
 			return CheckState.NO_NUM_VALUE;
 		}
 		// 1 : id,pw 일치, 0 : id일치 pw틀림, -1 : id 불일치
-		if (num == bb.getNum() && id.equals( bb.getName() ) ) {
+		if (num == bb.getNum() && id.equals(bb.getName())) {
 			System.out.println("id, pw 일치");
 			return CheckState.OK;
-		} else if (id.equals( bb.getName() ) == false) {
+		} else if (id.equals(bb.getName()) == false) {
 			System.out.println("세션값 아이디와 불일치");
 			return CheckState.WRONG_ID;
 		}
@@ -230,7 +251,6 @@ public class BoardDAO {
 		return CheckState.WRONG_ID;
 	}
 
-	
 	public void articleUpdate(BoardBean bb) {
 //		String sql2 = "update board set name=?,subject=?,content=? where num=?";
 		System.out.println("articleUpdate() subject : " + bb.getSubject());
@@ -264,7 +284,7 @@ public class BoardDAO {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void articleDelete(int num) {
 		try {
 			Connection con = getConnection();
@@ -289,13 +309,11 @@ public class BoardDAO {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void articleUpdateReadCount(int num, Table table) {
 		try {
 			Connection con = getConnection();
-			String sql2 = "update "
-					+ table.name()
-					+ " set readcount = readcount +1 where num=?";
+			String sql2 = "update " + table.name() + " set readcount = readcount +1 where num=?";
 			PreparedStatement pstmt2 = con.prepareStatement(sql2);
 			pstmt2.setInt(1, num);
 			pstmt2.executeUpdate();
@@ -371,7 +389,7 @@ public class BoardDAO {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void articleInsertFile(List<FileBean> fbList, BoardBean bb, Table boardTable, Table fileTable) {
 //		int file_idx = fb.getFile_idx();
 //		int post_idx = fb.getPost_idx();
@@ -388,12 +406,11 @@ public class BoardDAO {
 		try {
 			Connection con = getConnection();
 
-			String sql1 = "insert into "
-					+ boardTable.name()
-					+ "(name,subject,content,readcount,date) " + "values(?,?,?,?,?)";
+			String sql1 = "insert into " + boardTable.name() + "(name,subject,content,readcount,date) "
+					+ "values(?,?,?,?,?)";
 			PreparedStatement pstmt = con.prepareStatement(sql1);
 			System.out.println("articleInsertFile -> sql : " + sql1);
-			
+
 //			pstmt.setInt(1, num);
 			pstmt.setString(1, name);
 //			pstmt.setString(2, pass);
@@ -411,12 +428,11 @@ public class BoardDAO {
 				n = rs.getInt("LAST_INSERT_ID()");
 			}
 			System.out.println("LAST_INSERT_ID() : " + n);
-			String insertSQL = "insert into "
-					+ fileTable.name() 
-					+ "(post_idx,file_name,file_path,uploaded) " + "values(?,?,?,?)";
+			String insertSQL = "insert into " + fileTable.name() + "(post_idx,file_name,file_path,uploaded) "
+					+ "values(?,?,?,?)";
 			PreparedStatement pstmt3 = con.prepareStatement(insertSQL);
 			System.out.println("insertSQL -> sql : " + insertSQL);
-			
+
 			for (FileBean f : fbList) {
 				String file_name = f.getFile_name();
 				String file_path = f.getFile_path();
@@ -439,7 +455,7 @@ public class BoardDAO {
 	}
 
 	public List<FileBean> getArticleFileList(int post_idx) {
-		
+
 		List<FileBean> fbList = new ArrayList<FileBean>();
 
 		try {
@@ -454,13 +470,13 @@ public class BoardDAO {
 				String file_name = rs.getString("file_name");
 				int post_idx1 = rs.getInt("post_idx");
 				String fPath = rs.getString("file_path");
-				
+
 				fb.setFile_idx(rs.getInt("file_idx"));
 				fb.setPost_idx(post_idx1);
 				fb.setFile_name(file_name);
 				fb.setFile_path(fPath);
 				fb.setDate(rs.getTimestamp("uploaded"));
-				System.out.println("articleDownloadFile() file_path : " + fPath + ", \n post_idx :" + post_idx1 );
+				System.out.println("articleDownloadFile() file_path : " + fPath + ", \n post_idx :" + post_idx1);
 				fbList.add(fb);
 			}
 		} catch (Exception e) {
@@ -468,15 +484,14 @@ public class BoardDAO {
 		}
 		return fbList;
 	}
-	
+
 	public FileBean getArticleThumbFile(int post_idx) {
-		String sql = "select * from"
-				+ "file_pds "
+		String sql = "select * from" + "file_pds "
 				+ "WHERE post_idx=? and file_name REGEXP ('jfif|jpg|gif|png') LIMIT 1;";
 //				"select * from file where file_name like '%jpg%' and post_idx=? limit 1;";
-		
+
 		FileBean fb = new FileBean();
-		
+
 		try {
 			Connection con = getConnection();
 			PreparedStatement pstmt = con.prepareStatement(sql);
@@ -490,18 +505,17 @@ public class BoardDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return fb;
 	}
-	
+
 	public FileBean getArticleThumbFile(int post_idx, String tableName) {
-		String sql = "select * from "
-				+ tableName
+		String sql = "select * from " + tableName
 				+ " WHERE post_idx=? and file_name REGEXP ('jfif|jpg|gif|png') LIMIT 1;";
 //				"select * from " + tableName + " where file_name like '%jpg%' and post_idx=? limit 1;";
-		
+
 		FileBean fb = new FileBean();
-		
+
 		try {
 			Connection con = getConnection();
 			PreparedStatement pstmt = con.prepareStatement(sql);
@@ -515,17 +529,15 @@ public class BoardDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return fb;
 	}
-	
+
 	public List<CommentBean> getArticleComment(int post_idx, String tableName) {
-		String sql = "select * from "
-				+ tableName
-				+ " WHERE comment_board = ?";
+		String sql = "select * from " + tableName + " WHERE comment_board = ?";
 		System.out.println("getArticleComment() : " + sql);
 		List<CommentBean> commentList = new ArrayList<CommentBean>();
-		
+
 		try {
 			Connection con = getConnection();
 			PreparedStatement pstmt = con.prepareStatement(sql);
@@ -535,7 +547,7 @@ public class BoardDAO {
 			if (rs.next()) {
 				CommentBean cb = new CommentBean();
 				cb.setComment_board(post_idx);
-				cb.setComment_content(rs.getString(ColumnName.COMMENT_CONTENT.name()));				
+				cb.setComment_content(rs.getString(ColumnName.COMMENT_CONTENT.name()));
 				cb.setComment_date(rs.getTimestamp(ColumnName.COMMENT_DATE.name()));
 				cb.setComment_id(rs.getString(ColumnName.COMMENT_ID.name()));
 				cb.setComment_num(rs.getInt(ColumnName.COMMENT_NUM.name()));
@@ -545,10 +557,10 @@ public class BoardDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		return commentList; 
+
+		return commentList;
 	}
-	
+
 	public void writeComment(CommentBean cb, String tableName) {
 		String name = cb.getComment_id();
 		String content = cb.getComment_content();
@@ -558,13 +570,11 @@ public class BoardDAO {
 		try {
 			Connection con = getConnection();
 
-			String sql = "insert into "
-					+ tableName
-					+ "(COMMENT_BOARD, COMMENT_ID, COMMENT_DATE, COMMENT_CONTENT) " 
+			String sql = "insert into " + tableName + "(COMMENT_BOARD, COMMENT_ID, COMMENT_DATE, COMMENT_CONTENT) "
 					+ "values(?,?,?,?)";
 			PreparedStatement pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, articleID);
-			pstmt.setString(2, name);	
+			pstmt.setString(2, name);
 			pstmt.setTimestamp(3, date);
 			pstmt.setString(4, content);
 			pstmt.executeUpdate();
@@ -572,6 +582,26 @@ public class BoardDAO {
 			// 에러 발생하면 에러메시지 출력
 			e.printStackTrace();
 		}
+	}
+
+	public int articleGetCount(String tableName) {
+		int count = 0;
+		String sql = "SELECT COUNT(*) FROM " + tableName;
+		try {
+			Connection con = getConnection();
+			PreparedStatement pstmt2 = con.prepareStatement(sql);
+			// 4단계 실행 => 결과 rs 저장
+			ResultSet rs = pstmt2.executeQuery();
+			// 5단계 rs 다음행 이동 => 무조건 데이터 있음 => 데이터 가져와서+1
+			if (rs.next()) {
+				count = rs.getInt("COUNT(*)") + 1;
+			}
+
+		} catch (Exception e) {
+			// 에러 발생하면 에러메시지 출력
+			e.printStackTrace();
+		}
+		return count;
 	}
 
 }

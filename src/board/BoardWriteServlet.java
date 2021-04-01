@@ -79,7 +79,7 @@ public class BoardWriteServlet extends HttpServlet {
 			 System.out.println("imgs : " + element.attr("src"));
 		}
 		
-		response.sendRedirect("community.jsp");
+		response.sendRedirect("/community/community.jsp");
 	}
 
 	
