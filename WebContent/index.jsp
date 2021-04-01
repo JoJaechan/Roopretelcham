@@ -44,14 +44,14 @@
 
 <link rel="stylesheet" href="/js/vegas/vegas.min.css">
 </head>
-<body class="skin-orange">
+<body class="skin-orange" >
 	<!-- 헤더파일들어가는 곳 -->
-	<div id="slider1" class="slider1">
-		<header class="primary">
-			<div class="firstbar">
-				<div class="container">
+	<div >
+		<header class="primary" >
+			<div class="firstbar" >
+				<div class="container" id="ShowSlideShowHere" >
 					<div class="row">
-						<div class="col-md-3 col-sm-12">
+						<div class="col-md-3 col-sm-12" >
 							<div class="brand">
 								<!-- 									<img src="images/logo.png" alt="Magz Logo"> -->
 								<h2>
@@ -491,6 +491,27 @@
 <script src="/js/vegas/vegas.min.js"></script>
 	
 	<script>
+	$(document).ready(function() 
+			  {
+			    var imagecollection = [
+			        {src: 'images/noimg.gif'},
+			        {src: 'images/img02.jpg'},
+			        {src: 'images/img03.jpg'},
+			        {src: 'images/img04.jpg'}
+			        /* Slideshow not working? Check your image links. */
+			    ];
+
+			    $("#ShowSlideShowHere").vegas({
+			        slides: imagecollection,
+			        transition: 'fade',
+			        preloadImage: true,
+			        timer: true,
+			        shuffle: false,
+			        delay: 5000,
+			        animation: 'kenburns',
+			        cover: true
+			    });
+			  });
 // 	$("#slider1, body").vegas({
 // 					delay : 7000,
 // 					timer : false,
