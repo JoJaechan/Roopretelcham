@@ -56,26 +56,34 @@
 						<h4>회원 가입</h4>
 						<!-- 회원가입 폼 시작-->
 						<!-- 아이디 중복확인 -->
-						<form action="RegistServlet" method="post" id="join">
+						<form action="RegistServlet" method="post" id="join"
+						name="join">
 							<div class="form-group">
 								<label>아이디</label> <input type="text" id="id" required name="id"
-									value="<?= $_GET['name'] ?>" class="form-control">
+										 class="form-control">
 							</div>
 							<input type="button" value="중복 확인" class="dup"
 								onclick="idcheck()"><br>
 							<script type="text/javascript">
 								function idcheck() {
+									var frmLogin = document.join;
+									var userID = document.join.id.value;
+									
 									// id 텍스상자 입력여부 확인
-									if (document.fr.id.value == "") {
+									if (userID == "") {
 										alert("아이디 입력하세요");
-										document.fr.id.focus();
+										document.join.id.focus();
 										return;
 									}
-									
+																		
 									// id상자 입력 되어있으면 창열고 아이디 중복체크
-									var id = document.fr.id.value;
-									window.open("idcheck.jsp?id=" + id, "",
-											"width=400,height=300");
+									var id = document.join.id.value;
+									frmLogin.method = "post";
+									frmLogin.action = "/IDCheck";
+									frmLogin.submit();				<!-- 자바스크립트에서 서블릿으로 전송-->
+									
+// 									window.open("idcheck.jsp?id=" + id, "",
+// 											"width=400,height=300");
 								}
 							</script>
 							<%
@@ -85,14 +93,7 @@
 
 							// 							}
 							%>
-							<script type="text/JavaScript"
-								src="http://code.jquery.com/jquery-1.7.min.js"></script>
-							<script type="text/JavaScript">
-								function self_introduction($name, $email) {
-									jQuery('#name_text').val($name);
-								}
-							</script>
-
+							
 							<button class="btn btn-success"
 								onclick="swal('Alert Title', 'Your content here', 'success');">Success</button>
 							<button class="btn btn-danger"
