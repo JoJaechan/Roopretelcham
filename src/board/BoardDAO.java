@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,13 +32,15 @@ public class BoardDAO {
 	public int getMaxArticleNum() {
 		// 3단계 board테이블에서 num가 가장 큰 번호 구하기+1=> 이번에 등록할번호
 		int num = 0;
-
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		try {
-			Connection con = getConnection();
+			con = getConnection();
 			String sql2 = "select max(num) from board";
-			PreparedStatement pstmt2 = con.prepareStatement(sql2);
+			pstmt = con.prepareStatement(sql2);
 			// 4단계 실행 => 결과 rs 저장
-			ResultSet rs = pstmt2.executeQuery();
+			rs = pstmt.executeQuery();
 			// 5단계 rs 다음행 이동 => 무조건 데이터 있음 => 데이터 가져와서+1
 			if (rs.next()) {
 				num = rs.getInt("max(num)") + 1;
@@ -46,14 +49,37 @@ public class BoardDAO {
 		} catch (Exception e) {
 			// 에러 발생하면 에러메시지 출력
 			e.printStackTrace();
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
 		}
+
 		return num;
 	}
 
 	public void articleWrite(BoardBean bb) {
 //		int num = bb.getNum();
 		String name = bb.getName();
-		String pass = bb.getPass();
+//		String pass = bb.getPass();
 		String subject = bb.getSubject();
 		String content = bb.getContent();
 		int readcount = bb.getReadcount();
@@ -72,32 +98,41 @@ public class BoardDAO {
 			pstmt.setInt(4, readcount);
 			pstmt.setTimestamp(5, date);
 			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		} catch (Exception e) {
-			// 에러 발생하면 에러메시지 출력
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
 	}
 
-	public List<BoardBean> selectBoard() throws Exception {
-		Connection con = getConnection();
-		// 3단계 디비연결정보를 이용해서 SQL구문(select)을 만들고 실행할 준비
-		String sql = "select * from board order by num desc";
-		PreparedStatement pstmt = con.prepareStatement(sql);
-		// 4단계 SQL구문을 실행 (select 형태) 결과를 ResultSet내장객체 저장
-		ResultSet rs = pstmt.executeQuery();
-
+	public List<BoardBean> selectBoard() {
 		List<BoardBean> bbList = new ArrayList<BoardBean>();
-//		int columnCount = rs.getMetaData().getColumnCount();
+		
+		try {
+			Connection con = getConnection();
+			String sql = "select * from board order by num desc";
+			PreparedStatement pstmt = con.prepareStatement(sql);
+			ResultSet rs = pstmt.executeQuery();
 
-		while (rs.next()) {
-			BoardBean bb = new BoardBean();
-			bb.setNum(rs.getInt("num"));
-			bb.setDate(rs.getTimestamp("date"));
-			bb.setName(rs.getString("name"));
-			bb.setReadcount(rs.getInt("readcount"));
-			bb.setSubject(rs.getString("subject"));
-			bb.setContent(rs.getString("content"));
-			bbList.add(bb);
+			while (rs.next()) {
+				BoardBean bb = new BoardBean();
+				bb.setNum(rs.getInt("num"));
+				bb.setDate(rs.getTimestamp("date"));
+				bb.setName(rs.getString("name"));
+				bb.setReadcount(rs.getInt("readcount"));
+				bb.setSubject(rs.getString("subject"));
+				bb.setContent(rs.getString("content"));
+				bbList.add(bb);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		return bbList;
 	}
@@ -229,11 +264,15 @@ public class BoardDAO {
 
 		return CheckState.WRONG_PASSWORD;
 	}
-	
+
 	public CheckState articleCheck(int num, Table table) {
 
-		System.out.println("userCheck() num :" + num + ", pass : " + pass);
+		System.out.println("userCheck() num :" + num);
 		BoardBean bb = getArticle(num, table.name());
+
+		if (bb == null) {
+			return CheckState.NO_NUM_VALUE;
+		}
 
 		System.out.println("boardBean pass : " + bb.getPass());
 		System.out.println("boardBean name : " + bb.getName());
@@ -241,17 +280,9 @@ public class BoardDAO {
 		if (bb.getNum() == 0) {
 			System.out.println("num 없음");
 			return CheckState.NO_NUM_VALUE;
-		}
-		// 1 : id,pw 일치, 0 : id일치 pw틀림, -1 : id 불일치
-		if (num == bb.getNum() && pass.equals(bb.getPass())) {
-			System.out.println("id, pw 일치");
+		} else {
 			return CheckState.OK;
-		} else if (pass.equals(bb.getPass()) == false) {
-			System.out.println("pw 불일치");
-			return CheckState.WRONG_PASSWORD;
 		}
-
-		return CheckState.WRONG_PASSWORD;
 	}
 
 	public CheckState articleCheck(String id, int num, Table table) {
@@ -321,16 +352,14 @@ public class BoardDAO {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public CheckState articleDelete(int num, String pass, Table tableName) {
 		CheckState result = CheckState.NO_NUM_VALUE;
-		
+
 		try {
 			Connection con = getConnection();
-			String sql2 = "delete from "
-					+ tableName.name()
-					+ "where num=? and pass=?";
-			
+			String sql2 = "delete from " + tableName.name() + "where num=? and pass=?";
+
 			System.out.println("articleDelete -> " + sql2.replace("=?", "=" + num));
 			PreparedStatement pstmt2 = con.prepareStatement(sql2);
 			pstmt2.setInt(1, num);
@@ -343,16 +372,14 @@ public class BoardDAO {
 		}
 		return result;
 	}
-	
+
 	public CheckState articleDelete(int num, Table tableName) {
 		CheckState result = CheckState.NO_NUM_VALUE;
-		
+
 		try {
 			Connection con = getConnection();
-			String sql2 = "delete from "
-					+ tableName.name()
-					+ " where num=?";
-			
+			String sql2 = "delete from " + tableName.name() + " where num=?";
+
 			System.out.println("articleDelete -> " + sql2.replace("=?", "=" + num));
 			PreparedStatement pstmt2 = con.prepareStatement(sql2);
 			pstmt2.setInt(1, num);

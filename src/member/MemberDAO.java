@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import state.CheckState;
+import table.Table;
 
 public class MemberDAO {
 	// 회원관련 데이터베이스 작업
@@ -108,6 +109,8 @@ public class MemberDAO {
 		}
 		return mb;
 	}
+
+	
 
 	public List<MemberBean> getMemberList() {
 		MemberBean mb = new MemberBean();
@@ -276,4 +279,30 @@ public class MemberDAO {
 		}
 		return mb;
 	}
+	
+	public MemberBean getAdminMailInfo(Table tableName) {
+		MemberBean mb = new MemberBean();
+		try {
+			Connection con = getConnection();
+
+			// 3단계 디비연결정보를 이용해서 SQL구문(insert)을 만들고 실행할 준비
+			// SQL구문을 만들고 실행할수 있는 내장객체
+			String sql = "select * from " + tableName.name();
+
+			PreparedStatement pstmt = con.prepareStatement(sql);
+			// 4단계 SQL구문을 실행 (insert형태)
+			ResultSet rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				mb.setName(rs.getString("username"));
+				mb.setPass(rs.getString("password"));
+			}
+
+		} catch (Exception e) {
+			// 에러 발생하면 에러메시지 출력
+			e.printStackTrace();
+		}
+		return mb;
+	}
+
 }
