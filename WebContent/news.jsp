@@ -68,56 +68,69 @@
 					<div class="line"></div>
 					<div class="row">
 						<!-- 					글 시작 -->
-						<table class="col-md-12">
-							<tr>
-								<th class="no">글 번호</th>
-								<th class="title">제목</th>
-								<th class="twrite">작성자</th>
-								<th class="tdate">작성 시간</th>
-								<th class="readcount">조회수</th>
-							</tr>
-							<%
-							BoardDAO boardDAO = new BoardDAO();
-							int pageSize = 10; // 한페이지 당 글 개수
-							int startRow = 1;
-							String pageNum = request.getParameter("pageNum");
+						<%
+						BoardDAO boardDAO = new BoardDAO();
+						int pageSize = 10; // 한페이지 당 글 개수
+						int startRow = 1;
+						String pageNum = request.getParameter("pageNum");
+						// 시작하는 행번호 구하기
+						// 현페이지번호(currentPage)  한화면에보여줄 글개수(pageSize) => 행번호
+						//  1    10    => (1-1)*10+1=>0*10+1=>  0+1=>  1
+						//  2    10    => (2-1)*10+1=>1*10+1=> 10+1=> 11
+						//  3    10    => (3-1)*10+1=>2*10+1=> 20+1=> 21
+						if (pageNum == null) {
+							pageNum = "1";
+						}
 
-							if (pageNum == null) {
-								pageNum = "1";
-							}
+						int count = 0;
+						count = boardDAO.articleGetCount(Table.BOARD.name());
+						int currentPage = Integer.parseInt(pageNum);
+						startRow = (currentPage - 1) * pageSize + 1;
 
-							int count = 0;
-							count = boardDAO.articleGetCount(Table.BOARD.name());
-							int currentPage = Integer.parseInt(pageNum);
-							startRow = (currentPage - 1) * pageSize + 1;
+						List<BoardBean> bbList = boardDAO.selectBoard(Table.BOARD.name(), startRow, pageSize);
 
-							List<BoardBean> bbList = boardDAO.selectBoard(Table.BOARD.name(), startRow, pageSize);
-
-							if (bbList != null) {
-								for (BoardBean b : bbList) {
-							%>
-
+						if (bbList != null) {
+							for (BoardBean b : bbList) {
+						%>
+						<article class="col-md-12">
 							<!-- 							<div class="inner"> -->
 							<!-- 								<figure> -->
 							<!-- 									<a href="single.jsp"> <img src="images/news/img01.jpg"> -->
 							<!-- 									</a> -->
 							<!-- 								</figure> -->
-							<%-- 							<tr onclick="location.href='content.jsp?num=<%=b.getNum()%>'"> --%>
-							<tr>
-								<td><div class="no"><%=b.getNum()%></div></td>
-								<td class="left"><h6>
-										<a href="content.jsp?num=<%=b.getNum()%>"><%=b.getSubject()%></a>
-									</h6></td>
-								<td><div class="detail"><%=b.getName()%></div></td>
-								<td><div class="time"><%=b.getDate()%></div></td>
-								<td class="left"><h6><%=b.getReadcount()%></h6></td>
-							</tr>
+							<div class="details">
+								<div class="detail">
+									<div class="category">
+										<!-- 										<a href="category.jsp">Film</a> -->
+										<%=b.getName()%>
+									</div>
+									<div class="time"><%=b.getDate()%></div>
+								</div>
+								<h1>
+									<a href="content.jsp?num=<%=b.getNum()%>"><%=b.getSubject()%></a>
+								</h1>
 
-							<%
-							}
-							}
-							%>
-						</table>
+								<%-- 								<p><%=b.getContent()%></p> --%>
+
+								<footer>
+									<a href="#" class="love"><i
+										class="ion-android-favorite-outline"></i>
+										<div>237</div></a> <a class="btn btn-primary more"
+										href="content.jsp?num=<%=b.getNum()%>">
+										<div>더 보기</div>
+										<div>
+											<i class="ion-ios-arrow-thin-right"></i>
+										</div>
+									</a>
+								</footer>
+							</div>
+
+							<!-- 							</div> -->
+						</article>
+						<%
+						}
+						}
+						%>
 
 						<div class="col-md-12 text-center">
 							<ul class="pagination">
