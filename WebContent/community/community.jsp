@@ -82,7 +82,8 @@
 							pageNum = "1";
 						}
 
-						int count = boardDAO.articleGetCount(Table.BOARD.name());
+						int count = 0;
+						count = boardDAO.articleGetCount(Table.BOARD.name());
 						int currentPage = Integer.parseInt(pageNum);
 						startRow = (currentPage - 1) * pageSize + 1;
 
@@ -115,7 +116,7 @@
 									<a href="#" class="love"><i
 										class="ion-android-favorite-outline"></i>
 										<div>237</div></a> <a class="btn btn-primary more"
-										href="single.jsp">
+										href="content.jsp?num=<%=b.getNum()%>">
 										<div>더 보기</div>
 										<div>
 											<i class="ion-ios-arrow-thin-right"></i>
@@ -176,8 +177,13 @@
 							</ul>
 							<div class="pagination-help-text">
 								<%=count%>개 결과 중
+								<%
+								if (count < pageSize) {
+									pageSize = count;
+								}
+								%>
 								<%=pageSize%>개 표시 &mdash; 페이지
-								<%=pageNum %>
+								<%=pageNum%>
 							</div>
 						</div>
 					</div>

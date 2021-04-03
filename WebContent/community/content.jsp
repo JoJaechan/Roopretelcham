@@ -1,3 +1,5 @@
+<%@page import="member.MemberBean"%>
+<%@page import="member.MemberDAO"%>
 <%@page import="board.CommentBean"%>
 <%@page import="table.Table"%>
 <%@page import="java.util.ArrayList"%>
@@ -101,7 +103,7 @@
 						<!-- 글 본문 -->
 
 						<footer>
-<!-- 						게시물 태그 표시 시작 -->
+							<!-- 						게시물 태그 표시 시작 -->
 							<div class="col">
 								<ul class="tags">
 									<li><a href="#">Free Themes</a></li>
@@ -125,15 +127,30 @@
 					%>
 					<!-- 					본문 글 끝 -->
 
+					<!-- 수정,삭제버튼 로그인 사용자와 일치할 때만 보이도록-->
+					<%
+					String id = (String) session.getAttribute("id");
+					if (id != null) {
+						if (id.equals(bb.getName())) {
+					%>
 					<div class="col-md-2">
-						<input type="button" class="btn btn-primary btn-block" value="글 수정"
-							class="btn"
-							onclick="location.href='/updateForm.jsp?num=<%=bb.getNum()%>'">
+						<input type="button" class="btn btn-primary btn-block"
+							value="글 수정" class="btn"
+							onclick="location.href='updateForm.jsp?num=<%=bb.getNum()%>'">
 					</div>
 					<div class="col-md-2">
-						<input type="button" class="btn btn-primary btn-block" value="글 삭제"
-							class="btn" onclick="next(<%=bb.getNum()%>)">
+						<input type="button" class="btn btn-primary btn-block"
+							value="글 삭제" class="btn" onclick="next(<%=bb.getNum()%>)">
 					</div>
+					<%
+						}
+					}
+					%>
+					<div class="col-md-2">
+						<input type="button" class="btn btn-primary btn-block"
+							value="글 목록" class="btn" onclick="location.href='community.jsp'">
+					</div>
+					<!-- 수정,삭제버튼 로그인 사용자와 일치할 때만 보이도록-->
 
 					<script>
 						function next(no) {
@@ -150,8 +167,11 @@
 					<%
 					List<CommentBean> listComment = boardDAO.getArticleComment(bb.getNum(), Table.BOARD_COMMENT.name());
 					int numOfComment = listComment.size();
-					String id = (String) session.getAttribute("id");
-					
+// 					id = (String) session.getAttribute("id");
+
+					// 로그인 유저 정보 가져오기
+					MemberDAO memDao = new MemberDAO();
+					MemberBean mb = memDao.getMember(id);
 					%>
 					<div class="line thin"></div>
 					<div class="comments">
@@ -161,59 +181,80 @@
 						</h2>
 						<div class="comment-list">
 							<%
-								for (CommentBean c : listComment) {
-
+							for (CommentBean c : listComment) {
 							%>
 							<!-- 						개별 댓글 표시 시작 -->
 							<div class="item">
 								<div class="user">
-									<figure>
-										<img src="images/img01.jpg">
-									</figure>
+									<!-- 									<figure> -->
+									<!-- 										<img src="images/img01.jpg"> -->
+									<!-- 									</figure> -->
 									<div class="details">
-										<h5 class="name"><%=c.getComment_id() %></h5>
-										<div class="time"><%=c.getComment_date() %></div>
+										<h5 class="name"><%=c.getComment_id()%></h5>
+										<div class="time"><%=c.getComment_date()%></div>
 										<div class="description">
-											<%=c.getComment_content() %>
+											<%=c.getComment_content()%>
 										</div>
-										<footer>
-											<a href="#response">Reply</a>
-										</footer>
+										<!-- 										<footer> -->
+										<!-- 											<a href="#response">Reply</a> -->
+										<!-- 										</footer> -->
 									</div>
 								</div>
-							</div> <% } %>
+							</div>
+							<%
+							}
+							%>
 							<!-- 						개별 댓글 표시 끝 -->
 
 						</div>
-						<form class="row" action=writeComment method="post" id="response">
+						<%
+						if (mb == null || mb.getName() == null) {
+						%>
+						<label for="alert">댓글을 달려면 먼저 <a href="/member/login.jsp">로그인</a>
+							해주세요
+						</label>
+						<%
+						} else {
+						%>
+						<form class="row" action=/writeComment method="post" id="response">
 							<div class="col-md-12">
 								<h3 class="title">댓글을 남겨주세요</h3>
 							</div>
-							<input type="hidden" id="id" name="id" value=<%=id %>>
-							<input type="hidden" id="no" name="no" value=<%=bb.getNum() %>>
-							<input type="hidden" id="nick" name="nick" value=<%=bb.getName() %>>
-							<input type="hidden" id="tableName" name="tableName" value=<%=Table.BOARD_COMMENT.name() %>>
-							
+							<input type="hidden" id="id" name="id" value=<%=id%>> <input
+								type="hidden" id="no" name="no" value=<%=bb.getNum()%>>
+							<%-- 							<input type="hidden" id="nick" name="nick" value=<%=mb.getName() %>> --%>
+							<input type="hidden" id="tableName" name="tableName"
+								value=<%=Table.BOARD_COMMENT.name()%>>
+
 							<div class="form-group col-md-4">
 								<label for="nick">이름 <span class="required"></span></label> <input
-									type="text" readonly="readonly"  value=<%=bb.getName() %> id="nick" name="" class="form-control">
+									type="text" readonly="readonly" value=<%=mb.getName()%>
+									id="nick" name="nick" class="form-control"> <label
+									for="nick">이름 <span class="required"></span></label> <input
+									type="text" readonly="readonly" value=<%=mb.getName()%>
+									id="nick" name="nick" class="form-control">
 							</div>
-<!-- 							<div class="form-group col-md-4"> -->
-<!-- 								<label for="email">Email <span class="required"></span></label> -->
-<!-- 								<input type="email" id="email" name="" class="form-control"> -->
-<!-- 							</div> -->
-<!-- 							<div class="form-group col-md-4"> -->
-<!-- 								<label for="website">Website</label> <input type="url" -->
-<!-- 									id="website" name="" class="form-control"> -->
-<!-- 							</div> -->
+							<!-- 							<div class="form-group col-md-4"> -->
+							<!-- 								<label for="email">Email <span class="required"></span></label> -->
+							<!-- 								<input type="email" id="email" name="" class="form-control"> -->
+							<!-- 							</div> -->
+							<!-- 							<div class="form-group col-md-4"> -->
+							<!-- 								<label for="website">Website</label> <input type="url" -->
+							<!-- 									id="website" name="" class="form-control"> -->
+							<!-- 							</div> -->
 							<div class="form-group col-md-12">
-								<label for="comment_content">댓글 내용 <span class="required"></span></label>
+								<label for="comment_content">댓글 내용 <span
+									class="required"></span></label>
 								<textarea class="form-control" name="comment_content"
 									placeholder="여기에 댓글 내용을 써주세요"></textarea>
 							</div>
 							<div class="form-group col-md-12">
 								<button class="btn btn-primary">댓글 쓰기</button>
 							</div>
+							<%
+							}
+							%>
+
 						</form>
 					</div>
 				</div>

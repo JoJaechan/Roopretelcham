@@ -25,8 +25,7 @@
 <!-- <meta property="og:url" content="http://github.com/nauvalazhar/Magz" /> -->
 <!-- <meta property="og:image" -->
 <!-- 	content="https://raw.githubusercontent.com/nauvalazhar/Magz/master/images/preview.png" /> -->
-<title>Magz &mdash; Responsive HTML5 &amp; CSS3 Magazine
-	Template</title>
+<title>Roopretelcham</title>
 <!-- Bootstrap -->
 <link rel="stylesheet" href="/scripts/bootstrap/bootstrap.min.css">
 <!-- IonIcons -->
@@ -57,12 +56,13 @@
 	<%
 	String id = (String) session.getAttribute("id");
 	String name = (String) session.getAttribute("name");
+	String num = request.getParameter("num");
 	// 세션값이 없으면 "../member/login.jsp" 이동
 	if (id == null) {
 	%>
 	<script type="text/javascript">
-		alert("글쓰기를 하려면 먼저 로그인해주세요");
-		location.href = "login.jsp";
+		alert("글을 수정하려면 먼저 로그인해주세요");
+		location.href = "/member/login.jsp";
 	</script>
 	<%
 	}
@@ -75,7 +75,7 @@
 					<aside>
 						<ol class="breadcrumb">
 							<li><a href="#">메인</a></li>
-							<li class="active">갤러리</li>
+							<li class="active">커뮤니티</li>
 						</ol>
 					</aside>
 				</div>
@@ -83,10 +83,9 @@
 
 					<div class="row">
 						<!-- 					글 시작 -->
-
-						<h1>글 작성</h1>
-						<iframe src="gallery_editor.jsp" id="iframe" seamless="seamless" scrolling="no" frameborder="0" style="width:100%; height:750px"  ></iframe>
-		
+						<h1>글 수정</h1>
+						<iframe src="updateEditor.jsp?num=<%=num %>" seamless="seamless" scrolling="no" frameborder="0" style="width:100%; height:750px"  ></iframe>
+												
 					</div>
 				</div>
 			</div>
@@ -117,21 +116,19 @@ var sumitSendForm = function() {
 	<!-- End Footer -->
 
 	<!-- JS -->
-	<script src="js/jquery.js"></script>
-	<!-- 	<script src="js/jquery-3.6.0.js"></script> -->
-
-	<script src="js/jquery.migrate.js"></script>
-	<script src="scripts/bootstrap/bootstrap.min.js"></script>
+	<script src="/js/jquery.js"></script>
+	<script src="/js/jquery.migrate.js"></script>
+	<script src="/scripts/bootstrap/bootstrap.min.js"></script>
 	<script>
 		var $target_end = $(".best-of-the-week");
 	</script>
-	<script src="scripts/jquery-number/jquery.number.min.js"></script>
-	<script src="scripts/owlcarousel/dist/owl.carousel.min.js"></script>
-	<script src="scripts/magnific-popup/dist/jquery.magnific-popup.min.js"></script>
-	<script src="scripts/easescroll/jquery.easeScroll.js"></script>
-	<script src="scripts/sweetalert/dist/sweetalert.min.js"></script>
-	<script src="scripts/toast/jquery.toast.min.js"></script>
-	<script src="js/demo.js"></script>
-	<script src="js/e-magz.js"></script>
+	<script src="/scripts/jquery-number/jquery.number.min.js"></script>
+	<script src="/scripts/owlcarousel/dist/owl.carousel.min.js"></script>
+	<script src="/scripts/magnific-popup/dist/jquery.magnific-popup.min.js"></script>
+	<script src="/scripts/easescroll/jquery.easeScroll.js"></script>
+	<script src="/scripts/sweetalert/dist/sweetalert.min.js"></script>
+	<script src="/scripts/toast/jquery.toast.min.js"></script>
+	<script src="/js/demo.js"></script>
+	<script src="/js/e-magz.js"></script>
 </body>
 </html>

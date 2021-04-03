@@ -16,7 +16,8 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 
-<link rel="stylesheet" href="css/editor.css">
+<link rel="stylesheet" href="/css/editor.css">
+
 </head>
 <body>
 	<div id="wrap">
@@ -63,7 +64,7 @@
 				<label for="partFile1">첨부파일목록 ▼</label>
 				<ul id="fileList"></ul>
 
-				<button type="submit" onClick="checkForm()">글쓰기</button>
+				<button type="submit" onClick="checkForm()">글 등록</button>
 				<!-- 					글 등록안할 시 업로드파일 제거 처리 필요  -->
 				<button type="button" onClick="cancleForm()">작성취소</button>
 

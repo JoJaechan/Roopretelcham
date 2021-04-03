@@ -69,7 +69,7 @@
 							<ul class="nav-icons">
 								<li><%=id%>님 |</li>
 								<!-- 							<li><a href="#"><i class="icon ion-person"></i> 회원정보수정</a></li> -->
-								<li><a href="logout"><i class="icon ion-log-out"></i>
+								<li><a href="/logout"><i class="icon ion-log-out"></i>
 										로그아웃</a></li>
 							</ul>
 						</div>

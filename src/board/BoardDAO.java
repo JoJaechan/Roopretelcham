@@ -686,9 +686,8 @@ public class BoardDAO {
 			PreparedStatement pstmt2 = con.prepareStatement(sql);
 			// 4단계 실행 => 결과 rs 저장
 			ResultSet rs = pstmt2.executeQuery();
-			// 5단계 rs 다음행 이동 => 무조건 데이터 있음 => 데이터 가져와서+1
 			if (rs.next()) {
-				count = rs.getInt("COUNT(*)") + 1;
+				count = rs.getInt("COUNT(*)"); //+ 1;
 			}
 
 		} catch (Exception e) {

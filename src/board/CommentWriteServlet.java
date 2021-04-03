@@ -67,15 +67,15 @@ public class CommentWriteServlet extends HttpServlet {
 
 		if (tableName.equals(Table.BOARD_COMMENT.name())) {
 			dao.writeComment(cb, Table.BOARD_COMMENT.name());
-			response.sendRedirect("content.jsp?num=" + COMMENT_BOARD);
+			response.sendRedirect("/commounity/content.jsp?num=" + COMMENT_BOARD);
 		}
 		else if (tableName.equals(Table.BOARD_GALLERY_COMMENT.name())) {
 			dao.writeComment(cb, Table.BOARD_GALLERY_COMMENT.name());
-			response.sendRedirect("content_gallery.jsp?num=" + COMMENT_BOARD);
+			response.sendRedirect("/gallery/content_gallery.jsp?num=" + COMMENT_BOARD);
 		}
 		else if (tableName.equals(Table.BOARD_PDS_COMMENT.name())) {
 			dao.writeComment(cb, Table.BOARD_PDS_COMMENT.name());
-			response.sendRedirect("content_download.jsp?num=" + COMMENT_BOARD);
+			response.sendRedirect("/pds/content_download.jsp?num=" + COMMENT_BOARD);
 		}
 	}
 
