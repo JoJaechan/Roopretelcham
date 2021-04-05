@@ -93,8 +93,7 @@
 									                        	 "이미 사용중인 ID입니다",
 									                        	 "warning" //"info,success,warning,error" 중 택1
 									                         )
-								                         }								                         
-
+								                         }		
 // 								                         alert(responseData);
 
 								                 },
