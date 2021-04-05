@@ -67,12 +67,6 @@
 							</ol>
 						</div>
 					</div>
-
-					<div class="col-md-2">
-						<button class="btn btn-primary btn-block"
-							onclick="location.href='WriteFormGallery.jsp'">글쓰기</button>
-					</div>
-					<div class="line"></div>
 					<div class="row">
 						<%
 						BoardDAO boardDAO = new BoardDAO();

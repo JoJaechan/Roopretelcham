@@ -251,6 +251,10 @@ public class MemberDAO {
 
 	public CheckState userCheck(String id) {
 		CheckState result = CheckState.WRONG_ID;
+		
+		if (id == null)
+			return result;
+		
 		System.out.println("userCheck() id :" + id);
 		MemberBean mb = getMember(id);
 
@@ -519,5 +523,7 @@ public class MemberDAO {
 		}
 		return mb;
 	}
+	
+	
 
 }
