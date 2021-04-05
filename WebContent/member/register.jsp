@@ -73,7 +73,31 @@
 								        type: 'GET',
 									url: '/CheckID',
 								        success: function(responseData, status, xhr){
+
+								                         //alert(responseData);qual(이미 존재하는 아이디입니다)))
+								                         if($.trim(responseData)  ==  "OK"){
+								                         swal(
+								                  	     	 "ID 사용가능",	// title
+								                        	 "사용가능한 ID입니다",	// text
+								                        	 "success" //"info,success,warning,error" 중 택1
+								                         )
+								                         } else if ($.trim(responseData)  ==  "NO_VALUE") {
+								                        	 swal(
+									                  	     	 "ID 입력확인",
+									                        	 "ID를 입력해주세요",
+									                        	 "error" //"info,success,warning,error" 중 택1
+									                         )
+								                         } else {
+								                        	 swal(
+									                  	     	 "ID 중복",
+									                        	 "이미 사용중인 ID입니다",
+									                        	 "warning" //"info,success,warning,error" 중 택1
+									                         )
+								                         }
+								                         
+
 								                         alert(responseData);
+
 								                 },
 								        error: function(){
 								            	    console.log("error");

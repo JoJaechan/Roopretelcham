@@ -432,7 +432,7 @@ public class BoardDAO {
 
 		if (bb.getNum() == 0) {
 			System.out.println("num 없음");
-			return CheckState.NO_NUM_VALUE;
+			return CheckState.NO_VALUE;
 		}
 		// 1 : id,pw 일치, 0 : id일치 pw틀림, -1 : id 불일치
 		if (num == bb.getNum() && pass.equals(bb.getPass())) {
@@ -452,7 +452,7 @@ public class BoardDAO {
 		BoardBean bb = getArticle(num, table.name());
 
 		if (bb == null) {
-			return CheckState.NO_NUM_VALUE;
+			return CheckState.NO_VALUE;
 		}
 
 		System.out.println("boardBean pass : " + bb.getPass());
@@ -460,7 +460,7 @@ public class BoardDAO {
 
 		if (bb.getNum() == 0) {
 			System.out.println("num 없음");
-			return CheckState.NO_NUM_VALUE;
+			return CheckState.NO_VALUE;
 		} else {
 			return CheckState.OK;
 		}
@@ -473,7 +473,7 @@ public class BoardDAO {
 
 		if (bb.getNum() == 0) {
 			System.out.println("num 없음");
-			return CheckState.NO_NUM_VALUE;
+			return CheckState.NO_VALUE;
 		}
 		// 1 : id,pw 일치, 0 : id일치 pw틀림, -1 : id 불일치
 		if (num == bb.getNum() && id.equals(bb.getName())) {
@@ -591,7 +591,7 @@ public class BoardDAO {
 	}
 
 	public CheckState articleDelete(int num, String pass, Table tableName) {
-		CheckState result = CheckState.NO_NUM_VALUE;
+		CheckState result = CheckState.NO_VALUE;
 		Connection con = null;
 		PreparedStatement pstmt2 = null;
 		ResultSet rs = null;
@@ -636,7 +636,7 @@ public class BoardDAO {
 	}
 
 	public CheckState articleDelete(int num, Table tableName) {
-		CheckState result = CheckState.NO_NUM_VALUE;
+		CheckState result = CheckState.NO_VALUE;
 		Connection con = null;
 		PreparedStatement pstmt2 = null;
 		ResultSet rs = null;
