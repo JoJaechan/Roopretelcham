@@ -198,9 +198,9 @@
 							<!-- 						개별 댓글 표시 시작 -->
 							<div class="item">
 								<div class="user">
-									<figure>
-										<img src="images/img01.jpg">
-									</figure>
+<!-- 									<figure> -->
+<!-- 										<img src="images/img01.jpg"> -->
+<!-- 									</figure> -->
 									<div class="details">
 										<h5 class="name"><%=c.getComment_id() %></h5>
 										<div class="time"><%=c.getComment_date() %></div>
@@ -216,7 +216,7 @@
 							<!-- 						개별 댓글 표시 끝 -->
 
 						</div>
-						<form class="row" action=writeComment method="post" id="response">
+						<form class="row" action=/writeComment method="post" id="response">
 							<div class="col-md-12">
 								<h3 class="title">댓글을 남겨주세요</h3>
 							</div>
