@@ -83,7 +83,7 @@
 						<%
 						for (BoardBean b : bbList) {
 							FileBean fb = boardDAO.getArticleThumbFile(b.getNum(), Table.FILE_PDS.name());
-							String thumbPath = fb.getFile_name();
+							String thumbPath = fb.getThumb_path();
 							System.out.println("thumbPath : " + thumbPath);
 							List<FileBean> fbList = boardDAO.getArticleFileList(b.getNum());
 							

@@ -47,7 +47,7 @@
 						<td>글제목</td>
 					</tr>
 					<tr>
-						<td><input type="text" maxlength="50" required="required"
+						<td><input type="text" maxlength="50" required="required" style="width: 100%;"
 							name="subject"></td>
 					</tr>
 					<tr>

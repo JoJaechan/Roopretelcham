@@ -89,6 +89,13 @@ public class PdsUploadServlet extends HttpServlet {
 					fb.setFile_name(fileName);
 					fb.setFile_path(filePath);
 					fb.setDate(date);
+					
+					Thumbnail thumbnail = new Thumbnail();			
+					String thumbPath = thumbnail.thumbnailMake(filePath, filePath);
+
+					System.out.println("thumbPath : " + thumbPath);
+					fb.setThumb_path(thumbPath);					
+					
 					fbList.add(fb);
 				}
 			}
