@@ -54,7 +54,7 @@
 					</tr>
 				</table>
 
-				<button type="submit" onClick="checkForm()">글 등록</button>
+				<button type="submit" onClick="return checkForm()">글 등록</button>
 				<!-- 					글 등록안할 시 업로드파일 제거 처리 필요  -->
 				<button type="button" onClick="cancleForm()">작성취소</button>
 
@@ -64,6 +64,19 @@
 			<script>
 // iframe parent window 
 function checkForm(){ 
+	if (document.content_form.subject.value == "") {
+		alert("글 제목을 입력해주세요");
+		document.content_form.subject.focus();
+		return false;
+	}
+	
+	var content = window.editor.getData();
+	
+	if (content == "") {
+		alert("글내용을 입력해주세요");
+		return false;
+	}
+	
     document.content_form.target="_parent"; 
     document.content_form.submit(); 
 } 

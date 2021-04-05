@@ -82,6 +82,10 @@
 								FileBean fb = boardDAO.getArticleThumbFile(b.getNum(), Table.FILE_GALLERY.name());
 								String thumbPath = fb.getThumb_path();
 								System.out.println("gallery.jsp -> thumbPath : " + thumbPath);
+								
+								if (thumbPath == null || thumbPath == "") {
+									thumbPath = "noimg.gif";
+								}
 							%>
 							<!-- 						<div class="col-md-4 col-sm-6 col-xs-12"> -->
 							<div class="col">
@@ -103,7 +107,7 @@
 												</div>
 											</div>
 											<h2>
-												<a href="#"><%=b.getSubject()%></a>
+												<a href="content_gallery.jsp?num=<%=b.getNum()%>"><%=b.getSubject()%></a>
 											</h2>
 											<!-- 											<p>Lorem ipsum dolor sit amet, consectetur adipiscing -->
 											<!-- 												elit, sed do eiusmod tempor incididunt ut labore et dolore -->
@@ -112,7 +116,7 @@
 												<a href="#" class="love"><i
 													class="ion-android-favorite-outline"></i>
 													<div><%=b.getReadcount()%></div></a> <a
-													class="btn btn-primary more" href="#">
+													class="btn btn-primary more" href="content_gallery.jsp?num=<%=b.getNum()%>">
 													<div>More</div>
 													<div>
 														<i class="ion-ios-arrow-thin-right"></i>

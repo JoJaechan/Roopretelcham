@@ -127,13 +127,7 @@
 
 								// 전체페이지수 구하기
 								int pageCount = count / pageSize + (count % pageSize == 0 ? 0 : 1);
-																
-								// 전체글 개수 구하기 
-
-								// 끝페이지번호   전체페이지수  비교 
-								//								    10     >      5
-								// 끝페이지번호 대신에 전체페이지수 넣기
-								//								    10 <= 5 변경
+									
 								if (endPage > pageCount) {
 									endPage = pageCount;
 								}
@@ -177,6 +171,8 @@
 								<%=pageNum%>
 							</div>
 						</div>
+						
+						
 					</div>
 				</div>
 

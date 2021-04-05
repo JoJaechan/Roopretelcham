@@ -62,7 +62,7 @@
 	%>
 	<script type="text/javascript">
 		alert("글쓰기를 하려면 먼저 로그인해주세요");
-		location.href = "login.jsp";
+		location.href = "/member/login.jsp";
 	</script>
 	<%
 	}

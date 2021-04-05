@@ -5,7 +5,7 @@
 <head>
 <style>
 .ck.ck-editor {
-	min-width: 1100px;
+	min-width: 100%;
 }
 
 .ck-editor__editable {
@@ -15,7 +15,7 @@
 </style>
 
 <meta charset="UTF-8">
-<link rel="stylesheet" href="css/editor.css">
+<link rel="stylesheet" href="/css/editor.css">
 
 </head>
 <body>
@@ -36,7 +36,7 @@
 		<!-- 게시판 -->
 		<article>
 			<form action="/BoardWrite" method="POST" name="content_form">
-				<table id="community">
+				<table id="community" style="width: 100%;">
 					<tr>
 						<!-- 						<td>글쓴이</td> -->
 						<td><input type="hidden" name="name" value="<%=id%>" readonly></td>
@@ -49,16 +49,16 @@
 						<td>글제목</td>
 					</tr>
 					<tr>
-						<td><input type="text" maxlength="50" width="100%"
+						<td><input type="text" maxlength="50" style="width: 100%;"
 							required="required" name="subject"></td>
 					</tr>
 					<tr>
-						<td><textarea name="content" required="required"
+						<td><textarea name="content" 
 								maxlength="5000" id="editor"></textarea></td>
 					</tr>
 				</table>
 
-				<button type="submit" onClick="checkForm()">글쓰기</button>
+				<button type="submit" onClick="return checkForm()">글쓰기</button>
 				<!-- 					글 등록안할 시 업로드파일 제거 처리 필요  -->
 				<button type="button" onClick="cancleForm()">작성취소</button>
 
@@ -66,6 +66,19 @@
 			<script>
 // iframe parent window 
 function checkForm(){ 
+	if (document.content_form.subject.value == "") {
+		alert("글 제목을 입력해주세요");
+		document.content_form.subject.focus();
+		return false;
+	}
+	
+	var content = window.editor.getData();
+	
+	if (content == "") {
+		alert("글내용을 입력해주세요");
+		return false;
+	}
+	
     document.content_form.target="_parent"; 
     document.content_form.submit(); 
 }

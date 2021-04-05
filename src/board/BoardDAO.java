@@ -156,6 +156,12 @@ public class BoardDAO {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}finally {
+			// 예외 상관없이 마무리 작업(기억장소 해제) 
+			if(rs!=null) try{ rs.close();}catch(SQLException ex) {}
+			if(pstmt!=null) try{pstmt.close();}catch(SQLException ex) {}
+			if(pstmt2!=null) try {pstmt2.close();}catch(SQLException ex) {}
+			if(con!=null) try{con.close();}catch(SQLException ex) {}
 		}
 		return bbList;
 	}
@@ -517,14 +523,25 @@ public class BoardDAO {
 	}
 
 	public void articleUpdateReadCount(int num) {
+		Connection con=null;
+		PreparedStatement pstmt2=null;
+		ResultSet rs=null;
+		PreparedStatement pstmt=null;
+		
 		try {
-			Connection con = getConnection();
+			 con = getConnection();
 			String sql2 = "update board set readcount = readcount +1 where num=?";
-			PreparedStatement pstmt2 = con.prepareStatement(sql2);
+			 pstmt2 = con.prepareStatement(sql2);
 			pstmt2.setInt(1, num);
 			pstmt2.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
+		}finally {
+			// 예외 상관없이 마무리 작업(기억장소 해제) 
+			if(rs!=null) try{ rs.close();}catch(SQLException ex) {}
+			if(pstmt!=null) try{pstmt.close();}catch(SQLException ex) {}
+			if(pstmt2!=null) try {pstmt2.close();}catch(SQLException ex) {}
+			if(con!=null) try{con.close();}catch(SQLException ex) {}
 		}
 	}
 
@@ -745,7 +762,8 @@ public class BoardDAO {
 
 	public FileBean getArticleThumbFile(int post_idx) {
 		String sql = "select * from" + "file_pds "
-				+ "WHERE post_idx=? and file_name REGEXP ('jfif|jpg|gif|png') LIMIT 1;";
+				+ "WHERE post_idx=? and "
+				+ "(file_name REGEXP ('jfif|jpg|gif|png') OR file_path REGEXP ('jfif|jpg|gif|png')) LIMIT 1;";
 //				"select * from file where file_name like '%jpg%' and post_idx=? limit 1;";
 
 		FileBean fb = new FileBean();
@@ -779,7 +797,7 @@ public class BoardDAO {
 	public FileBean getArticleThumbFile(int post_idx, String tableName) {
 		String sql = "select * from " + tableName
 				+ " WHERE post_idx=? and "
-				+ "thumb_path REGEXP ('jfif|jpg|gif|png') OR file_path REGEXP ('jfif|jpg|gif|png') LIMIT 1";
+				+ "(thumb_path REGEXP ('jfif|jpg|gif|png') OR file_path REGEXP ('jfif|jpg|gif|png')) LIMIT 1";
 //				"select * from " + tableName + " where file_name like '%jpg%' and post_idx=? limit 1;";
 
 		System.out.println("getArticleThumbFile : " + sql);

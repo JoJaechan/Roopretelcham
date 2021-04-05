@@ -1,3 +1,4 @@
+<%@page import="table.Table"%>
 <%@page import="file.FileBean"%>
 <%@page import="board.BoardBean"%>
 <%@page import="java.util.List"%>
@@ -81,10 +82,11 @@
 						<!-- 갤러리 표시 시작 -->
 						<%
 						for (BoardBean b : bbList) {
-							FileBean fb = boardDAO.getArticleThumbFile(b.getNum(), "file_pds");
+							FileBean fb = boardDAO.getArticleThumbFile(b.getNum(), Table.FILE_PDS.name());
 							String thumbPath = fb.getFile_name();
 							System.out.println("thumbPath : " + thumbPath);
 							List<FileBean> fbList = boardDAO.getArticleFileList(b.getNum());
+							
 						%>
 
 						<article class="col-md-12 article-list">
@@ -103,7 +105,7 @@
 									System.out.println("이미지없음, 대체이미지 표시");
 									%>
 									<a href="content_download.jsp?num=<%=b.getNum()%>"> <!-- 											<img src="images/news/img10.jpg" alt="Sample Article"> -->
-										<img src="images/noimg.gif" />
+										<img src="/images/noimg.gif" />
 									</a>
 									<br>
 									<%
@@ -117,8 +119,8 @@
 										</div>
 										<div class="time"><%=b.getDate()%></div>
 									</div>
-									<h1>
-										<a href="#"><%=b.getSubject()%></a>
+									<h1>									
+										<a href="content_download.jsp?num=<%=b.getNum()%>"><%=b.getSubject()%></a>
 									</h1>
 
 									<%-- 									<p><%=b.getContent()%></p> --%>
@@ -139,7 +141,7 @@
 										<a href="#" class="love"><i
 											class="ion-android-favorite-outline"></i>
 											<div><%=b.getReadcount()%></div></a> <a
-											class="btn btn-primary more" href="single.html">
+											class="btn btn-primary more" href="content_download.jsp?num=<%=b.getNum()%>">
 											<div>더 보기</div>
 											<div>
 												<i class="ion-ios-arrow-thin-right"></i>
@@ -156,19 +158,70 @@
 
 						<div class="col-md-12 text-center">
 							<ul class="pagination">
-								<li class="prev"><a href="#"><i
+								<%								
+								int pageSize = 10; // 한페이지 당 글 개수
+								int startRow = 1;
+								String pageNum = request.getParameter("pageNum");
+
+								if (pageNum == null) {
+									pageNum = "1";
+								}
+
+								int count = 0;
+								count = boardDAO.articleGetCount(Table.BOARD.name());
+								int currentPage = Integer.parseInt(pageNum);
+								startRow = (currentPage - 1) * pageSize + 1;
+								
+								int startPage = (currentPage - 1) / pageSize * pageSize + 1;
+								int endPage = (startPage + pageSize) - 1;
+
+								// 전체페이지수 구하기
+								int pageCount = count / pageSize + (count % pageSize == 0 ? 0 : 1);
+									
+								if (endPage > pageCount) {
+									endPage = pageCount;
+								}
+								// 이전 10만큼 앞으로 페이지 이동
+								if (startPage > pageSize) {
+								%><li class="prev"><a href="list.jsp?pageNum=<%=startPage - pageSize%>"><i
 										class="ion-ios-arrow-left"></i></a></li>
-								<li class="active"><a href="#">1</a></li>
-								<li><a href="#">2</a></li>
-								<li><a href="#">3</a></li>
-								<li><a href="#">...</a></li>
-								<li><a href="#">97</a></li>
-								<li class="next"><a href="#"><i
-										class="ion-ios-arrow-right"></i></a></li>
+								<%
+								}
+
+								// 페이지 출력
+								for (int i = 1; i <= endPage; i++) {
+									if (i == Integer.parseInt(pageNum)) {
+								%>
+								<li class="active"><a href="community.jsp?pageNum=<%=i%>"><%=i%></a></li>
+								<%
+									} else {
+								%><li><a href="community.jsp?pageNum=<%=i%>"><%=i%></a></li>
+								<%
+									}
+								}
+								%>
+								
+								<%
+								//다음 10만큼 뒤로 페이지 이동
+								//if(endPage < pageCount){
+									%><li class="next"><a href="#"><i
+										class="ion-ios-arrow-right"></i></a></li><%
+								//}
+								%>
+								
 							</ul>
-							<div class="pagination-help-text">Showing 8 results of 776
-								&mdash; Page 1</div>
+							<div class="pagination-help-text">
+								<%=count%>개 결과 중
+								<%
+								if (count < pageSize) {
+									pageSize = count;
+								}
+								%>
+								<%=pageSize%>개 표시 &mdash; 페이지
+								<%=pageNum%>
+							</div>
 						</div>
+						
 					</div>
 				</div>
 

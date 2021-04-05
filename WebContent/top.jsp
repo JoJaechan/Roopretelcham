@@ -134,7 +134,7 @@
 									<i class="ion-ios-arrow-right"></i>
 							</a>
 								<ul class="dropdown-menu">
-									<li><a href="member/member_update.jsp"><i
+									<li><a href="/member/member_update.jsp"><i
 											class="icon ion-person"></i> 회원 정보 수정</a></li>
 									<!-- 								<li><a href="#"><i class="icon ion-heart"></i> 작성 글 보기</a></li> -->
 									<li><a href="#"><i class="icon ion-chatbox"></i> 작성 글

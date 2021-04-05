@@ -5,7 +5,7 @@
 <head>
 <style>
 .ck.ck-editor {
-	min-width: 1100px;
+	min-width: 100%;
 }
 
 .ck-editor__editable {
@@ -29,7 +29,7 @@
 		%>
 		<script type="text/javascript">
 	alert("글쓰기를 하려면 먼저 로그인해주세요");
-	location.href="../member/login.jsp";</script>
+	location.href="/member/login.jsp";</script>
 		<%
 		}
 		%>
@@ -38,16 +38,17 @@
 		<article>
 			<form action="/fileUpload" method="POST" name="content_form"
 				enctype="multipart/form-data">
-				<table id="pds">
+				<table id="pds" style="width: 100%;">
 					<tr>
-						<td><input type="hidden" name="name" value="<%=id%>" readonly></td>
+						<td><input type="hidden" name="name" required="required"
+							value="<%=id%>" readonly></td>
 					</tr>
 					<tr>
 						<td>글제목</td>
 					</tr>
 					<tr>
-						<td><input type="text" maxlength="50" width="100%"
-							required="required" name="subject"></td>
+						<td><input type="text" maxlength="50" required="required"
+							name="subject"></td>
 					</tr>
 					<tr>
 						<td><textarea name="content" required="required"
@@ -57,14 +58,14 @@
 				<p>
 					<label for="partFile1">파일 첨부 : </label><input type="file"
 						multiple="multiple" onchange="fileUpload(this)" name="partFile1"
-						id="partFile1" accept=".jpg, .gif, .zip,.pdf,.mp4,.mp3,.avi,">				
+						id="partFile1" accept=".jpg, .gif, .zip,.pdf,.mp4,.mp3,.avi,">
 					<br>
 				</p>
 
 				<label for="partFile1">첨부파일목록 ▼</label>
 				<ul id="fileList"></ul>
 
-				<button type="submit" onClick="checkForm()">글 등록</button>
+				<button type="submit" onClick="return checkForm()">글 등록</button>
 				<!-- 					글 등록안할 시 업로드파일 제거 처리 필요  -->
 				<button type="button" onClick="cancleForm()">작성취소</button>
 
@@ -73,6 +74,28 @@
 			<script>
 // iframe parent window 
 function checkForm(){ 
+	if (document.content_form.subject.value == "") {
+		alert("글 제목을 입력해주세요");
+		document.content_form.subject.focus();
+		return false;
+	}
+	
+var content = window.editor.getData();
+	
+	if (content == "") {
+		alert("글내용을 입력해주세요");
+		return false;
+	}
+	
+	if (document.content_form.partFile1.value == "") {
+		alert("파일을 하나 이상 첨부해주세요");
+		document.content_form.partFile1.focus();
+		return false;
+	}	
+
+// 	valueInVar = document.getElementById("editor").value;
+// 	alert(valueInVar);
+
     document.content_form.target="_parent"; 
     document.content_form.submit(); 
 }
