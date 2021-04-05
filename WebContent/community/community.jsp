@@ -121,15 +121,13 @@
 
 						<div class="col-md-12 text-center">
 							<ul class="pagination">
-								<li class="prev"><a href="#"><i
-										class="ion-ios-arrow-left"></i></a></li>
 								<%
 								int startPage = (currentPage - 1) / pageSize * pageSize + 1;
 								int endPage = (startPage + pageSize) - 1;
 
 								// 전체페이지수 구하기
 								int pageCount = count / pageSize + (count % pageSize == 0 ? 0 : 1);
-
+																
 								// 전체글 개수 구하기 
 
 								// 끝페이지번호   전체페이지수  비교 
@@ -139,20 +137,34 @@
 								if (endPage > pageCount) {
 									endPage = pageCount;
 								}
+								// 이전 10만큼 앞으로 페이지 이동
+								if (startPage > pageSize) {
+								%><li class="prev"><a href="list.jsp?pageNum=<%=startPage - pageSize%>"><i
+										class="ion-ios-arrow-left"></i></a></li>
+								<%
+								}
 
+								// 페이지 출력
 								for (int i = 1; i <= endPage; i++) {
 									if (i == Integer.parseInt(pageNum)) {
 								%>
 								<li class="active"><a href="community.jsp?pageNum=<%=i%>"><%=i%></a></li>
 								<%
-								} else {
+									} else {
 								%><li><a href="community.jsp?pageNum=<%=i%>"><%=i%></a></li>
 								<%
-								}
+									}
 								}
 								%>
-								<li class="next"><a href="#"><i
-										class="ion-ios-arrow-right"></i></a></li>
+								
+								<%
+								//다음 10만큼 뒤로 페이지 이동
+								//if(endPage < pageCount){
+									%><li class="next"><a href="#"><i
+										class="ion-ios-arrow-right"></i></a></li><%
+								//}
+								%>
+								
 							</ul>
 							<div class="pagination-help-text">
 								<%=count%>개 결과 중

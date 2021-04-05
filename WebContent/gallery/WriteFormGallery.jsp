@@ -62,7 +62,7 @@
 	%>
 	<script type="text/javascript">
 		alert("글쓰기를 하려면 먼저 로그인해주세요");
-		location.href = "login.jsp";
+		location.href = "/member/login.jsp";
 	</script>
 	<%
 	}
@@ -117,21 +117,19 @@ var sumitSendForm = function() {
 	<!-- End Footer -->
 
 	<!-- JS -->
-	<script src="js/jquery.js"></script>
-	<!-- 	<script src="js/jquery-3.6.0.js"></script> -->
-
-	<script src="js/jquery.migrate.js"></script>
-	<script src="scripts/bootstrap/bootstrap.min.js"></script>
+	<script src="/js/jquery.js"></script>
+	<script src="/js/jquery.migrate.js"></script>
+	<script src="/scripts/bootstrap/bootstrap.min.js"></script>
 	<script>
 		var $target_end = $(".best-of-the-week");
 	</script>
-	<script src="scripts/jquery-number/jquery.number.min.js"></script>
-	<script src="scripts/owlcarousel/dist/owl.carousel.min.js"></script>
-	<script src="scripts/magnific-popup/dist/jquery.magnific-popup.min.js"></script>
-	<script src="scripts/easescroll/jquery.easeScroll.js"></script>
-	<script src="scripts/sweetalert/dist/sweetalert.min.js"></script>
-	<script src="scripts/toast/jquery.toast.min.js"></script>
-	<script src="js/demo.js"></script>
-	<script src="js/e-magz.js"></script>
+	<script src="/scripts/jquery-number/jquery.number.min.js"></script>
+	<script src="/scripts/owlcarousel/dist/owl.carousel.min.js"></script>
+	<script src="/scripts/magnific-popup/dist/jquery.magnific-popup.min.js"></script>
+	<script src="/scripts/easescroll/jquery.easeScroll.js"></script>
+	<script src="/scripts/sweetalert/dist/sweetalert.min.js"></script>
+	<script src="/scripts/toast/jquery.toast.min.js"></script>
+	<script src="/js/demo.js"></script>
+	<script src="/js/e-magz.js"></script>
 </body>
 </html>

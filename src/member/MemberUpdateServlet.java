@@ -63,7 +63,7 @@ public class MemberUpdateServlet extends HttpServlet {
 		address = address + " " + request.getParameter("sample6_detailAddress");
 		System.out.println("sample6_detailAddress : " + address);
 
-		if (address == null || address == "") {
+		if (address == null || address.replace(" ", "") == "") {
 			System.out.println("새 주소가 없으므로 기존주소 사용");
 			address = originAddress;
 		}
@@ -81,7 +81,7 @@ public class MemberUpdateServlet extends HttpServlet {
 			mb.setMobile(request.getParameter("mobile"));
 			md.updateMember(mb);
 			// main.jsp 이동
-			response.sendRedirect("login.jsp");
+			response.sendRedirect("/member/login.jsp");
 		}
 		if (check == 0) {
 			String msg = "기존 비밀번호가 올바르지 않습니다";

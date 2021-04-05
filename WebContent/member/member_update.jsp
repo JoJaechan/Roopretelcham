@@ -82,7 +82,7 @@
 					<div class="box-body">
 						<h4>회원정보 수정</h4>
 						<!-- 회원가입 폼 시작-->
-						<form action="userUpdate" method="post" id="join">
+						<form action="/userUpdate" method="post" id="join">
 							<div class="form-group">
 								<label>아이디 (*아이디는 변경할 수 없습니다)</label> <input type="text"
 									value="<%=strID%>" readonly="readonly" name="id"

@@ -1,3 +1,4 @@
+<%@page import="table.Table"%>
 <%@page import="file.FileBean"%>
 <%@page import="board.BoardBean"%>
 <%@page import="java.util.List"%>
@@ -78,9 +79,9 @@
 							<!-- 갤러리 표시 시작 -->
 							<%
 							for (BoardBean b : bbList) {
-								FileBean fb = boardDAO.getArticleThumbFile(b.getNum(), "file_gallery");
-								String thumbPath = fb.getFile_name();
-								System.out.println(thumbPath);
+								FileBean fb = boardDAO.getArticleThumbFile(b.getNum(), Table.FILE_GALLERY.name());
+								String thumbPath = fb.getThumb_path();
+								System.out.println("gallery.jsp -> thumbPath : " + thumbPath);
 							%>
 							<!-- 						<div class="col-md-4 col-sm-6 col-xs-12"> -->
 							<div class="col">

@@ -4,9 +4,14 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.sql.DataSource;
 
 import state.CheckState;
 import table.Table;
@@ -16,13 +21,17 @@ public class MemberDAO {
 	private Connection getConnection() throws Exception {
 		// 예기치 못한 에러가 발생한는 코드
 		// 1단계 JDBC프로그램 불러오기 com\mysql\jdbc Driver.class
-		Class.forName("com.mysql.jdbc.Driver");
-		// 2단계 불러온 프로그램을 이용해서 DB서버
-		// (디비주소,디비접근아이디,디비접근비밀번호) 접속 => 디비연결 정보를 저장
-		String dbUrl = "jdbc:mysql://localhost:3306/jspdb7";
-		String dbUser = "jspid";
-		String dbPass = "jsppass";
-		Connection con = DriverManager.getConnection(dbUrl, dbUser, dbPass);
+//		Class.forName("com.mysql.jdbc.Driver");
+//		// 2단계 불러온 프로그램을 이용해서 DB서버
+//		// (디비주소,디비접근아이디,디비접근비밀번호) 접속 => 디비연결 정보를 저장
+//		String dbUrl = "jdbc:mysql://localhost:3306/jspdb7";
+//		String dbUser = "jspid";
+//		String dbPass = "jsppass";
+//		Connection con = DriverManager.getConnection(dbUrl, dbUser, dbPass);
+
+		Context init = new InitialContext();
+		DataSource ds = (DataSource) init.lookup("java:comp/env/jdbc/Mysql");
+		Connection con = ds.getConnection();
 
 		return con;
 	}
@@ -49,15 +58,17 @@ public class MemberDAO {
 		System.out.println("전달받은 전화 : " + phone);
 		System.out.println("전달받은 휴대전화 : " + mobile);
 
-		// 외부에 있는 파일,데이터베이스 서버에 접근하기 위해서는
-		// 예기치 못한 에러가 발생하면 자바코드중에 자동으로 에러를 처리
+		Connection con = null;
+		PreparedStatement pstmt2 = null;
+		ResultSet rs = null;
+		PreparedStatement pstmt = null;
 		try {
-			Connection con = getConnection();
+			con = getConnection();
 
 			// 3단계 디비연결정보를 이용해서 SQL구문(insert)을 만들고 실행할 준비
 			// SQL구문을 만들고 실행할수 있는 내장객체
 			String sql = "insert into member(id,pass,name,date, email, address, phone, mobile) values(?,?,?,?,?,?,?,?)";
-			PreparedStatement pstmt = con.prepareStatement(sql);
+			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, id);
 			pstmt.setString(2, pass);
 			pstmt.setString(3, name);
@@ -73,22 +84,49 @@ public class MemberDAO {
 			// 에러 발생하면 에러메시지 출력
 			e.printStackTrace();
 			return isOk;
+		} finally {
+			// 예외 상관없이 마무리 작업(기억장소 해제)
+			if (rs != null)
+				try {
+					rs.close();
+				} catch (SQLException ex) {
+				}
+			if (pstmt != null)
+				try {
+					pstmt.close();
+				} catch (SQLException ex) {
+				}
+			if (pstmt2 != null)
+				try {
+					pstmt2.close();
+				} catch (SQLException ex) {
+				}
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException ex) {
+				}
 		}
 		return isOk;
 	}
 
 	public MemberBean getMember(String id) {
 		MemberBean mb = new MemberBean();
+		Connection con = null;
+		PreparedStatement pstmt2 = null;
+		ResultSet rs = null;
+		PreparedStatement pstmt = null;
+
 		try {
-			Connection con = getConnection();
+			con = getConnection();
 
 			// 3단계 디비연결정보를 이용해서 SQL구문(insert)을 만들고 실행할 준비
 			// SQL구문을 만들고 실행할수 있는 내장객체
 			String sql = "select * from member where id=?";
-			PreparedStatement pstmt = con.prepareStatement(sql);
+			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, id);
 			// 4단계 SQL구문을 실행 (insert형태)
-			ResultSet rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 
 			if (rs.next()) {
 				mb.setDate(rs.getTimestamp("date"));
@@ -106,22 +144,46 @@ public class MemberDAO {
 		} catch (Exception e) {
 			// 에러 발생하면 에러메시지 출력
 			e.printStackTrace();
+		} finally {
+			// 예외 상관없이 마무리 작업(기억장소 해제)
+			if (rs != null)
+				try {
+					rs.close();
+				} catch (SQLException ex) {
+				}
+			if (pstmt != null)
+				try {
+					pstmt.close();
+				} catch (SQLException ex) {
+				}
+			if (pstmt2 != null)
+				try {
+					pstmt2.close();
+				} catch (SQLException ex) {
+				}
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException ex) {
+				}
 		}
 		return mb;
 	}
 
-	
-
 	public List<MemberBean> getMemberList() {
 		MemberBean mb = new MemberBean();
 		List<MemberBean> mbList = new ArrayList<MemberBean>();
+		Connection con = null;
+		PreparedStatement pstmt2 = null;
+		ResultSet rs = null;
+		PreparedStatement pstmt = null;
 
 		try {
-			Connection con = getConnection();
+			con = getConnection();
 			String sql = "select * from member";
-			PreparedStatement pstmt = con.prepareStatement(sql);
+			pstmt = con.prepareStatement(sql);
 
-			ResultSet rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 
 			if (rs.next()) {
 				mb.setDate(rs.getTimestamp("date"));
@@ -139,6 +201,28 @@ public class MemberDAO {
 		} catch (Exception e) {
 			// 에러 발생하면 에러메시지 출력
 			e.printStackTrace();
+		} finally {
+			// 예외 상관없이 마무리 작업(기억장소 해제)
+			if (rs != null)
+				try {
+					rs.close();
+				} catch (SQLException ex) {
+				}
+			if (pstmt != null)
+				try {
+					pstmt.close();
+				} catch (SQLException ex) {
+				}
+			if (pstmt2 != null)
+				try {
+					pstmt2.close();
+				} catch (SQLException ex) {
+				}
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException ex) {
+				}
 		}
 		return mbList;
 	}
@@ -200,11 +284,15 @@ public class MemberDAO {
 	}
 
 	public void updateMember(MemberBean mb) {
-		// 3단계 update //4단계 실행 // main.jsp 이동
+		Connection con = null;
+		PreparedStatement pstmt2 = null;
+		ResultSet rs = null;
+		PreparedStatement pstmt = null;
+
 		try {
-			Connection con = getConnection();
+			con = getConnection();
 			String sql2 = "update member set name=?," + "pass=?, email=?, address=?, phone=?," + "mobile=? where id=?";
-			PreparedStatement pstmt2 = con.prepareStatement(sql2);
+			pstmt2 = con.prepareStatement(sql2);
 			pstmt2.setString(1, mb.getName());
 			pstmt2.setString(2, mb.getPass());
 			pstmt2.setString(3, mb.getEmail());
@@ -216,15 +304,40 @@ public class MemberDAO {
 			pstmt2.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			// 예외 상관없이 마무리 작업(기억장소 해제)
+			if (rs != null)
+				try {
+					rs.close();
+				} catch (SQLException ex) {
+				}
+			if (pstmt != null)
+				try {
+					pstmt.close();
+				} catch (SQLException ex) {
+				}
+			if (pstmt2 != null)
+				try {
+					pstmt2.close();
+				} catch (SQLException ex) {
+				}
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException ex) {
+				}
 		}
 	}
 
 	public boolean updateMemberPassword(String newPassword, String id) {
-		// 3단계 update //4단계 실행 // main.jsp 이동
+		Connection con = null;
+		PreparedStatement pstmt2 = null;
+		ResultSet rs = null;
+		PreparedStatement pstmt = null;
 		try {
-			Connection con = getConnection();
+			con = getConnection();
 			String sql2 = "update member set pass=? where id=?";
-			PreparedStatement pstmt2 = con.prepareStatement(sql2);
+			pstmt2 = con.prepareStatement(sql2);
 			pstmt2.setString(1, newPassword);
 			pstmt2.setString(2, id);
 			pstmt2.executeUpdate();
@@ -232,33 +345,86 @@ public class MemberDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
+		} finally {
+			// 예외 상관없이 마무리 작업(기억장소 해제)
+			if (rs != null)
+				try {
+					rs.close();
+				} catch (SQLException ex) {
+				}
+			if (pstmt != null)
+				try {
+					pstmt.close();
+				} catch (SQLException ex) {
+				}
+			if (pstmt2 != null)
+				try {
+					pstmt2.close();
+				} catch (SQLException ex) {
+				}
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException ex) {
+				}
 		}
 	}
 
 	// 리턴값 없음 mdao.deleteMember(mb);
 	public void deleteMember(MemberBean mb) {
+		Connection con = null;
+		PreparedStatement pstmt2 = null;
+		ResultSet rs = null;
+		PreparedStatement pstmt = null;
 		try {
-			Connection con = getConnection();
+			con = getConnection();
 			// 3단계 delete
 			String sql = "delete from member where id=?";
-			PreparedStatement pstmt = con.prepareStatement(sql);
+			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, mb.getId());
 			// 4단계 실행
 			pstmt.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			// 예외 상관없이 마무리 작업(기억장소 해제)
+			if (rs != null)
+				try {
+					rs.close();
+				} catch (SQLException ex) {
+				}
+			if (pstmt != null)
+				try {
+					pstmt.close();
+				} catch (SQLException ex) {
+				}
+			if (pstmt2 != null)
+				try {
+					pstmt2.close();
+				} catch (SQLException ex) {
+				}
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException ex) {
+				}
 		}
 	}
 
 	public MemberBean getMemberInfoByEmail(String email) {
 		MemberBean mb = new MemberBean();
+		Connection con = null;
+		PreparedStatement pstmt2 = null;
+		ResultSet rs = null;
+		PreparedStatement pstmt = null;
+
 		try {
-			Connection con = getConnection();
+			con = getConnection();
 
 			String sql = "select * from member where email=?";
-			PreparedStatement pstmt = con.prepareStatement(sql);
+			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, email);
-			ResultSet rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 
 			if (rs.next()) {
 				mb.setDate(rs.getTimestamp("date"));
@@ -276,22 +442,49 @@ public class MemberDAO {
 		} catch (Exception e) {
 			// 에러 발생하면 에러메시지 출력
 			e.printStackTrace();
+		} finally {
+			// 예외 상관없이 마무리 작업(기억장소 해제)
+			if (rs != null)
+				try {
+					rs.close();
+				} catch (SQLException ex) {
+				}
+			if (pstmt != null)
+				try {
+					pstmt.close();
+				} catch (SQLException ex) {
+				}
+			if (pstmt2 != null)
+				try {
+					pstmt2.close();
+				} catch (SQLException ex) {
+				}
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException ex) {
+				}
 		}
 		return mb;
 	}
-	
+
 	public MemberBean getAdminMailInfo(Table tableName) {
 		MemberBean mb = new MemberBean();
+		Connection con = null;
+		PreparedStatement pstmt2 = null;
+		ResultSet rs = null;
+		PreparedStatement pstmt = null;
+
 		try {
-			Connection con = getConnection();
+			con = getConnection();
 
 			// 3단계 디비연결정보를 이용해서 SQL구문(insert)을 만들고 실행할 준비
 			// SQL구문을 만들고 실행할수 있는 내장객체
 			String sql = "select * from " + tableName.name();
 
-			PreparedStatement pstmt = con.prepareStatement(sql);
+			pstmt = con.prepareStatement(sql);
 			// 4단계 SQL구문을 실행 (insert형태)
-			ResultSet rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 
 			if (rs.next()) {
 				mb.setName(rs.getString("username"));
@@ -301,6 +494,28 @@ public class MemberDAO {
 		} catch (Exception e) {
 			// 에러 발생하면 에러메시지 출력
 			e.printStackTrace();
+		} finally {
+			// 예외 상관없이 마무리 작업(기억장소 해제)
+			if (rs != null)
+				try {
+					rs.close();
+				} catch (SQLException ex) {
+				}
+			if (pstmt != null)
+				try {
+					pstmt.close();
+				} catch (SQLException ex) {
+				}
+			if (pstmt2 != null)
+				try {
+					pstmt2.close();
+				} catch (SQLException ex) {
+				}
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException ex) {
+				}
 		}
 		return mb;
 	}

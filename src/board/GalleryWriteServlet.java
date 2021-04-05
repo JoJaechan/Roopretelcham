@@ -20,6 +20,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import file.FileBean;
+import file.Thumbnail;
 import table.Table;
 
 /**
@@ -102,12 +103,18 @@ public class GalleryWriteServlet extends HttpServlet {
 			fb.setFile_name(fileName);
 			fb.setFile_path(filePath);
 			fb.setDate(date);
+
+			Thumbnail thumbnail = new Thumbnail();			
+			String thumbPath = thumbnail.thumbnailMake(filePath, filePath);
+
+			System.out.println("thumbPath : " + thumbPath);
+			fb.setThumb_path(thumbPath);
+			
 			fbList.add(fb);
-			System.out.println("imgs : " + src);
 		}
 		dao.articleInsertFile(fbList, bean, Table.BOARD_GALLERY, Table.FILE_GALLERY);
 
-		response.sendRedirect("/gallery.jsp");
+		response.sendRedirect("/gallery/gallery.jsp");
 	}
 
 }

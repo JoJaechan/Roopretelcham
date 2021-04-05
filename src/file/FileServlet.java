@@ -75,6 +75,7 @@ public class FileServlet extends HttpServlet {
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().print(outData.toString());
 		
+
 		System.out.println(outData.toString());
 	}
 

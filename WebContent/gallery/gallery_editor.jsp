@@ -5,7 +5,7 @@
 <head>
 <style>
 .ck.ck-editor {
-	min-width: 1100px;
+	min-width: 100%;
 }
 
 .ck-editor__editable {
@@ -37,8 +37,8 @@
 
 		<!-- 게시판 -->
 		<article>
-			<form action="GalleryWrite" method="POST" name="content_form">
-				<table id="notice">
+			<form action="/GalleryWrite" method="POST" name="content_form">
+				<table id="notice" style="width: 100%;">
 					<tr>
 						<td><input type="hidden" name="name" value="<%=id%>" readonly></td>
 					</tr>
@@ -46,11 +46,11 @@
 						<td>글제목</td>
 					</tr>
 					<tr>
-						<td><input type="text" maxlength="50" width="100%"
+						<td><input type="text" maxlength="50" style="width: 100%;"
 							name="subject"></td>
 					</tr>
 					<tr>
-						<td><textarea name="content" maxlength="5000" id="editor"></textarea></td>
+						<td><textarea name="content" maxlength="5000" style="width: 100%;" id="editor"></textarea></td>
 					</tr>
 				</table>
 
@@ -74,14 +74,14 @@ function cancleForm(){
 	}
 }
 </script>
-			<script src="ckeditor5/ckeditor.js"></script>
-			<script src="ckeditor5/translations/ko.js"></script>
+			<script src="/ckeditor5/ckeditor.js"></script>
+			<script src="/ckeditor5/translations/ko.js"></script>
 			<script>
 			 ClassicEditor
 			 .create( document.querySelector( '#editor' ),{  // textarea의 id
 					language: 'ko',        
 					ckfinder: {
-				        uploadUrl: 'FileServlet' // 내가 지정한 업로드 url (post로 요청감)
+				        uploadUrl: '/FileServlet' // 내가 지정한 업로드 url (post로 요청감)
 				    }
 				} )
 		        .then( editor => {

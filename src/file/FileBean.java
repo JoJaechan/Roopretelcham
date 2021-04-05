@@ -17,8 +17,17 @@ public class FileBean {
 	private String file_name;
 	private String file_path;
 	private Timestamp date;
+	private String thumb_path;
 
-//	private String is_del = "N";	
+	public String getThumb_path() {
+		return thumb_path;
+	}
+
+	public void setThumb_path(String thumb_path) {
+		this.thumb_path = thumb_path;
+	}
+
+	// private String is_del = "N";
 	public int getFile_idx() {
 		return file_idx;
 	}
