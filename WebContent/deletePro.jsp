@@ -44,7 +44,7 @@
 		history.back();
 	</script>
 	<%
-	} else if (state == CheckState.NO_NUM_VALUE) {
+	} else if (state == CheckState.NO_VALUE) {
 	%>
 	<script type="text/javascript">
 		alert("num없음");

@@ -49,9 +49,11 @@ public class MemberCheckID extends HttpServlet {
 		//check==1 "기존회원 아이디 있음"  출력 "아이디 중복"
 		//check==-1 "기존회원 아이디 없음"  출력 "아이디 사용가능"
 		if(isOK==CheckState.WRONG_ID){
-			writer.print("이미 존재하는 아이디입니다");
-		}else{
-			writer.print("사용가능한 아이디입니다");
+			writer.print(CheckState.WRONG_ID.name());
+		}else if (isOK==CheckState.NO_VALUE){
+			writer.print(CheckState.NO_VALUE.name());
+		} else if(isOK==CheckState.OK) {
+			writer.print(CheckState.OK.name());
 		}
 	}
 

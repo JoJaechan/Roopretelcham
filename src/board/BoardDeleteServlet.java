@@ -63,7 +63,7 @@ public class BoardDeleteServlet extends HttpServlet {
 			str += "history.go(-1);"; // 이전페이지로 가기
 			str += "</script>";
 			out.print(str);
-		} else if (state == CheckState.NO_NUM_VALUE) {
+		} else if (state == CheckState.NO_VALUE) {
 			String msg = "해당 아이디로 가입한 계정이 없습니다";
 			String str = "";
 			str = "<script language='javascript'>";
