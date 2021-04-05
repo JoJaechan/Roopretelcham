@@ -1,3 +1,4 @@
+<%@page import="table.Table"%>
 <%@page import="board.BoardBean"%>
 <%@page import="board.BoardDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -62,11 +63,12 @@
 		<!-- 게시판 -->
 		<article>
 			<form action="/BoardUpdate" method="POST" name="content_form">
-				<table id="community">
+				<table id="community" style="width: 100%;">
 					<tr>
 						<!-- 						<td>글쓴이</td> -->
 						<td><input type="hidden" name="name" value="<%=id%>" readonly></td>
 						<td><input type="hidden" name="num" value="<%=bb.getNum()%>" readonly></td>
+						<td><input type="hidden" name="tableName" value="<%=Table.BOARD.name()%>" readonly></td>
 					</tr>
 					<!-- 					<tr> -->
 					<!-- 						<td>비밀번호</td> -->
@@ -76,7 +78,7 @@
 						<td>글제목</td>
 					</tr>
 					<tr>
-						<td><input type="text" maxlength="50" width="100%"
+						<td><input type="text" maxlength="50"  style="width: 100%;"
 							value="<%=bb.getSubject()%>" required="required" name="subject"></td>
 					</tr>
 					<tr>

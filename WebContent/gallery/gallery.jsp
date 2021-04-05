@@ -72,8 +72,13 @@
 					<div class="line"></div>
 					<div class="row">
 						<%
+						//한페이지에 가져올 글개수 설정
+						int pageSize=6;
+						//시작하는 행번호 구하기
+						int startRow=1;
+						
 						BoardDAO boardDAO = new BoardDAO();
-						List<BoardBean> bbList = boardDAO.selectBoard("board_gallery");
+						List<BoardBean> bbList = boardDAO.selectBoard("board_gallery", 1, 6);
 						%>
 						<div class="row">
 							<!-- 갤러리 표시 시작 -->
@@ -93,7 +98,7 @@
 								<article class="article col-md-4">
 									<div class="inner">
 										<figure>
-											<a href="content_gallery.jsp?num=<%=b.getNum()%>"> <!-- 											<img src="images/news/img10.jpg" alt="Sample Article"> -->
+											<a href="/gallery/content_gallery.jsp?num=<%=b.getNum()%>"> <!-- 											<img src="images/news/img10.jpg" alt="Sample Article"> -->
 												<img
 												src="${pageContext.request.contextPath}/upload/<%=thumbPath%>" />
 											</a>
@@ -107,7 +112,7 @@
 												</div>
 											</div>
 											<h2>
-												<a href="content_gallery.jsp?num=<%=b.getNum()%>"><%=b.getSubject()%></a>
+												<a href="/gallery/content_gallery.jsp?num=<%=b.getNum()%>"><%=b.getSubject()%></a>
 											</h2>
 											<!-- 											<p>Lorem ipsum dolor sit amet, consectetur adipiscing -->
 											<!-- 												elit, sed do eiusmod tempor incididunt ut labore et dolore -->
@@ -116,7 +121,7 @@
 												<a href="#" class="love"><i
 													class="ion-android-favorite-outline"></i>
 													<div><%=b.getReadcount()%></div></a> <a
-													class="btn btn-primary more" href="content_gallery.jsp?num=<%=b.getNum()%>">
+													class="btn btn-primary more" href="/gallery/content_gallery.jsp?num=<%=b.getNum()%>">
 													<div>More</div>
 													<div>
 														<i class="ion-ios-arrow-thin-right"></i>

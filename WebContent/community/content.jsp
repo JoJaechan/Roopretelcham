@@ -132,6 +132,7 @@
 					String id = (String) session.getAttribute("id");
 					if (id != null) {
 						if (id.equals(bb.getName())) {
+							String boardName = "BOARD";
 					%>
 					<div class="col-md-2">
 						<input type="button" class="btn btn-primary btn-block"
@@ -227,12 +228,9 @@
 								value=<%=Table.BOARD_COMMENT.name()%>>
 
 							<div class="form-group col-md-4">
-								<label for="nick">이름 <span class="required"></span></label> <input
-									type="text" readonly="readonly" value=<%=mb.getName()%>
-									id="nick" name="nick" class="form-control"> <label
-									for="nick">이름 <span class="required"></span></label> <input
-									type="text" readonly="readonly" value=<%=mb.getName()%>
-									id="nick" name="nick" class="form-control">
+								<label for="nick">이름 <span class="required"></span></label> 
+								<input type="text" readonly="readonly" value=<%=mb.getName()%>
+									id="nick" name="nick" class="form-control"> 									
 							</div>
 							<!-- 							<div class="form-group col-md-4"> -->
 							<!-- 								<label for="email">Email <span class="required"></span></label> -->

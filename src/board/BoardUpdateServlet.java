@@ -1,7 +1,10 @@
 package board;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,6 +15,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+
+import file.FileBean;
+import file.Thumbnail;
+import table.Table;
 
 /**
  * Servlet implementation class BoardUpdateServlet
@@ -47,6 +54,9 @@ public class BoardUpdateServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		request.setCharacterEncoding("utf-8");
 		response.setContentType("text/html; charset=utf-8");
+
+		String realPath = request.getServletContext().getRealPath("/upload");
+		
 		String name = request.getParameter("name");
 //		String pass = request.getParameter("pass");
 //		String id = request.getParameter("id");
@@ -55,6 +65,11 @@ public class BoardUpdateServlet extends HttpServlet {
 		String content = request.getParameter("content");
 		String num = request.getParameter("num");
 
+		String tableName = request.getParameter("tableName");
+		System.out.println("tableName : " + tableName);
+		Table tableEnum = Table.valueOf(tableName);
+
+		System.out.println("/BoardUpdate tableName : " + tableName);
 		System.out.println("/BoardUpdate content : " + content);
 		BoardDAO dao = new BoardDAO();
 		BoardBean bean = new BoardBean();
@@ -70,19 +85,68 @@ public class BoardUpdateServlet extends HttpServlet {
 		bean.setReadcount(0);
 		bean.setDate(date);
 
-		dao.articleUpdate(bean);
+		dao.articleUpdate(bean, tableEnum);
 
 		String htmlTable = content;
 		Document doc = Jsoup.parse(htmlTable);
 
 		// then use something like this to get your element:
 		org.jsoup.select.Elements imgs = doc.getElementsByTag("img");
-
-		for (Element element : imgs) {
-			System.out.println("imgs : " + element.attr("src"));
+		
+		switch (tableEnum) {
+		case BOARD:
+			updateFiles(imgs, realPath, bean, tableEnum, Table.FILE);
+			response.sendRedirect("/community/community.jsp");
+			break;
+		case BOARD_GALLERY:
+			updateFiles(imgs, realPath, bean, tableEnum, Table.FILE_GALLERY);
+			response.sendRedirect("/gallery/gallery.jsp");
+			break;
+		case BOARD_PDS:
+			updateFiles(imgs, realPath, bean, tableEnum, Table.FILE_PDS);
+			response.sendRedirect("/pds/download.jsp");
+			break;
+		default:
+			break;
 		}
 
-		response.sendRedirect("/community/community.jsp");
+	}
+	
+	public void updateFiles(org.jsoup.select.Elements imgs, String realPath, BoardBean bean,
+			Table boardTable, Table fileTable) {
+		BoardDAO dao = new BoardDAO();
+		List<FileBean> fbList = new ArrayList<FileBean>();
+
+		File fileSaveDir = new File(realPath);
+
+		// 파일 경로 없으면 생성
+		if (!fileSaveDir.exists())
+			fileSaveDir.mkdirs();
+		
+		for (Element element : imgs) {
+			System.out.println("imgs : " + element.attr("src"));
+			dao.articleUpdateFile(fbList, bean, boardTable, fileTable);
+			Timestamp date = new Timestamp(System.currentTimeMillis());
+
+			String src = element.attr("src");
+			File f = new File(src);
+			String fileName = f.getName();
+			String filePath = realPath + File.separator + fileName;
+			FileBean fb = new FileBean();
+			fb.setFile_name(fileName);
+			fb.setFile_path(filePath);
+			fb.setDate(date);
+
+			Thumbnail thumbnail = new Thumbnail();			
+			String thumbPath = thumbnail.thumbnailMake(filePath, filePath);
+
+			System.out.println("thumbPath : " + thumbPath);
+			fb.setThumb_path(thumbPath);
+			
+			fbList.add(fb);
+		}
+		
+		dao.articleUpdateFile(fbList, bean, boardTable, fileTable);
 	}
 
 }

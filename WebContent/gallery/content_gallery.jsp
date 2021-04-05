@@ -156,14 +156,29 @@
 					%>
 					<!-- 					본문 글 끝 -->
 
+					<!-- 수정,삭제버튼 로그인 사용자와 일치할 때만 보이도록-->
+					<%
+					String id = (String) session.getAttribute("id");
+					if (id != null) {
+						if (id.equals(bb.getName())) {
+							String boardName = "BOARD_GALLERY";
+					%>
 					<div class="col-md-2">
-						<input type="button" class="btn btn-primary btn-block" value="글수정"
-							class="btn"
-							onclick="location.href='updateForm.jsp?num=<%=bb.getNum()%>'">
+						<input type="button" class="btn btn-primary btn-block"
+							value="글 수정" class="btn"
+							onclick="location.href='updateForm.jsp?num=<%=bb.getNum()%>&tableName=<%=boardName%>'">
 					</div>
 					<div class="col-md-2">
-						<input type="button" class="btn btn-primary btn-block" value="글삭제"
-							class="btn" onclick="next(<%=bb.getNum()%>)">
+						<input type="button" class="btn btn-primary btn-block"
+							value="글 삭제" class="btn" onclick="next(<%=bb.getNum()%>)">
+					</div>
+					<%
+						}
+					}
+					%>
+					<div class="col-md-2">
+						<input type="button" class="btn btn-primary btn-block"
+							value="글 목록" class="btn" onclick="location.href='gallery.jsp'">
 					</div>
 
 					<script>
@@ -181,7 +196,6 @@
 					<%
 					List<CommentBean> listComment = boardDAO.getArticleComment(bb.getNum(), Table.BOARD_GALLERY_COMMENT.name());
 					int numOfComment = listComment.size();
-					String id = (String) session.getAttribute("id");
 					
 					%>
 					<div class="line thin"></div>

@@ -30,11 +30,11 @@ public class BoardDAO {
 //		String dbPass = "jsppass";
 //		Connection con = DriverManager.getConnection(dbUrl, dbUser, dbPass);
 //		return con;
-		
-		Context init=new InitialContext();
-		DataSource ds=(DataSource)init.lookup("java:comp/env/jdbc/Mysql");
+
+		Context init = new InitialContext();
+		DataSource ds = (DataSource) init.lookup("java:comp/env/jdbc/Mysql");
 		Connection con = ds.getConnection();
-		return con;		
+		return con;
 	}
 
 	public int getMaxArticleNum() {
@@ -92,11 +92,11 @@ public class BoardDAO {
 		String content = bb.getContent();
 		int readcount = bb.getReadcount();
 		Timestamp date = bb.getDate();
-		
-		Connection con=null;
-		PreparedStatement pstmt2=null;
-		ResultSet rs=null;
-		PreparedStatement pstmt=null;
+
+		Connection con = null;
+		PreparedStatement pstmt2 = null;
+		ResultSet rs = null;
+		PreparedStatement pstmt = null;
 
 		try {
 			con = getConnection();
@@ -118,27 +118,43 @@ public class BoardDAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
-			// 예외 상관없이 마무리 작업(기억장소 해제) 
-			if(rs!=null) try{ rs.close();}catch(SQLException ex) {}
-			if(pstmt!=null) try{pstmt.close();}catch(SQLException ex) {}
-			if(pstmt2!=null) try {pstmt2.close();}catch(SQLException ex) {}
-			if(con!=null) try{con.close();}catch(SQLException ex) {}
+			// 예외 상관없이 마무리 작업(기억장소 해제)
+			if (rs != null)
+				try {
+					rs.close();
+				} catch (SQLException ex) {
+				}
+			if (pstmt != null)
+				try {
+					pstmt.close();
+				} catch (SQLException ex) {
+				}
+			if (pstmt2 != null)
+				try {
+					pstmt2.close();
+				} catch (SQLException ex) {
+				}
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException ex) {
+				}
 		}
 
 	}
 
 	public List<BoardBean> selectBoard() {
 		List<BoardBean> bbList = new ArrayList<BoardBean>();
-		Connection con=null;
-		PreparedStatement pstmt2=null;
-		ResultSet rs=null;
-		PreparedStatement pstmt=null;
-		
+		Connection con = null;
+		PreparedStatement pstmt2 = null;
+		ResultSet rs = null;
+		PreparedStatement pstmt = null;
+
+		String sql = "select * from board order by num desc";
 		try {
-			 con = getConnection();
-			String sql = "select * from board order by num desc";
-			 pstmt = con.prepareStatement(sql);
-			 rs = pstmt.executeQuery();
+			con = getConnection();
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
 				BoardBean bb = new BoardBean();
@@ -156,12 +172,28 @@ public class BoardDAO {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}finally {
-			// 예외 상관없이 마무리 작업(기억장소 해제) 
-			if(rs!=null) try{ rs.close();}catch(SQLException ex) {}
-			if(pstmt!=null) try{pstmt.close();}catch(SQLException ex) {}
-			if(pstmt2!=null) try {pstmt2.close();}catch(SQLException ex) {}
-			if(con!=null) try{con.close();}catch(SQLException ex) {}
+		} finally {
+			// 예외 상관없이 마무리 작업(기억장소 해제)
+			if (rs != null)
+				try {
+					rs.close();
+				} catch (SQLException ex) {
+				}
+			if (pstmt != null)
+				try {
+					pstmt.close();
+				} catch (SQLException ex) {
+				}
+			if (pstmt2 != null)
+				try {
+					pstmt2.close();
+				} catch (SQLException ex) {
+				}
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException ex) {
+				}
 		}
 		return bbList;
 	}
@@ -172,60 +204,71 @@ public class BoardDAO {
 		ResultSet rs=null;
 		PreparedStatement pstmt=null;
 		List<BoardBean> bbList = new ArrayList<BoardBean>();
-		
-		try {
-			try {
-				con = getConnection();
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			// 3단계 디비연결정보를 이용해서 SQL구문(select)을 만들고 실행할 준비
-			String sql = "select * from " + tableName + " order by num desc";
-			 pstmt = con.prepareStatement(sql);
-			// 4단계 SQL구문을 실행 (select 형태) 결과를 ResultSet내장객체 저장
-			 rs = pstmt.executeQuery();			
 
-			while (rs.next()) {
-				BoardBean bb = new BoardBean();
-				bb.setNum(rs.getInt("num"));
-				bb.setDate(rs.getTimestamp("date"));
-				bb.setName(rs.getString("name"));
-				bb.setReadcount(rs.getInt("readcount"));
-				bb.setSubject(rs.getString("subject"));
-				bb.setContent(rs.getString("content"));
-				bbList.add(bb);
-			}
-			return bbList;
+		String sql = "select * from " + tableName + " order by num desc";
+		try {			
+				con = getConnection();
+				 pstmt = con.prepareStatement(sql);
+				 rs = pstmt.executeQuery();			
+
+				while (rs.next()) {
+					BoardBean bb = new BoardBean();
+					bb.setNum(rs.getInt("num"));
+					bb.setDate(rs.getTimestamp("date"));
+					bb.setName(rs.getString("name"));
+					bb.setReadcount(rs.getInt("readcount"));
+					bb.setSubject(rs.getString("subject"));
+					bb.setContent(rs.getString("content"));
+					bbList.add(bb);	
+				}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		} finally {
-			// 예외 상관없이 마무리 작업(기억장소 해제) 
-			if(rs!=null) try{ rs.close();}catch(SQLException ex) {}
-			if(pstmt!=null) try{pstmt.close();}catch(SQLException ex) {}
-			if(pstmt2!=null) try {pstmt2.close();}catch(SQLException ex) {}
-			if(con!=null) try{con.close();}catch(SQLException ex) {}
+			// 예외 상관없이 마무리 작업(기억장소 해제)
+			if (rs != null)
+				try {
+					rs.close();
+				} catch (SQLException ex) {
+				}
+			if (pstmt != null)
+				try {
+					pstmt.close();
+				} catch (SQLException ex) {
+				}
+			if (pstmt2 != null)
+				try {
+					pstmt2.close();
+				} catch (SQLException ex) {
+				}
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException ex) {
+				}
 		}
 		return bbList;
 	}
 
 	public List<BoardBean> selectBoard(String tableName, int startRow, int pageSize) {
-		Connection con=null;
-		PreparedStatement pstmt2=null;
-		ResultSet rs=null;
-		PreparedStatement pstmt=null;
-		
+		Connection con = null;
+		PreparedStatement pstmt2 = null;
+		ResultSet rs = null;
+		PreparedStatement pstmt = null;
+
 		List<BoardBean> bbList = new ArrayList<BoardBean>();
-		
+
 		try {
 			con = getConnection();
 			// 3단계 디비연결정보를 이용해서 SQL구문(select)을 만들고 실행할 준비
 			String sql = "select * from " + tableName + " order by num desc limit ?,?";
-			 pstmt = con.prepareStatement(sql);
+			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, startRow - 1);
 			pstmt.setInt(2, pageSize);
-			 rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 
 			bbList = new ArrayList<BoardBean>();
 
@@ -245,30 +288,46 @@ public class BoardDAO {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}finally {
-			// 예외 상관없이 마무리 작업(기억장소 해제) 
-			if(rs!=null) try{ rs.close();}catch(SQLException ex) {}
-			if(pstmt!=null) try{pstmt.close();}catch(SQLException ex) {}
-			if(pstmt2!=null) try {pstmt2.close();}catch(SQLException ex) {}
-			if(con!=null) try{con.close();}catch(SQLException ex) {}
+		} finally {
+			// 예외 상관없이 마무리 작업(기억장소 해제)
+			if (rs != null)
+				try {
+					rs.close();
+				} catch (SQLException ex) {
+				}
+			if (pstmt != null)
+				try {
+					pstmt.close();
+				} catch (SQLException ex) {
+				}
+			if (pstmt2 != null)
+				try {
+					pstmt2.close();
+				} catch (SQLException ex) {
+				}
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException ex) {
+				}
 		}
 		return bbList;
 	}
 
 	public BoardBean getArticle(int num) {
 		BoardBean bb = new BoardBean();
-		Connection con=null;
-		PreparedStatement pstmt2=null;
-		ResultSet rs=null;
-		PreparedStatement pstmt=null;
-		
+		Connection con = null;
+		PreparedStatement pstmt2 = null;
+		ResultSet rs = null;
+		PreparedStatement pstmt = null;
+
 		try {
-			 con = getConnection();
+			con = getConnection();
 			String sql = "select * from board where num=?";
-			 pstmt = con.prepareStatement(sql);
+			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, num);
 			// 4단계 SQL구문을 실행 (select 형태) 결과를 ResultSet내장객체 저장
-			 rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 			if (rs.next()) {
 				// num 멤버변수 <- 디비에서 가져온 rs.getInt("num") 저장
 				bb.setNum(rs.getInt("num"));
@@ -281,12 +340,28 @@ public class BoardDAO {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-		}finally {
-			// 예외 상관없이 마무리 작업(기억장소 해제) 
-			if(rs!=null) try{ rs.close();}catch(SQLException ex) {}
-			if(pstmt!=null) try{pstmt.close();}catch(SQLException ex) {}
-			if(pstmt2!=null) try {pstmt2.close();}catch(SQLException ex) {}
-			if(con!=null) try{con.close();}catch(SQLException ex) {}
+		} finally {
+			// 예외 상관없이 마무리 작업(기억장소 해제)
+			if (rs != null)
+				try {
+					rs.close();
+				} catch (SQLException ex) {
+				}
+			if (pstmt != null)
+				try {
+					pstmt.close();
+				} catch (SQLException ex) {
+				}
+			if (pstmt2 != null)
+				try {
+					pstmt2.close();
+				} catch (SQLException ex) {
+				}
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException ex) {
+				}
 		}
 
 		return bb;
@@ -294,17 +369,17 @@ public class BoardDAO {
 
 	public BoardBean getArticle(int num, String tableName) {
 		BoardBean bb = new BoardBean();
-		Connection con=null;
-		PreparedStatement pstmt2=null;
-		ResultSet rs=null;
-		PreparedStatement pstmt=null;
+		Connection con = null;
+		PreparedStatement pstmt2 = null;
+		ResultSet rs = null;
+		PreparedStatement pstmt = null;
 		try {
-			 con = getConnection();
+			con = getConnection();
 			String sql = "select * from " + tableName + " where num=?";
-			 pstmt = con.prepareStatement(sql);
+			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, num);
 			// 4단계 SQL구문을 실행 (select 형태) 결과를 ResultSet내장객체 저장
-			 rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 			if (rs.next()) {
 				// num 멤버변수 <- 디비에서 가져온 rs.getInt("num") 저장
 				bb.setNum(rs.getInt("num"));
@@ -317,12 +392,28 @@ public class BoardDAO {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-		}finally {
-			// 예외 상관없이 마무리 작업(기억장소 해제) 
-			if(rs!=null) try{ rs.close();}catch(SQLException ex) {}
-			if(pstmt!=null) try{pstmt.close();}catch(SQLException ex) {}
-			if(pstmt2!=null) try {pstmt2.close();}catch(SQLException ex) {}
-			if(con!=null) try{con.close();}catch(SQLException ex) {}
+		} finally {
+			// 예외 상관없이 마무리 작업(기억장소 해제)
+			if (rs != null)
+				try {
+					rs.close();
+				} catch (SQLException ex) {
+				}
+			if (pstmt != null)
+				try {
+					pstmt.close();
+				} catch (SQLException ex) {
+				}
+			if (pstmt2 != null)
+				try {
+					pstmt2.close();
+				} catch (SQLException ex) {
+				}
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException ex) {
+				}
 		}
 
 		return bb;
@@ -396,21 +487,23 @@ public class BoardDAO {
 		return CheckState.WRONG_ID;
 	}
 
-	public void articleUpdate(BoardBean bb) {
+	public void articleUpdate(BoardBean bb, Table table) {
 //		String sql2 = "update board set name=?,subject=?,content=? where num=?";
 		System.out.println("articleUpdate() subject : " + bb.getSubject());
 		System.out.println("articleUpdate() content : " + bb.getContent());
 		System.out.println("articleUpdate() num : " + bb.getNum());
 
-		Connection con=null;
-		PreparedStatement pstmt2=null;
-		ResultSet rs=null;
-		PreparedStatement pstmt=null;
-		
+		Connection con = null;
+		PreparedStatement pstmt2 = null;
+		ResultSet rs = null;
+		PreparedStatement pstmt = null;
+
 		try {
-			 con = getConnection();
-			String sql2 = "update board set subject=?, content=? where num=?";
-			 pstmt2 = con.prepareStatement(sql2);
+			con = getConnection();
+			String sql2 = "update "
+					+ table.name()
+					+ " set subject=?, content=? where num=?";
+			pstmt2 = con.prepareStatement(sql2);
 //			pstmt2.setString(1, bb.getName());
 			pstmt2.setString(1, bb.getSubject());
 			pstmt2.setString(2, bb.getContent());
@@ -419,12 +512,28 @@ public class BoardDAO {
 			pstmt2.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
-		}finally {
-			// 예외 상관없이 마무리 작업(기억장소 해제) 
-			if(rs!=null) try{ rs.close();}catch(SQLException ex) {}
-			if(pstmt!=null) try{pstmt.close();}catch(SQLException ex) {}
-			if(pstmt2!=null) try {pstmt2.close();}catch(SQLException ex) {}
-			if(con!=null) try{con.close();}catch(SQLException ex) {}
+		} finally {
+			// 예외 상관없이 마무리 작업(기억장소 해제)
+			if (rs != null)
+				try {
+					rs.close();
+				} catch (SQLException ex) {
+				}
+			if (pstmt != null)
+				try {
+					pstmt.close();
+				} catch (SQLException ex) {
+				}
+			if (pstmt2 != null)
+				try {
+					pstmt2.close();
+				} catch (SQLException ex) {
+				}
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException ex) {
+				}
 		}
 	}
 
@@ -442,41 +551,57 @@ public class BoardDAO {
 //	}
 
 	public void articleDelete(int num) {
-		Connection con=null;
-		PreparedStatement pstmt2=null;
-		ResultSet rs=null;
-		PreparedStatement pstmt=null;
-		
+		Connection con = null;
+		PreparedStatement pstmt2 = null;
+		ResultSet rs = null;
+		PreparedStatement pstmt = null;
+
 		try {
-			 con = getConnection();
+			con = getConnection();
 			String sql2 = "delete from board where num=?";
 			System.out.println("articleDelete -> " + sql2.replace("=?", "=" + num));
-			 pstmt2 = con.prepareStatement(sql2);
+			pstmt2 = con.prepareStatement(sql2);
 			pstmt2.setInt(1, num);
 			pstmt2.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
-		}finally {
-			// 예외 상관없이 마무리 작업(기억장소 해제) 
-			if(rs!=null) try{ rs.close();}catch(SQLException ex) {}
-			if(pstmt!=null) try{pstmt.close();}catch(SQLException ex) {}
-			if(pstmt2!=null) try {pstmt2.close();}catch(SQLException ex) {}
-			if(con!=null) try{con.close();}catch(SQLException ex) {}
+		} finally {
+			// 예외 상관없이 마무리 작업(기억장소 해제)
+			if (rs != null)
+				try {
+					rs.close();
+				} catch (SQLException ex) {
+				}
+			if (pstmt != null)
+				try {
+					pstmt.close();
+				} catch (SQLException ex) {
+				}
+			if (pstmt2 != null)
+				try {
+					pstmt2.close();
+				} catch (SQLException ex) {
+				}
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException ex) {
+				}
 		}
 	}
 
 	public CheckState articleDelete(int num, String pass, Table tableName) {
 		CheckState result = CheckState.NO_NUM_VALUE;
-		Connection con=null;
-		PreparedStatement pstmt2=null;
-		ResultSet rs=null;
-		PreparedStatement pstmt=null;
+		Connection con = null;
+		PreparedStatement pstmt2 = null;
+		ResultSet rs = null;
+		PreparedStatement pstmt = null;
 		try {
-			 con = getConnection();
+			con = getConnection();
 			String sql2 = "delete from " + tableName.name() + "where num=? and pass=?";
 
 			System.out.println("articleDelete -> " + sql2.replace("=?", "=" + num));
-			 pstmt2 = con.prepareStatement(sql2);
+			pstmt2 = con.prepareStatement(sql2);
 			pstmt2.setInt(1, num);
 			pstmt2.setString(2, pass);
 			pstmt2.executeUpdate();
@@ -484,86 +609,150 @@ public class BoardDAO {
 			return result;
 		} catch (Exception e) {
 			e.printStackTrace();
-		}finally {
-			// 예외 상관없이 마무리 작업(기억장소 해제) 
-			if(rs!=null) try{ rs.close();}catch(SQLException ex) {}
-			if(pstmt!=null) try{pstmt.close();}catch(SQLException ex) {}
-			if(pstmt2!=null) try {pstmt2.close();}catch(SQLException ex) {}
-			if(con!=null) try{con.close();}catch(SQLException ex) {}
+		} finally {
+			// 예외 상관없이 마무리 작업(기억장소 해제)
+			if (rs != null)
+				try {
+					rs.close();
+				} catch (SQLException ex) {
+				}
+			if (pstmt != null)
+				try {
+					pstmt.close();
+				} catch (SQLException ex) {
+				}
+			if (pstmt2 != null)
+				try {
+					pstmt2.close();
+				} catch (SQLException ex) {
+				}
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException ex) {
+				}
 		}
 		return result;
 	}
 
 	public CheckState articleDelete(int num, Table tableName) {
 		CheckState result = CheckState.NO_NUM_VALUE;
-		Connection con=null;
-		PreparedStatement pstmt2=null;
-		ResultSet rs=null;
-		PreparedStatement pstmt=null;
+		Connection con = null;
+		PreparedStatement pstmt2 = null;
+		ResultSet rs = null;
+		PreparedStatement pstmt = null;
 		try {
-			 con = getConnection();
+			con = getConnection();
 			String sql2 = "delete from " + tableName.name() + " where num=?";
 
 			System.out.println("articleDelete -> " + sql2.replace("=?", "=" + num));
-			 pstmt2 = con.prepareStatement(sql2);
+			pstmt2 = con.prepareStatement(sql2);
 			pstmt2.setInt(1, num);
 			pstmt2.executeUpdate();
 			result = CheckState.OK;
 			return result;
 		} catch (Exception e) {
 			e.printStackTrace();
-		}finally {
-			// 예외 상관없이 마무리 작업(기억장소 해제) 
-			if(rs!=null) try{ rs.close();}catch(SQLException ex) {}
-			if(pstmt!=null) try{pstmt.close();}catch(SQLException ex) {}
-			if(pstmt2!=null) try {pstmt2.close();}catch(SQLException ex) {}
-			if(con!=null) try{con.close();}catch(SQLException ex) {}
+		} finally {
+			// 예외 상관없이 마무리 작업(기억장소 해제)
+			if (rs != null)
+				try {
+					rs.close();
+				} catch (SQLException ex) {
+				}
+			if (pstmt != null)
+				try {
+					pstmt.close();
+				} catch (SQLException ex) {
+				}
+			if (pstmt2 != null)
+				try {
+					pstmt2.close();
+				} catch (SQLException ex) {
+				}
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException ex) {
+				}
 		}
 		return result;
 	}
 
 	public void articleUpdateReadCount(int num) {
-		Connection con=null;
-		PreparedStatement pstmt2=null;
-		ResultSet rs=null;
-		PreparedStatement pstmt=null;
-		
+		Connection con = null;
+		PreparedStatement pstmt2 = null;
+		ResultSet rs = null;
+		PreparedStatement pstmt = null;
+
 		try {
-			 con = getConnection();
+			con = getConnection();
 			String sql2 = "update board set readcount = readcount +1 where num=?";
-			 pstmt2 = con.prepareStatement(sql2);
+			pstmt2 = con.prepareStatement(sql2);
 			pstmt2.setInt(1, num);
 			pstmt2.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
-		}finally {
-			// 예외 상관없이 마무리 작업(기억장소 해제) 
-			if(rs!=null) try{ rs.close();}catch(SQLException ex) {}
-			if(pstmt!=null) try{pstmt.close();}catch(SQLException ex) {}
-			if(pstmt2!=null) try {pstmt2.close();}catch(SQLException ex) {}
-			if(con!=null) try{con.close();}catch(SQLException ex) {}
+		} finally {
+			// 예외 상관없이 마무리 작업(기억장소 해제)
+			if (rs != null)
+				try {
+					rs.close();
+				} catch (SQLException ex) {
+				}
+			if (pstmt != null)
+				try {
+					pstmt.close();
+				} catch (SQLException ex) {
+				}
+			if (pstmt2 != null)
+				try {
+					pstmt2.close();
+				} catch (SQLException ex) {
+				}
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException ex) {
+				}
 		}
 	}
 
 	public void articleUpdateReadCount(int num, Table table) {
-		Connection con=null;
-		PreparedStatement pstmt2=null;
-		ResultSet rs=null;
-		PreparedStatement pstmt=null;
+		Connection con = null;
+		PreparedStatement pstmt2 = null;
+		ResultSet rs = null;
+		PreparedStatement pstmt = null;
 		try {
-			 con = getConnection();
+			con = getConnection();
 			String sql2 = "update " + table.name() + " set readcount = readcount +1 where num=?";
-			 pstmt2 = con.prepareStatement(sql2);
+			pstmt2 = con.prepareStatement(sql2);
 			pstmt2.setInt(1, num);
 			pstmt2.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
-		}finally {
-			// 예외 상관없이 마무리 작업(기억장소 해제) 
-			if(rs!=null) try{ rs.close();}catch(SQLException ex) {}
-			if(pstmt!=null) try{pstmt.close();}catch(SQLException ex) {}
-			if(pstmt2!=null) try {pstmt2.close();}catch(SQLException ex) {}
-			if(con!=null) try{con.close();}catch(SQLException ex) {}
+		} finally {
+			// 예외 상관없이 마무리 작업(기억장소 해제)
+			if (rs != null)
+				try {
+					rs.close();
+				} catch (SQLException ex) {
+				}
+			if (pstmt != null)
+				try {
+					pstmt.close();
+				} catch (SQLException ex) {
+				}
+			if (pstmt2 != null)
+				try {
+					pstmt2.close();
+				} catch (SQLException ex) {
+				}
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException ex) {
+				}
 		}
 	}
 
@@ -587,16 +776,16 @@ public class BoardDAO {
 		Timestamp date = bb.getDate();
 
 		System.out.println("articleInsertFile");
-		Connection con=null;
-		PreparedStatement pstmt2=null;
-		ResultSet rs=null;
-		PreparedStatement pstmt=null;
-		
+		Connection con = null;
+		PreparedStatement pstmt2 = null;
+		ResultSet rs = null;
+		PreparedStatement pstmt = null;
+
 		try {
-			 con = getConnection();
+			con = getConnection();
 
 			String sql1 = "insert into board(name,pass,subject,content,readcount,date) " + "values(?,?,?,?,?,?)";
-			 pstmt = con.prepareStatement(sql1);
+			pstmt = con.prepareStatement(sql1);
 //			pstmt.setInt(1, num);
 			pstmt.setString(1, name);
 //			pstmt.setString(2, pass);
@@ -607,8 +796,8 @@ public class BoardDAO {
 			pstmt.executeUpdate();
 
 			String sqlGetId = "SELECT LAST_INSERT_ID()";
-			 pstmt2 = con.prepareStatement(sqlGetId);
-			 rs = pstmt2.executeQuery();
+			pstmt2 = con.prepareStatement(sqlGetId);
+			rs = pstmt2.executeQuery();
 			int n = -1;
 			if (rs.next()) {
 				n = rs.getInt("LAST_INSERT_ID()");
@@ -635,12 +824,28 @@ public class BoardDAO {
 		} catch (Exception e) {
 			// 에러 발생하면 에러메시지 출력
 			e.printStackTrace();
-		}finally {
-			// 예외 상관없이 마무리 작업(기억장소 해제) 
-			if(rs!=null) try{ rs.close();}catch(SQLException ex) {}
-			if(pstmt!=null) try{pstmt.close();}catch(SQLException ex) {}
-			if(pstmt2!=null) try {pstmt2.close();}catch(SQLException ex) {}
-			if(con!=null) try{con.close();}catch(SQLException ex) {}
+		} finally {
+			// 예외 상관없이 마무리 작업(기억장소 해제)
+			if (rs != null)
+				try {
+					rs.close();
+				} catch (SQLException ex) {
+				}
+			if (pstmt != null)
+				try {
+					pstmt.close();
+				} catch (SQLException ex) {
+				}
+			if (pstmt2 != null)
+				try {
+					pstmt2.close();
+				} catch (SQLException ex) {
+				}
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException ex) {
+				}
 		}
 	}
 
@@ -655,17 +860,17 @@ public class BoardDAO {
 		Timestamp date = bb.getDate();
 
 		System.out.println("articleInsertFile");
-		Connection con=null;
-		PreparedStatement pstmt2=null;
-		ResultSet rs=null;
-		PreparedStatement pstmt=null;
-		
+		Connection con = null;
+		PreparedStatement pstmt2 = null;
+		ResultSet rs = null;
+		PreparedStatement pstmt = null;
+
 		try {
-			 con = getConnection();
+			con = getConnection();
 
 			String sql1 = "insert into " + boardTable.name() + "(name,subject,content,readcount,date) "
 					+ "values(?,?,?,?,?)";
-			 pstmt = con.prepareStatement(sql1);
+			pstmt = con.prepareStatement(sql1);
 			System.out.println("articleInsertFile -> sql : " + sql1);
 
 //			pstmt.setInt(1, num);
@@ -678,15 +883,15 @@ public class BoardDAO {
 			pstmt.executeUpdate();
 
 			String sqlGetId = "SELECT LAST_INSERT_ID()";
-			 pstmt2 = con.prepareStatement(sqlGetId);
-			 rs = pstmt2.executeQuery();
+			pstmt2 = con.prepareStatement(sqlGetId);
+			rs = pstmt2.executeQuery();
 			int n = -1;
 			if (rs.next()) {
 				n = rs.getInt("LAST_INSERT_ID()");
 			}
 			System.out.println("LAST_INSERT_ID() : " + n);
-			String insertSQL = "insert into " + fileTable.name() + "(post_idx,file_name,file_path,uploaded, thumb_path) "
-					+ "values(?,?,?,?,?)";
+			String insertSQL = "insert into " + fileTable.name()
+					+ "(post_idx,file_name,file_path,uploaded, thumb_path) " + "values(?,?,?,?,?)";
 			PreparedStatement pstmt3 = con.prepareStatement(insertSQL);
 			System.out.println("insertSQL -> sql : " + insertSQL);
 
@@ -710,30 +915,113 @@ public class BoardDAO {
 		} catch (Exception e) {
 			// 에러 발생하면 에러메시지 출력
 			e.printStackTrace();
-		}finally {
-			// 예외 상관없이 마무리 작업(기억장소 해제) 
-			if(rs!=null) try{ rs.close();}catch(SQLException ex) {}
-			if(pstmt!=null) try{pstmt.close();}catch(SQLException ex) {}
-			if(pstmt2!=null) try {pstmt2.close();}catch(SQLException ex) {}
-			if(con!=null) try{con.close();}catch(SQLException ex) {}
+		} finally {
+			// 예외 상관없이 마무리 작업(기억장소 해제)
+			if (rs != null)
+				try {
+					rs.close();
+				} catch (SQLException ex) {
+				}
+			if (pstmt != null)
+				try {
+					pstmt.close();
+				} catch (SQLException ex) {
+				}
+			if (pstmt2 != null)
+				try {
+					pstmt2.close();
+				} catch (SQLException ex) {
+				}
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException ex) {
+				}
+		}
+	}
+	
+	public void articleUpdateFile(List<FileBean> fbList, BoardBean bb, Table boardTable, Table fileTable) {
+		int num = bb.getNum();
+
+		System.out.println("articleUpdateFile");
+		Connection con = null;
+		PreparedStatement pstmt2 = null;
+		ResultSet rs = null;
+		PreparedStatement pstmt = null;
+
+		try {
+			con = getConnection();
+
+			String sql1 = "delete from " + fileTable.name() + " where post_idx=?";
+			pstmt = con.prepareStatement(sql1);
+			System.out.println("articledeleteFile -> sql : " + sql1);
+
+			pstmt.setInt(1, num);
+			pstmt.executeUpdate();
+
+			String insertSQL = "insert into " + fileTable.name()
+					+ "(post_idx,file_name,file_path,uploaded, thumb_path) " + "values(?,?,?,?,?)";
+			PreparedStatement pstmt3 = con.prepareStatement(insertSQL);
+			System.out.println("insertSQL -> sql : " + insertSQL);
+
+			for (FileBean f : fbList) {
+				String file_name = f.getFile_name();
+				String file_path = f.getFile_path();
+				Timestamp uploaded = f.getDate();
+				String thumb_path = f.getThumb_path();
+
+				System.out.println("fbList -> " + file_name);
+				pstmt3.setInt(1, num);
+				pstmt3.setString(2, file_name);
+				pstmt3.setString(3, file_path);
+				pstmt3.setTimestamp(4, uploaded);
+				pstmt3.setString(5, thumb_path);
+				pstmt3.executeUpdate();
+			}
+
+		} catch (Exception e) {
+			// 에러 발생하면 에러메시지 출력
+			e.printStackTrace();
+		} finally {
+			// 예외 상관없이 마무리 작업(기억장소 해제)
+			if (rs != null)
+				try {
+					rs.close();
+				} catch (SQLException ex) {
+				}
+			if (pstmt != null)
+				try {
+					pstmt.close();
+				} catch (SQLException ex) {
+				}
+			if (pstmt2 != null)
+				try {
+					pstmt2.close();
+				} catch (SQLException ex) {
+				}
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException ex) {
+				}
 		}
 	}
 
 	public List<FileBean> getArticleFileList(int post_idx) {
 
 		List<FileBean> fbList = new ArrayList<FileBean>();
-		Connection con=null;
-		PreparedStatement pstmt2=null;
-		ResultSet rs=null;
-		PreparedStatement pstmt=null;
-		
+		Connection con = null;
+		PreparedStatement pstmt2 = null;
+		ResultSet rs = null;
+		PreparedStatement pstmt = null;
+
 		try {
-			 con = getConnection();
+			con = getConnection();
 			String sql = "select * from file_pds where post_idx=?";
-			 pstmt = con.prepareStatement(sql);
+			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, post_idx);
 			// 4단계 SQL구문을 실행 (select 형태) 결과를 ResultSet내장객체 저장
-			 rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				FileBean fb = new FileBean();
 				String file_name = rs.getString("file_name");
@@ -750,69 +1038,99 @@ public class BoardDAO {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-		}finally {
-			// 예외 상관없이 마무리 작업(기억장소 해제) 
-			if(rs!=null) try{ rs.close();}catch(SQLException ex) {}
-			if(pstmt!=null) try{pstmt.close();}catch(SQLException ex) {}
-			if(pstmt2!=null) try {pstmt2.close();}catch(SQLException ex) {}
-			if(con!=null) try{con.close();}catch(SQLException ex) {}
+		} finally {
+			// 예외 상관없이 마무리 작업(기억장소 해제)
+			if (rs != null)
+				try {
+					rs.close();
+				} catch (SQLException ex) {
+				}
+			if (pstmt != null)
+				try {
+					pstmt.close();
+				} catch (SQLException ex) {
+				}
+			if (pstmt2 != null)
+				try {
+					pstmt2.close();
+				} catch (SQLException ex) {
+				}
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException ex) {
+				}
 		}
 		return fbList;
 	}
 
 	public FileBean getArticleThumbFile(int post_idx) {
-		String sql = "select * from" + "file_pds "
-				+ "WHERE post_idx=? and "
+		String sql = "select * from" + "file_pds " + "WHERE post_idx=? and "
 				+ "(file_name REGEXP ('jfif|jpg|gif|png') OR file_path REGEXP ('jfif|jpg|gif|png')) LIMIT 1;";
 //				"select * from file where file_name like '%jpg%' and post_idx=? limit 1;";
 
 		FileBean fb = new FileBean();
-		Connection con=null;
-		PreparedStatement pstmt2=null;
-		ResultSet rs=null;
-		PreparedStatement pstmt=null;
+		Connection con = null;
+		PreparedStatement pstmt2 = null;
+		ResultSet rs = null;
+		PreparedStatement pstmt = null;
 		try {
-			 con = getConnection();
-			 pstmt = con.prepareStatement(sql);
+			con = getConnection();
+			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, post_idx);
 			// 4단계 SQL구문을 실행 (select 형태) 결과를 ResultSet내장객체 저장
-			 rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 			if (rs.next()) {
 				fb.setFile_name(rs.getString("file_name"));
 				fb.setFile_path(rs.getString("file_path"));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-		}finally {
-			// 예외 상관없이 마무리 작업(기억장소 해제) 
-			if(rs!=null) try{ rs.close();}catch(SQLException ex) {}
-			if(pstmt!=null) try{pstmt.close();}catch(SQLException ex) {}
-			if(pstmt2!=null) try {pstmt2.close();}catch(SQLException ex) {}
-			if(con!=null) try{con.close();}catch(SQLException ex) {}
+		} finally {
+			// 예외 상관없이 마무리 작업(기억장소 해제)
+			if (rs != null)
+				try {
+					rs.close();
+				} catch (SQLException ex) {
+				}
+			if (pstmt != null)
+				try {
+					pstmt.close();
+				} catch (SQLException ex) {
+				}
+			if (pstmt2 != null)
+				try {
+					pstmt2.close();
+				} catch (SQLException ex) {
+				}
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException ex) {
+				}
 		}
 
 		return fb;
 	}
 
 	public FileBean getArticleThumbFile(int post_idx, String tableName) {
-		String sql = "select * from " + tableName
-				+ " WHERE post_idx=? and "
+		String sql = "select * from " + tableName + " WHERE post_idx=? and "
 				+ "(thumb_path REGEXP ('jfif|jpg|gif|png') OR file_path REGEXP ('jfif|jpg|gif|png')) LIMIT 1";
 //				"select * from " + tableName + " where file_name like '%jpg%' and post_idx=? limit 1;";
 
 		System.out.println("getArticleThumbFile : " + sql);
 		FileBean fb = new FileBean();
-		Connection con=null;
-		PreparedStatement pstmt2=null;
-		ResultSet rs=null;
-		PreparedStatement pstmt=null;
-		
+		Connection con = null;
+		PreparedStatement pstmt2 = null;
+		ResultSet rs = null;
+		PreparedStatement pstmt = null;
+
 		try {
-			 con = getConnection();
-			 pstmt = con.prepareStatement(sql);
+			con = getConnection();
+			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, post_idx);
 			// 4단계 SQL구문을 실행 (select 형태) 결과를 ResultSet내장객체 저장
-			 rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 			if (rs.next()) {
 				fb.setFile_name(rs.getString("file_name"));
 				fb.setFile_path(rs.getString("file_path"));
@@ -820,12 +1138,28 @@ public class BoardDAO {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-		}finally {
-			// 예외 상관없이 마무리 작업(기억장소 해제) 
-			if(rs!=null) try{ rs.close();}catch(SQLException ex) {}
-			if(pstmt!=null) try{pstmt.close();}catch(SQLException ex) {}
-			if(pstmt2!=null) try {pstmt2.close();}catch(SQLException ex) {}
-			if(con!=null) try{con.close();}catch(SQLException ex) {}
+		} finally {
+			// 예외 상관없이 마무리 작업(기억장소 해제)
+			if (rs != null)
+				try {
+					rs.close();
+				} catch (SQLException ex) {
+				}
+			if (pstmt != null)
+				try {
+					pstmt.close();
+				} catch (SQLException ex) {
+				}
+			if (pstmt2 != null)
+				try {
+					pstmt2.close();
+				} catch (SQLException ex) {
+				}
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException ex) {
+				}
 		}
 
 		return fb;
@@ -835,16 +1169,16 @@ public class BoardDAO {
 		String sql = "select * from " + tableName + " WHERE comment_board = ?";
 		System.out.println("getArticleComment() : " + sql);
 		List<CommentBean> commentList = new ArrayList<CommentBean>();
-		Connection con=null;
-		PreparedStatement pstmt2=null;
-		ResultSet rs=null;
-		PreparedStatement pstmt=null;
+		Connection con = null;
+		PreparedStatement pstmt2 = null;
+		ResultSet rs = null;
+		PreparedStatement pstmt = null;
 		try {
-			 con = getConnection();
-			 pstmt = con.prepareStatement(sql);
+			con = getConnection();
+			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, post_idx);
 			// 4단계 SQL구문을 실행 (select 형태) 결과를 ResultSet내장객체 저장
-			 rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 			if (rs.next()) {
 				CommentBean cb = new CommentBean();
 				cb.setComment_board(post_idx);
@@ -857,12 +1191,28 @@ public class BoardDAO {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-		}finally {
-			// 예외 상관없이 마무리 작업(기억장소 해제) 
-			if(rs!=null) try{ rs.close();}catch(SQLException ex) {}
-			if(pstmt!=null) try{pstmt.close();}catch(SQLException ex) {}
-			if(pstmt2!=null) try {pstmt2.close();}catch(SQLException ex) {}
-			if(con!=null) try{con.close();}catch(SQLException ex) {}
+		} finally {
+			// 예외 상관없이 마무리 작업(기억장소 해제)
+			if (rs != null)
+				try {
+					rs.close();
+				} catch (SQLException ex) {
+				}
+			if (pstmt != null)
+				try {
+					pstmt.close();
+				} catch (SQLException ex) {
+				}
+			if (pstmt2 != null)
+				try {
+					pstmt2.close();
+				} catch (SQLException ex) {
+				}
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException ex) {
+				}
 		}
 
 		return commentList;
@@ -874,17 +1224,17 @@ public class BoardDAO {
 		int articleID = cb.getComment_board();
 		Timestamp date = cb.getComment_date();
 
-		Connection con=null;
-		PreparedStatement pstmt2=null;
-		ResultSet rs=null;
-		PreparedStatement pstmt=null;
-		
+		Connection con = null;
+		PreparedStatement pstmt2 = null;
+		ResultSet rs = null;
+		PreparedStatement pstmt = null;
+
 		try {
-			 con = getConnection();
+			con = getConnection();
 
 			String sql = "insert into " + tableName + "(COMMENT_BOARD, COMMENT_ID, COMMENT_DATE, COMMENT_CONTENT) "
 					+ "values(?,?,?,?)";
-			 pstmt = con.prepareStatement(sql);
+			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, articleID);
 			pstmt.setString(2, name);
 			pstmt.setTimestamp(3, date);
@@ -893,41 +1243,73 @@ public class BoardDAO {
 		} catch (Exception e) {
 			// 에러 발생하면 에러메시지 출력
 			e.printStackTrace();
-		}finally {
-			// 예외 상관없이 마무리 작업(기억장소 해제) 
-			if(rs!=null) try{ rs.close();}catch(SQLException ex) {}
-			if(pstmt!=null) try{pstmt.close();}catch(SQLException ex) {}
-			if(pstmt2!=null) try {pstmt2.close();}catch(SQLException ex) {}
-			if(con!=null) try{con.close();}catch(SQLException ex) {}
+		} finally {
+			// 예외 상관없이 마무리 작업(기억장소 해제)
+			if (rs != null)
+				try {
+					rs.close();
+				} catch (SQLException ex) {
+				}
+			if (pstmt != null)
+				try {
+					pstmt.close();
+				} catch (SQLException ex) {
+				}
+			if (pstmt2 != null)
+				try {
+					pstmt2.close();
+				} catch (SQLException ex) {
+				}
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException ex) {
+				}
 		}
 	}
 
 	public int articleGetCount(String tableName) {
 		int count = 0;
 		String sql = "SELECT COUNT(*) FROM " + tableName;
-		Connection con=null;
-		PreparedStatement pstmt2=null;
-		ResultSet rs=null;
-		PreparedStatement pstmt=null;
-		
+		Connection con = null;
+		PreparedStatement pstmt2 = null;
+		ResultSet rs = null;
+		PreparedStatement pstmt = null;
+
 		try {
-			 con = getConnection();
-			 pstmt2 = con.prepareStatement(sql);
+			con = getConnection();
+			pstmt2 = con.prepareStatement(sql);
 			// 4단계 실행 => 결과 rs 저장
-			 rs = pstmt2.executeQuery();
+			rs = pstmt2.executeQuery();
 			if (rs.next()) {
-				count = rs.getInt("COUNT(*)"); //+ 1;
+				count = rs.getInt("COUNT(*)"); // + 1;
 			}
 
 		} catch (Exception e) {
 			// 에러 발생하면 에러메시지 출력
 			e.printStackTrace();
-		}finally {
-			// 예외 상관없이 마무리 작업(기억장소 해제) 
-			if(rs!=null) try{ rs.close();}catch(SQLException ex) {}
-			if(pstmt!=null) try{pstmt.close();}catch(SQLException ex) {}
-			if(pstmt2!=null) try {pstmt2.close();}catch(SQLException ex) {}
-			if(con!=null) try{con.close();}catch(SQLException ex) {}
+		} finally {
+			// 예외 상관없이 마무리 작업(기억장소 해제)
+			if (rs != null)
+				try {
+					rs.close();
+				} catch (SQLException ex) {
+				}
+			if (pstmt != null)
+				try {
+					pstmt.close();
+				} catch (SQLException ex) {
+				}
+			if (pstmt2 != null)
+				try {
+					pstmt2.close();
+				} catch (SQLException ex) {
+				}
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException ex) {
+				}
 		}
 		return count;
 	}

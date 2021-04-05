@@ -1,3 +1,8 @@
+<%@page import="file.FileBean"%>
+<%@page import="java.util.List"%>
+<%@page import="table.Table"%>
+<%@page import="board.BoardBean"%>
+<%@page import="board.BoardDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -23,23 +28,55 @@
 		<%
 		//String id = (String)세션값 가져오기
 		String id = (String) session.getAttribute("id");
+		BoardDAO bdao = new BoardDAO();
+		BoardBean bb = new BoardBean();
+
 		// 세션값이 없으면 "../member/login.jsp" 이동
 		if (id == null) {
 		%>
 		<script type="text/javascript">
-	alert("글쓰기를 하려면 먼저 로그인해주세요");
+	alert("글을 수정하려면 먼저 로그인해주세요");
 	location.href="/member/login.jsp";</script>
 		<%
+		return;
+		}
+
+		String strNum = request.getParameter("num");
+		int num = -1;
+
+		if (strNum == null) {
+		return;
+		}
+
+		num = Integer.parseInt(strNum);
+		bb = bdao.getArticle(num, Table.BOARD_PDS.name());
+		List<FileBean> fbList = null;
+
+		if (bb == null || num == -1) {
+		%>
+		<script type="text/javascript">
+				alert("수정할 글이 없습니다.");		
+		 		location.href="list.jsp";
+			</script>
+		<%
+		return;
+		} else {
+		fbList = bdao.getArticleFileList(bb.getNum());
+
 		}
 		%>
 
 		<!-- 게시판 -->
 		<article>
-			<form action="/BoardWrite" method="POST" name="content_form">
-				<table id="community" style="width: 100%;" >
+			<form action="/BoardUpdate" method="POST" name="content_form">
+				<table id="gallery" style="width: 100%;">
 					<tr>
 						<!-- 						<td>글쓴이</td> -->
 						<td><input type="hidden" name="name" value="<%=id%>" readonly></td>
+						<td><input type="hidden" name="num" value="<%=bb.getNum()%>"
+							readonly></td>
+						<td><input type="hidden" name="tableName"
+							value="<%=Table.BOARD_PDS.name()%>" readonly></td>
 					</tr>
 					<!-- 					<tr> -->
 					<!-- 						<td>비밀번호</td> -->
@@ -49,41 +86,48 @@
 						<td>글제목</td>
 					</tr>
 					<tr>
-						<td style="width: 100%;"><input type="text" maxlength="50" style="width: 100%;" 
+						<td style="width: 100%;"><input type="text" maxlength="50"
+							width="100%" style="width: 100%;" value="<%=bb.getSubject()%>"
 							required="required" name="subject"></td>
 					</tr>
 					<tr>
-						<td><textarea name="content" 
-								maxlength="5000" id="editor"></textarea></td>
+						<td><textarea name="content" required="required"
+								maxlength="5000" id="editor"><%=bb.getContent()%></textarea></td>
 					</tr>
 				</table>
+				<!-- 게시물에 대한 파일리스트 표시시작 -->
+				<%
+				if (fbList != null) {
+					for (FileBean file : fbList) {
+						String filename = file.getFile_name();
+				%>
+				<a href="${pageContext.request.contextPath}/upload/<%=filename%>">
+					<%=filename%>
+				</a><a>삭제</a><br>
+				<%
+					}
+				}
+				%>
+				<p>
+					<label for="partFile1">파일 첨부 : </label><input type="file"
+						multiple="multiple" onchange="fileUpload(this)" name="partFile1"
+						id="partFile1" accept=".jpg, .gif, .zip,.pdf,.mp4,.mp3,.avi,">
+					<br>
+				</p>
 
-				<button type="submit" onClick="return checkForm()">글쓰기</button>
+				<button type="submit" onClick="checkForm()">글 수정</button>
 				<!-- 					글 등록안할 시 업로드파일 제거 처리 필요  -->
-				<button type="button" onClick="cancleForm()">작성취소</button>
+				<button type="button" onClick="cancleForm()">수정취소</button>
 
 			</form>
 			<script>
 // iframe parent window 
 function checkForm(){ 
-	if (document.content_form.subject.value == "") {
-		alert("글 제목을 입력해주세요");
-		document.content_form.subject.focus();
-		return false;
-	}
-	
-	var content = window.editor.getData();
-	
-	if (content == "") {
-		alert("글내용을 입력해주세요");
-		return false;
-	}
-	
     document.content_form.target="_parent"; 
     document.content_form.submit(); 
 }
 function cancleForm(){ 
-	if (confirm("글쓰기를 취소하시겠습니까?")) {
+	if (confirm("글 수정을 취소하시겠습니까?")) {
 		document.content_form.target="_parent";
 	    window.parent.history.back(); //이전페이지로 가기
 	}
