@@ -94,12 +94,7 @@
 									                        	 "warning" //"info,success,warning,error" 중 택1
 									                         )
 
-								                         }		
-// 								                         alert(responseData);
-
-								                         }
-								                         
-
+								                         }	
 								                 },
 								        error: function(){
 								            	    console.log("error");
