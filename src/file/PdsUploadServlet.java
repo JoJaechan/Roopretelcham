@@ -100,6 +100,7 @@ public class PdsUploadServlet extends HttpServlet {
 				}
 			}
 		}
+		
 		dao.articleInsertFile(fbList, bean, Table.BOARD_PDS, Table.FILE_PDS);
 		out.println(uploadFileNameList); // + "파일 업로드 완료.");
 

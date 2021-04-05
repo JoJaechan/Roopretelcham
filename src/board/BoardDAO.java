@@ -1006,6 +1006,53 @@ public class BoardDAO {
 				}
 		}
 	}
+	
+	public void articleDeleteFile(List<FileBean> fbList, BoardBean bb, Table fileTable) {
+		int num = bb.getNum();
+
+		System.out.println("articleUpdateFile");
+		Connection con = null;
+		PreparedStatement pstmt2 = null;
+		ResultSet rs = null;
+		PreparedStatement pstmt = null;
+
+		try {
+			con = getConnection();
+
+			String sql1 = "delete from " + fileTable.name() + " where post_idx=?";
+			pstmt = con.prepareStatement(sql1);
+			System.out.println("articledeleteFile -> sql : " + sql1);
+
+			pstmt.setInt(1, num);
+			pstmt.executeUpdate();
+
+		} catch (Exception e) {
+			// 에러 발생하면 에러메시지 출력
+			e.printStackTrace();
+		} finally {
+			// 예외 상관없이 마무리 작업(기억장소 해제)
+			if (rs != null)
+				try {
+					rs.close();
+				} catch (SQLException ex) {
+				}
+			if (pstmt != null)
+				try {
+					pstmt.close();
+				} catch (SQLException ex) {
+				}
+			if (pstmt2 != null)
+				try {
+					pstmt2.close();
+				} catch (SQLException ex) {
+				}
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException ex) {
+				}
+		}
+	}
 
 	public List<FileBean> getArticleFileList(int post_idx) {
 

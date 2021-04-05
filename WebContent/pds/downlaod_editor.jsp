@@ -47,8 +47,8 @@
 						<td>글제목</td>
 					</tr>
 					<tr>
-						<td><input type="text" maxlength="50" required="required" style="width: 100%;"
-							name="subject"></td>
+						<td><input type="text" maxlength="50" required="required"
+							style="width: 100%;" name="subject"></td>
 					</tr>
 					<tr>
 						<td><textarea name="content" required="required"
@@ -80,7 +80,7 @@ function checkForm(){
 		return false;
 	}
 	
-var content = window.editor.getData();
+	var content = window.editor.getData();
 	
 	if (content == "") {
 		alert("글내용을 입력해주세요");

@@ -4,13 +4,16 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -24,6 +27,7 @@ import table.Table;
  * Servlet implementation class BoardUpdateServlet
  */
 @WebServlet("/BoardUpdate")
+@MultipartConfig(fileSizeThreshold = 0)
 public class BoardUpdateServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -56,6 +60,12 @@ public class BoardUpdateServlet extends HttpServlet {
 		response.setContentType("text/html; charset=utf-8");
 
 		String realPath = request.getServletContext().getRealPath("/upload");
+
+		File fileSaveDir = new File(realPath);
+
+		// 파일 경로 없으면 생성
+		if (!fileSaveDir.exists())
+			fileSaveDir.mkdirs();
 		
 		String name = request.getParameter("name");
 //		String pass = request.getParameter("pass");
@@ -103,7 +113,34 @@ public class BoardUpdateServlet extends HttpServlet {
 			response.sendRedirect("/gallery/gallery.jsp");
 			break;
 		case BOARD_PDS:
-			updateFiles(imgs, realPath, bean, tableEnum, Table.FILE_PDS);
+			Collection<Part> parts = request.getParts();
+			List<FileBean> fbList = new ArrayList<FileBean>();
+			
+			for (Part p : parts) {
+//				System.out.println(p.getName());
+				if (p.getHeader("Content-Disposition").contains("filename=")) {
+
+					if (p.getSize() > 0) {
+						String fileName = p.getSubmittedFileName();
+						String filePath = realPath + File.separator + fileName;
+						p.write(filePath);
+						FileBean fb = new FileBean();
+						fb.setFile_name(fileName);
+						fb.setFile_path(filePath);
+						fb.setDate(date);
+						
+						Thumbnail thumbnail = new Thumbnail();			
+						String thumbPath = thumbnail.thumbnailMake(filePath, filePath);
+
+						System.out.println("thumbPath : " + thumbPath);
+						fb.setThumb_path(thumbPath);					
+						
+						fbList.add(fb);
+					}
+				}
+			}			
+			dao.articleUpdateFile(fbList, bean, Table.BOARD_PDS, Table.FILE_PDS);
+			
 			response.sendRedirect("/pds/download.jsp");
 			break;
 		default:
@@ -116,12 +153,6 @@ public class BoardUpdateServlet extends HttpServlet {
 			Table boardTable, Table fileTable) {
 		BoardDAO dao = new BoardDAO();
 		List<FileBean> fbList = new ArrayList<FileBean>();
-
-		File fileSaveDir = new File(realPath);
-
-		// 파일 경로 없으면 생성
-		if (!fileSaveDir.exists())
-			fileSaveDir.mkdirs();
 		
 		for (Element element : imgs) {
 			System.out.println("imgs : " + element.attr("src"));

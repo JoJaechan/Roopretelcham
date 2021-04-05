@@ -68,7 +68,8 @@
 
 		<!-- 게시판 -->
 		<article>
-			<form action="/BoardUpdate" method="POST" name="content_form">
+			<form action="/BoardUpdate" method="POST" name="content_form"
+			 enctype="multipart/form-data">
 				<table id="gallery" style="width: 100%;">
 					<tr>
 						<!-- 						<td>글쓴이</td> -->
@@ -95,26 +96,31 @@
 								maxlength="5000" id="editor"><%=bb.getContent()%></textarea></td>
 					</tr>
 				</table>
-				<!-- 게시물에 대한 파일리스트 표시시작 -->
-				<%
-				if (fbList != null) {
-					for (FileBean file : fbList) {
-						String filename = file.getFile_name();
-				%>
-				<a href="${pageContext.request.contextPath}/upload/<%=filename%>">
-					<%=filename%>
-				</a><a>삭제</a><br>
-				<%
-					}
-				}
-				%>
 				<p>
 					<label for="partFile1">파일 첨부 : </label><input type="file"
 						multiple="multiple" onchange="fileUpload(this)" name="partFile1"
 						id="partFile1" accept=".jpg, .gif, .zip,.pdf,.mp4,.mp3,.avi,">
 					<br>
 				</p>
-
+				
+				<!-- 게시물에 대한 파일리스트 표시시작 -->
+				
+				<label for="partFile1">첨부파일목록 ▼</label>
+				<ul id="fileList">
+				<%
+				if (fbList != null) {
+					for (FileBean file : fbList) {
+						String filename = file.getFile_name();
+				%>						
+				<li><%=filename%></li>
+<%-- 				<a id="flist" href="${pageContext.request.contextPath}/upload/<%=filename%>">					 --%>
+<!-- 				</a> -->
+<!-- 				&nbsp;<a><img alt="파일삭제" height="15" src="/images/fdelete_icon.png"></a><br> -->
+				<%
+					}
+				}
+				%>	
+				</ul>
 				<button type="submit" onClick="checkForm()">글 수정</button>
 				<!-- 					글 등록안할 시 업로드파일 제거 처리 필요  -->
 				<button type="button" onClick="cancleForm()">수정취소</button>
@@ -123,6 +129,25 @@
 			<script>
 // iframe parent window 
 function checkForm(){ 
+	if (document.content_form.subject.value == "") {
+		alert("글 제목을 입력해주세요");
+		document.content_form.subject.focus();
+		return false;
+	}
+	
+	var content = window.editor.getData();
+	
+	if (content == "") {
+		alert("글내용을 입력해주세요");
+		return false;
+	}
+	
+// 	if (document.content_form.partFile1.value) {
+// 		alert("파일을 하나 이상 첨부해주세요");
+// 		document.content_form.partFile1.focus();
+// 		return false;
+// 	}	
+	
     document.content_form.target="_parent"; 
     document.content_form.submit(); 
 }
@@ -158,7 +183,8 @@ function cancleForm(){
 $(function(){
     $("#partFile1").change(function(){
     fileList = $("#partFile1")[0].files;
-    fileListTag = '';
+    fileListTag = "";   
+    
     for(i = 0; i < fileList.length; i++){
         fileListTag += "<li>"+fileList[i].name+"</li>";
     }

@@ -198,7 +198,8 @@
 					<script>
 						function next(no) {
 							if (confirm("정말 글을 삭제하시겠습니까?")) {
-								location.href = "/deletePro.jsp?num=" + no;
+								var boardName = "BOARD_PDS";
+								location.href = "/deletePro.jsp?num=" + no + "&tableName=" + boardName;
 							} else {
 // 								alert('아니오를 누르셨습니다');
 							}
