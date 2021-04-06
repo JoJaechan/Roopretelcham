@@ -144,7 +144,7 @@
 							value="글 삭제" class="btn" onclick="next(<%=bb.getNum()%>)">
 					</div>
 					<%
-						}
+					}
 					}
 					%>
 					<div class="col-md-2">
@@ -168,7 +168,7 @@
 					<%
 					List<CommentBean> listComment = boardDAO.getArticleComment(bb.getNum(), Table.BOARD_COMMENT.name());
 					int numOfComment = listComment.size();
-// 					id = (String) session.getAttribute("id");
+					// 					id = (String) session.getAttribute("id");
 
 					// 로그인 유저 정보 가져오기
 					MemberDAO memDao = new MemberDAO();
@@ -180,19 +180,24 @@
 							<%=numOfComment%>
 							개의 댓글 <a href="#response">댓글 달기</a>
 						</h2>
+						
+						<%
+									SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+									for (CommentBean c : listComment) {
+									%>
 						<div class="comment-list">
-							<%
-							for (CommentBean c : listComment) {
-							%>
+
 							<!-- 						개별 댓글 표시 시작 -->
 							<div class="item">
 								<div class="user">
+									
 									<!-- 									<figure> -->
 									<!-- 										<img src="images/img01.jpg"> -->
 									<!-- 									</figure> -->
 									<div class="details">
 										<h5 class="name"><%=c.getComment_id()%></h5>
-										<div class="time"><%=c.getComment_date()%></div>
+										<div class="time"><%=sdf.format(c.getComment_date())%></div>
 										<div class="description">
 											<%=c.getComment_content()%>
 										</div>
@@ -202,12 +207,13 @@
 									</div>
 								</div>
 							</div>
-							<%
+							
+						</div>
+						<%
 							}
 							%>
-							<!-- 						개별 댓글 표시 끝 -->
+						<!-- 						개별 댓글 표시 끝 -->
 
-						</div>
 						<%
 						if (mb == null || mb.getName() == null) {
 						%>
@@ -228,9 +234,9 @@
 								value=<%=Table.BOARD_COMMENT.name()%>>
 
 							<div class="form-group col-md-4">
-								<label for="nick">이름 <span class="required"></span></label> 
-								<input type="text" readonly="readonly" value=<%=mb.getName()%>
-									id="nick" name="nick" class="form-control"> 									
+								<label for="nick">이름 <span class="required"></span></label> <input
+									type="text" readonly="readonly" value=<%=mb.getName()%>
+									id="nick" name="nick" class="form-control">
 							</div>
 							<!-- 							<div class="form-group col-md-4"> -->
 							<!-- 								<label for="email">Email <span class="required"></span></label> -->

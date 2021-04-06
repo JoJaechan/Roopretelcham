@@ -67,7 +67,7 @@ public class CommentWriteServlet extends HttpServlet {
 
 		if (tableName.equals(Table.BOARD_COMMENT.name())) {
 			dao.writeComment(cb, Table.BOARD_COMMENT.name());
-			response.sendRedirect("/commounity/content.jsp?num=" + COMMENT_BOARD);
+			response.sendRedirect("/community/content.jsp?num=" + COMMENT_BOARD);
 		}
 		else if (tableName.equals(Table.BOARD_GALLERY_COMMENT.name())) {
 			dao.writeComment(cb, Table.BOARD_GALLERY_COMMENT.name());

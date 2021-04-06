@@ -66,7 +66,7 @@ public class BoardUpdateServlet extends HttpServlet {
 		// 파일 경로 없으면 생성
 		if (!fileSaveDir.exists())
 			fileSaveDir.mkdirs();
-		
+
 		String name = request.getParameter("name");
 //		String pass = request.getParameter("pass");
 //		String id = request.getParameter("id");
@@ -102,7 +102,7 @@ public class BoardUpdateServlet extends HttpServlet {
 
 		// then use something like this to get your element:
 		org.jsoup.select.Elements imgs = doc.getElementsByTag("img");
-		
+
 		switch (tableEnum) {
 		case BOARD:
 			updateFiles(imgs, realPath, bean, tableEnum, Table.FILE);
@@ -115,6 +115,8 @@ public class BoardUpdateServlet extends HttpServlet {
 		case BOARD_PDS:
 			Collection<Part> parts = request.getParts();
 			List<FileBean> fbList = new ArrayList<FileBean>();
+
+			int nPartsSize = 0;
 			
 			for (Part p : parts) {
 //				System.out.println(p.getName());
@@ -128,19 +130,25 @@ public class BoardUpdateServlet extends HttpServlet {
 						fb.setFile_name(fileName);
 						fb.setFile_path(filePath);
 						fb.setDate(date);
-						
-						Thumbnail thumbnail = new Thumbnail();			
+
+						Thumbnail thumbnail = new Thumbnail();
 						String thumbPath = thumbnail.thumbnailMake(filePath, filePath);
 
 						System.out.println("thumbPath : " + thumbPath);
-						fb.setThumb_path(thumbPath);					
-						
+						fb.setThumb_path(thumbPath);
+
 						fbList.add(fb);
+						nPartsSize++;
 					}
 				}
-			}			
-			dao.articleUpdateFile(fbList, bean, Table.BOARD_PDS, Table.FILE_PDS);
-			
+			}
+
+			System.out.println("nPartsSize : " + nPartsSize);
+			// 첨부파일이 하나 이상일떄만 업데이트
+			if (nPartsSize > 0) {
+				dao.articleUpdateFile(fbList, bean, Table.BOARD_PDS, Table.FILE_PDS);
+			}
+
 			response.sendRedirect("/pds/download.jsp");
 			break;
 		default:
@@ -148,12 +156,12 @@ public class BoardUpdateServlet extends HttpServlet {
 		}
 
 	}
-	
-	public void updateFiles(org.jsoup.select.Elements imgs, String realPath, BoardBean bean,
-			Table boardTable, Table fileTable) {
+
+	public void updateFiles(org.jsoup.select.Elements imgs, String realPath, BoardBean bean, Table boardTable,
+			Table fileTable) {
 		BoardDAO dao = new BoardDAO();
 		List<FileBean> fbList = new ArrayList<FileBean>();
-		
+
 		for (Element element : imgs) {
 			System.out.println("imgs : " + element.attr("src"));
 			dao.articleUpdateFile(fbList, bean, boardTable, fileTable);
@@ -168,15 +176,15 @@ public class BoardUpdateServlet extends HttpServlet {
 			fb.setFile_path(filePath);
 			fb.setDate(date);
 
-			Thumbnail thumbnail = new Thumbnail();			
+			Thumbnail thumbnail = new Thumbnail();
 			String thumbPath = thumbnail.thumbnailMake(filePath, filePath);
 
 			System.out.println("thumbPath : " + thumbPath);
 			fb.setThumb_path(thumbPath);
-			
+
 			fbList.add(fb);
 		}
-		
+
 		dao.articleUpdateFile(fbList, bean, boardTable, fileTable);
 	}
 

@@ -62,7 +62,7 @@
 									class="form-control">
 							</div>
 
-							<button id="idChkBtn" class="btn btn-primary"
+							<button id="idChkBtn" class="btn btn-primary" type="button"
 								onclick="confirmId()">중복 확인</button>
 
 

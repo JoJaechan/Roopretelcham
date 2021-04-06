@@ -96,12 +96,12 @@
 
 							<div class="form-group">
 								<label class="fw">변경할 비밀번호</label> <input type="password"
-									name="pass" required class="form-control">
+									name="pass" id="pass" required class="form-control">
 							</div>
 
 							<div class="form-group">
 								<label class="fw">변경할 비밀번호 확인입력</label> <input type="password"
-									name="pass2" required class="form-control">
+									name="pass2" id="pass2" required class="form-control">
 							</div>
 
 							<div class="form-group">
@@ -111,11 +111,12 @@
 
 							<div class="form-group">
 								<label>E-Mail</label> <input type="email" required name="email"
-									value=<%=email%> class="form-control">
+									value="<%=email%>" id="email" class="form-control">
 							</div>
 							<div class="form-group">
-								<label>E-Mail 확인입력</label> <input type="email" value=<%=email%>
-									required name="email2" class="form-control">
+								<label>E-Mail 확인입력</label> <input type="email"
+									value="<%=email%>" required name="email2" id="email2"
+									class="form-control">
 							</div>
 
 							<!-- 							<div class="form-group"> -->
@@ -223,17 +224,20 @@
 								</div>
 								<div class="form-group">
 									<label>휴대전화 번호</label> <input type="tel"
-										value="<%=mb.getMobile()%>" name="mobile">
-									<label>집 전화 번호</label> <input type="tel" value="<%=mb.getPhone() %>" name="phone"><br>
+										value="<%=mb.getMobile()%>" name="mobile"> <label>집
+										전화 번호</label> <input type="tel" value="<%=mb.getPhone()%>"
+										name="phone"><br>
 								</div>
 								<div class="form-group">
-									<label>휴대전화 번호</label> <input type="tel" value="<%=mb.getMobile() %>" name="mobile">
+									<label>휴대전화 번호</label> <input type="tel"
+										value="<%=mb.getMobile()%>" name="mobile">
 								</div>
 							</fieldset>
 							<!-- 								옵션 영역 끝 -->
 
 							<div class="form-group text-right">
-								<button class="btn btn-primary btn-block">회원정보 수정</button>
+								<button class="btn btn-primary btn-block"
+									onClick="return checkForm()">회원정보 수정</button>
 							</div>
 						</form>
 						<!-- 회원가입 폼 끝-->
@@ -242,6 +246,31 @@
 			</div>
 		</div>
 	</section>
+
+	<script>
+		function checkForm() {
+			var password = document.getElementById("pass").value;
+			var password2 = document.getElementById("pass2").value;
+			console.log("password" + password);
+
+			// - 비밀번호, 비밀번호 확인 일치 제어
+			if (password != password2) {
+				alert('비밀번호 입력을 확인해주세요');
+				return false;
+			}
+
+			var email = document.getElementById("email").value;
+			var email2 = document.getElementById("email2").value;
+
+			if (email != email2) {
+				alert('메일주소 입력을 확인해주세요');
+				return false;
+			}
+
+			document.join.submit();
+		}
+	</script>
+
 
 
 	<!-- Start footer -->

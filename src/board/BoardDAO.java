@@ -1226,7 +1226,7 @@ public class BoardDAO {
 			pstmt.setInt(1, post_idx);
 			// 4단계 SQL구문을 실행 (select 형태) 결과를 ResultSet내장객체 저장
 			rs = pstmt.executeQuery();
-			if (rs.next()) {
+			while (rs.next()) {
 				CommentBean cb = new CommentBean();
 				cb.setComment_board(post_idx);
 				cb.setComment_content(rs.getString(ColumnName.COMMENT_CONTENT.name()));

@@ -112,7 +112,7 @@ public class EmailSendServlet extends HttpServlet {
 //			   str += "history.go(-1);";    //이전페이지로 가기
 				str += "</script>";
 				out.print(str);
-				out.println("<script>location.href='login.jsp';</script>");
+				out.println("<script>location.href='/login.jsp';</script>");
 			} else {
 				String msg = "임시비밀번호 발급에 실패했습니다. 다시 시도해주세요.";
 				String str = "";

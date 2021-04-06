@@ -83,8 +83,8 @@ public class MemberRegistServlet extends HttpServlet {
 			String msg = "가입에 실패하였습니다!";
 			String str = "";
 			str = "<script language='javascript'>";
-//			str += "alert('" + msg + "');"; // 얼럿창 띄우기
-//			str += "history.go(-1);"; // 이전페이지로 가기
+			str += "alert('" + msg + "');"; // 얼럿창 띄우기
+			str += "history.go(-1);"; // 이전페이지로 가기
 			str += "</script>";
 			out.print(str);
 		}
