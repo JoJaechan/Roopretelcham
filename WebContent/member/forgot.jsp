@@ -60,7 +60,7 @@
 									<button class="btn btn-primary btn-block">비밀번호 재설정</button>
 								</div>
 								<div class="form-group text-center">
-									<span class="text-muted">로그인 화면으로 돌아갈까요?</span> <a href="login.jsp">Login</a>
+									<span class="text-muted">로그인 화면으로 돌아갈까요?</span> <a href="/login.jsp">Login</a>
 								</div>
 							</form>
 						</div>
