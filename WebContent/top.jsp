@@ -22,31 +22,34 @@
 							</div>
 						</div>
 
+						<!-- 통합검색창 -->
 						<div class="col-md-4 col-sm-12">
-							<form class="search" autocomplete="off">
-								<div class="form-group">
-									<div class="input-group">
-										<input type="text" name="q" class="form-control"
-											placeholder="Type something here">
-										<div class="input-group-btn">
-											<button class="btn btn-primary">
-												<i class="ion-search"></i>
-											</button>
-										</div>
-									</div>
-								</div>
-								<div class="help-block">
-									<div>Popular:</div>
-									<ul>
-										<li><a href="#">HTML5</a></li>
-										<li><a href="#">CSS3</a></li>
-										<li><a href="#">Bootstrap 3</a></li>
-										<li><a href="#">jQuery</a></li>
-										<li><a href="#">AnguarJS</a></li>
-									</ul>
-								</div>
-							</form>
+<!-- 							<form class="search" autocomplete="off"> -->
+<!-- 								<div class="form-group"> -->
+<!-- 									<div class="input-group"> -->
+<!-- 										<input type="text" name="q" class="form-control" -->
+<!-- 											placeholder="Type something here"> -->
+<!-- 										<div class="input-group-btn"> -->
+<!-- 											<button class="btn btn-primary"> -->
+<!-- 												<i class="ion-search"></i> -->
+<!-- 											</button> -->
+<!-- 										</div> -->
+<!-- 									</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="help-block"> -->
+<!-- 									<div>Popular:</div> -->
+<!-- 									<ul> -->
+<!-- 										<li><a href="#">HTML5</a></li> -->
+<!-- 										<li><a href="#">CSS3</a></li> -->
+<!-- 										<li><a href="#">Bootstrap 3</a></li> -->
+<!-- 										<li><a href="#">jQuery</a></li> -->
+<!-- 										<li><a href="#">AnguarJS</a></li> -->
+<!-- 									</ul> -->
+<!-- 								</div> -->
+<!-- 							</form> -->
 						</div>
+						<!-- 통합검색창 끝-->
+						
 						<%
 						// String id = 세션값 가져와서 변수에 저장
 						String id = (String) session.getAttribute("id");

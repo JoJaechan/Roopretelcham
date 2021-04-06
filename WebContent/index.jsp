@@ -93,8 +93,16 @@
 								<h1>
 									<a href="/community/content.jsp?num=<%=bb.getNum()%>"><%=bb.getSubject()%></a>
 								</h1>
-
 							</div>
+<!-- 							<footer> -->
+<!-- 									<a class="btn btn-primary more" -->
+<%-- 										href="/community/content.jsp?num=<%=bb.getNum()%>"> --%>
+<!-- 										<div>더 보기</div> -->
+<!-- 										<div> -->
+<!-- 											<i class="ion-ios-arrow-thin-right"></i> -->
+<!-- 										</div> -->
+<!-- 									</a> -->
+<!-- 								</footer> -->
 
 						</article>
 					</div>
@@ -164,7 +172,7 @@
 														<div><%=b.getReadcount()%></div></a> <a
 														class="btn btn-primary more"
 														href="/gallery/content_gallery.jsp?num=<%=b.getNum()%>">
-														<div>More</div>
+														<div>더 보기</div>
 														<div>
 															<i class="ion-ios-arrow-thin-right"></i>
 														</div>

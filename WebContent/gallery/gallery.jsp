@@ -122,7 +122,7 @@
 													class="ion-android-favorite-outline"></i>
 													<div><%=b.getReadcount()%></div></a> <a
 													class="btn btn-primary more" href="/gallery/content_gallery.jsp?num=<%=b.getNum()%>">
-													<div>More</div>
+													<div>더 보기</div>
 													<div>
 														<i class="ion-ios-arrow-thin-right"></i>
 													</div>

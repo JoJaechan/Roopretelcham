@@ -178,7 +178,7 @@
 					<div class="comments">
 						<h2 class="title">
 							<%=numOfComment%>
-							개의 댓글 <a href="#">댓글 달기</a>
+							개의 댓글 <a href="#response">댓글 달기</a>
 						</h2>
 						<div class="comment-list">
 							<%

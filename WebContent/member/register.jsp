@@ -56,7 +56,7 @@
 						<h4>회원 가입</h4>
 						<!-- 회원가입 폼 시작-->
 						<!-- 아이디 중복확인 -->
-						<form action="RegistServlet" method="post" id="join" name="join">
+						<form action="/RegistServlet" method="post" id="join" name="join">
 							<div class="form-group">
 								<label>아이디</label> <input type="text" id="id" required name="id"
 									class="form-control">
@@ -64,53 +64,15 @@
 
 							<button id="idChkBtn" class="btn btn-primary"
 								onclick="confirmId()">중복 확인</button>
-							<script>
-							function confirmId(){
-								var userid = document.getElementById("id").value;
-								 var allData = { "id": userid };
-							     
-								$.ajax({
-								        type: 'GET',
-									url: '/CheckID',
-								        success: function(responseData, status, xhr){
 
-								                         //alert(responseData);qual(이미 존재하는 아이디입니다)))
-								                         if($.trim(responseData)  ==  "OK"){
-								                         swal(
-								                  	     	 "ID 사용가능",	// title
-								                        	 "사용가능한 ID입니다",	// text
-								                        	 "success" //"info,success,warning,error" 중 택1
-								                         )
-								                         } else if ($.trim(responseData)  ==  "NO_VALUE") {
-								                        	 swal(
-									                  	     	 "ID 입력확인",
-									                        	 "ID를 입력해주세요",
-									                        	 "error" //"info,success,warning,error" 중 택1
-									                         )
-								                         } else {
-								                        	 swal(
-									                  	     	 "ID 중복",
-									                        	 "이미 사용중인 ID입니다",
-									                        	 "warning" //"info,success,warning,error" 중 택1
-									                         )
-
-								                         }	
-								                 },
-								        error: function(){
-								            	    console.log("error");
-								               },
-								        data: allData
-								});
-							}
-							</script>
 
 							<div class="form-group">
 								<label class="fw">비밀번호</label> <input type="password"
-									name="pass" required class="form-control">
+									name="pass" id="pass" required class="form-control">
 							</div>
 							<div class="form-group">
 								<label class="fw">비밀번호 확인입력</label> <input type="password"
-									name="pass2" required class="form-control">
+									name="pass2" id="pass2" required class="form-control">
 							</div>
 
 							<div class="form-group">
@@ -120,11 +82,11 @@
 
 							<div class="form-group">
 								<label>E-Mail</label> <input type="email" required name="email"
-									class="form-control">
+									id="email" class="form-control">
 							</div>
 							<div class="form-group">
 								<label>E-Mail 확인입력</label> <input type="email" required
-									name="email2" class="form-control">
+									name="email2" id="email2" class="form-control">
 							</div>
 
 							<!-- 							<div class="form-group"> -->
@@ -231,7 +193,8 @@
 							<!-- 								옵션 영역 끝 -->
 
 							<div class="form-group text-right">
-								<button class="btn btn-primary btn-block">가입하기</button>
+								<button class="btn btn-primary btn-block" type="button"
+									onClick="return checkForm()">가입하기</button>
 							</div>
 							<div class="form-group text-center">
 								<span class="text-muted">이미 계정이 있으신가요?</span> <a
@@ -245,6 +208,106 @@
 		</div>
 	</section>
 
+	<script>
+		function checkForm() {
+			var password = document.getElementById("pass").value;
+			var password2 = document.getElementById("pass2").value;
+			console.log("password" + password);
+
+			// - 비밀번호, 비밀번호 확인 일치 제어
+			if (password != password2) {
+				alert('비밀번호 입력을 확인해주세요');
+				return false;
+			}
+
+			var email = document.getElementById("email").value;
+			var email2 = document.getElementById("email2").value;
+
+			if (email != email2) {
+				// 				swal("이메일 확인", // title
+				// 				"메일주소가 일치하지 않습니다", // text
+				// 				"warning" //"info,success,warning,error" 중 택1
+				// 				);
+				alert('메일주소 입력을 확인해주세요');
+				return false;
+			}
+
+			if (confirmId2() == false) {
+				return false;
+			} else {
+				document.join.submit();
+			}
+		}
+	</script>
+	<script>
+		function confirmId() {
+			var userid = document.getElementById("id").value;
+			var allData = {
+				"id" : userid
+			};
+
+			$.ajax({
+				type : 'GET',
+				url : '/CheckID',
+				success : function(responseData, status, xhr) {
+
+					//alert(responseData);qual(이미 존재하는 아이디입니다)))
+					if ($.trim(responseData) == "OK") {
+						swal("ID 사용가능", // title
+						"사용가능한 ID입니다", // text
+						"success" //"info,success,warning,error" 중 택1
+						)
+					} else if ($.trim(responseData) == "NO_VALUE") {
+						swal("ID 입력확인", "ID를 입력해주세요", "error" //"info,success,warning,error" 중 택1
+						)
+					} else {
+						swal("ID 중복", "이미 사용중인 ID입니다", "warning" //"info,success,warning,error" 중 택1
+						)
+
+					}
+				},
+				error : function() {
+					console.log("error");
+				},
+				data : allData
+			});
+		}
+	</script>
+
+	<script>
+		function confirmId2() {
+			var userid = document.getElementById("id").value;
+			var allData = {
+				"id" : userid
+			};
+
+			$.ajax({
+				type : 'GET',
+				url : '/CheckID',
+				async:false, // 이거 꼭 해줘야합니다.
+				success : function(responseData, status, xhr) {
+
+					//alert(responseData);qual(이미 존재하는 아이디입니다)))
+					if ($.trim(responseData) == "OK") {
+						return true;
+					} else if ($.trim(responseData) == "NO_VALUE") {
+						swal("ID 입력확인", "ID를 입력해주세요", "error" //"info,success,warning,error" 중 택1
+						)
+						return false;
+
+					} else {
+						swal("ID 중복", "이미 사용중인 ID입니다", "warning" //"info,success,warning,error" 중 택1
+						)
+						return false;
+					}
+				},
+				error : function() {
+					console.log("error");
+				},
+				data : allData
+			});
+		}
+	</script>
 
 	<!-- Start footer -->
 	<footer class="footer">
