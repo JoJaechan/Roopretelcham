@@ -62,6 +62,8 @@
 	%>
 	<script type="text/javascript">
 		alert("글쓰기를 하려면 먼저 로그인해주세요");
+		
+		// 로그인 시 현재 게시판 유지하도록 TABLE파라미터 넘기기 필요				
 		location.href = "/member/login.jsp";
 	</script>
 	<%

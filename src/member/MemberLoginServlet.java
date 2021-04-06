@@ -60,7 +60,7 @@ public class MemberLoginServlet extends HttpServlet {
 			HttpSession session = request.getSession();
 				session.setAttribute("id", id);
 				session.setAttribute("name", mb.getName());
-				response.sendRedirect("index.jsp");
+				response.sendRedirect("/index.jsp");
 		}
 		else if (check == 0) {
 		   //history.go(-1) >> 이전페이지로 -2가되면  이전 이전 페이지로

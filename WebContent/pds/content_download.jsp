@@ -233,9 +233,9 @@
 										<div class="description">
 											<%=c.getComment_content()%>
 										</div>
-										<footer>
-											<a href="#response">Reply</a>
-										</footer>
+<!-- 										<footer> -->
+<!-- 											<a href="#response">Reply</a> -->
+<!-- 										</footer> -->
 									</div>
 								</div>
 							</div>

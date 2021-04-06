@@ -49,95 +49,247 @@
 
 <link rel="stylesheet" href="/js/vegas/vegas.min.css">
 </head>
-<body >
+<body>
 	<!-- 헤더파일들어가는 곳 -->
 	<jsp:include page="/top.jsp"></jsp:include>
 	<!-- 헤더파일들어가는 곳 -->
 
+	<%
+	int startRow = 1;
+	int pageSize = 3;
+	BoardDAO boardDAO = new BoardDAO();
+	%>
 
 	<section class="home">
 		<div class="container">
 			<div class="row">
 				<div class="col-md-12 col-sm-12 col-xs-12">
+
+					<!-- 커뮤니티 -->
+					<ol class="breadcrumb">
+						<li><a href="#">메인</a></li>
+						<li class="active">커뮤니티</li>
+					</ol>
+					<%
+					List<BoardBean> bbList = boardDAO.selectBoard(Table.BOARD.name(), startRow, pageSize);
+					if (bbList != null) {
+						for (BoardBean bb : bbList) {
+					%>
+					<div class="row">
+						<article class="col-md-12">
+							<!-- 							<div class="inner"> -->
+							<!-- 								<figure> -->
+							<!-- 									<a href="single.jsp"> <img src="images/news/img01.jpg"> -->
+							<!-- 									</a> -->
+							<!-- 								</figure> -->
+							<div class="details">
+								<div class="detail">
+									<div class="category">
+										<!-- 										<a href="category.jsp">Film</a> -->
+										<%=bb.getName()%>
+									</div>
+									<div class="time"><%=bb.getDate()%></div>
+								</div>
+								<h1>
+									<a href="/community/content.jsp?num=<%=bb.getNum()%>"><%=bb.getSubject()%></a>
+								</h1>
+
+							</div>
+
+						</article>
+					</div>
+					<%
+					}
+					}
+					%>
+					<div class="line"></div>
+					<!-- 			커뮤니티 끝 -->
+
+					
+
+						<!-- 					갤러리 시작 -->
+						<div class="row">
+							<div class="col-md-12">
+								<ol class="breadcrumb">
+									<li><a href="#">메인</a></li>
+									<li class="active">갤러리</li>
+								</ol>
+							</div>
+						</div>
+						<div class="row">
+							<%
+							List<BoardBean> bbGaleryList = boardDAO.selectBoard(Table.BOARD_GALLERY.name(), startRow, pageSize);
+							%>
+							<div class="row">
+								<!-- 갤러리 표시 시작 -->
+								<%
+								for (BoardBean b : bbGaleryList) {
+									FileBean fb = boardDAO.getArticleThumbFile(b.getNum(), Table.FILE_GALLERY.name());
+									String thumbPath = fb.getThumb_path();
+									System.out.println("gallery.jsp -> thumbPath : " + thumbPath);
+
+									if (thumbPath == null || thumbPath == "") {
+										thumbPath = "noimg.gif";
+									}
+								%>
+								<!-- 						<div class="col-md-4 col-sm-6 col-xs-12"> -->
+								<div class="col">
+
+									<article class="article col-md-4">
+										<div class="inner">
+											<figure>
+												<a href="/gallery/content_gallery.jsp?num=<%=b.getNum()%>">
+													<!-- 											<img src="images/news/img10.jpg" alt="Sample Article"> -->
+													<img
+													src="${pageContext.request.contextPath}/upload/<%=thumbPath%>" />
+												</a>
+											</figure>
+
+											<div class="padding">
+												<div class="detail">
+													<div class="time"><%=b.getDate()%></div>
+													<div class="category">
+														<a href="#"><%=b.getName()%></a>
+													</div>
+												</div>
+												<h2>
+													<a href="/gallery/content_gallery.jsp?num=<%=b.getNum()%>"><%=b.getSubject()%></a>
+												</h2>
+												<!-- 											<p>Lorem ipsum dolor sit amet, consectetur adipiscing -->
+												<!-- 												elit, sed do eiusmod tempor incididunt ut labore et dolore -->
+												<!-- 												magna aliqua. Ut enim ad minim veniam.</p> -->
+												<footer>
+													<a href="#" class="love"><i
+														class="ion-android-favorite-outline"></i>
+														<div><%=b.getReadcount()%></div></a> <a
+														class="btn btn-primary more"
+														href="/gallery/content_gallery.jsp?num=<%=b.getNum()%>">
+														<div>More</div>
+														<div>
+															<i class="ion-ios-arrow-thin-right"></i>
+														</div>
+													</a>
+												</footer>
+											</div>
+										</div>
+									</article>
+
+								</div>
+								<!-- 						</div> -->
+								<%
+								}
+								%>
+
+							</div>
+
+						</div>
+					</div>
+				</div>
+				<!-- 			갤러리 끝 -->
+
+
+<!-- 자료실 시작 -->
+					<div class="line"></div>
 					<div class="row">
 						<div class="col-md-12">
 							<ol class="breadcrumb">
 								<li><a href="#">메인</a></li>
-								<li class="active">갤러리</li>
+								<li class="active">자료실</li>
 							</ol>
 						</div>
-					</div>
-					<div class="row">
+						<!-- 					글목록 시작 -->
 						<%
-						BoardDAO boardDAO = new BoardDAO();
-						List<BoardBean> bbList = boardDAO.selectBoard("board_gallery");
+						List<BoardBean> pdsList = boardDAO.selectBoard(Table.BOARD_PDS.name(), startRow, pageSize);;
 						%>
-						<div class="row">
-							<!-- 갤러리 표시 시작 -->
-							<%
-							for (BoardBean b : bbList) {
-								FileBean fb = boardDAO.getArticleThumbFile(b.getNum(), Table.FILE_GALLERY.name());
-								String thumbPath = fb.getThumb_path();
-								System.out.println("gallery.jsp -> thumbPath : " + thumbPath);
-								
-								if (thumbPath == null || thumbPath == "") {
-									thumbPath = "noimg.gif";
-								}
-							%>
-							<!-- 						<div class="col-md-4 col-sm-6 col-xs-12"> -->
-							<div class="col">
+						<!-- 갤러리 표시 시작 -->
+						<%
+						for (BoardBean post : pdsList) {
+							FileBean fb = boardDAO.getArticleThumbFile(post.getNum(), Table.FILE_PDS.name());
+							String thumbPath = fb.getThumb_path();
+							System.out.println("thumbPath : " + thumbPath);
+							List<FileBean> fbList = boardDAO.getArticleFileList(post.getNum());
+						%>
 
-								<article class="article col-md-4">
-									<div class="inner">
-										<figure>
-											<a href="content_gallery.jsp?num=<%=b.getNum()%>"> <!-- 											<img src="images/news/img10.jpg" alt="Sample Article"> -->
-												<img
-												src="${pageContext.request.contextPath}/upload/<%=thumbPath%>" />
-											</a>
-										</figure>
-
-										<div class="padding">
-											<div class="detail">
-												<div class="time"><%=b.getDate()%></div>
-												<div class="category">
-													<a href="#"><%=b.getName()%></a>
-												</div>
-											</div>
-											<h2>
-												<a href="content_gallery.jsp?num=<%=b.getNum()%>"><%=b.getSubject()%></a>
-											</h2>
-											<!-- 											<p>Lorem ipsum dolor sit amet, consectetur adipiscing -->
-											<!-- 												elit, sed do eiusmod tempor incididunt ut labore et dolore -->
-											<!-- 												magna aliqua. Ut enim ad minim veniam.</p> -->
-											<footer>
-												<a href="#" class="love"><i
-													class="ion-android-favorite-outline"></i>
-													<div><%=b.getReadcount()%></div></a> <a
-													class="btn btn-primary more" href="content_gallery.jsp?num=<%=b.getNum()%>">
-													<div>More</div>
-													<div>
-														<i class="ion-ios-arrow-thin-right"></i>
-													</div>
-												</a>
-											</footer>
+						<article class="col-md-12 article-list">
+							<div class="inner">
+								<figure>
+									<%
+									if (thumbPath != null) {
+									%>
+									<a href="/pds/content_download.jsp?num=<%=post.getNum()%>">
+										<!-- 											<img src="images/news/img10.jpg" alt="Sample Article"> -->
+										<img
+										src="${pageContext.request.contextPath}/upload/<%=thumbPath%>" />
+									</a>
+									<br>
+									<%
+									} else {
+									System.out.println("이미지없음, 대체이미지 표시");
+									%>
+									<a href="/pds/content_download.jsp?num=<%=post.getNum()%>">
+										<!-- 											<img src="images/news/img10.jpg" alt="Sample Article"> -->
+										<img src="/images/noimg.gif" />
+									</a>
+									<br>
+									<%
+									}
+									%>
+								</figure>
+								<div class="details">
+									<div class="detail">
+										<div class="category">
+											<a href="#"><%=post.getName()%></a>
 										</div>
+										<div class="time"><%=post.getDate()%></div>
 									</div>
-								</article>
+									<h1>
+										<a href="/pds/content_download.jsp?num=<%=post.getNum()%>"><%=post.getSubject()%></a>
+									</h1>
 
+									<%-- 									<p><%=b.getContent()%></p> --%>
+									<!-- 게시물에 대한 파일리스트 표시시작 -->
+									<%
+									for (FileBean file : fbList) {
+										String filename = file.getFile_name();
+									%>
+									<a
+										href="${pageContext.request.contextPath}/upload/<%=filename%>">
+										<%=filename%>
+									</a><br>
+									<%
+									}
+									%>
+
+									<footer>
+										<a href="#" class="love"><i
+											class="ion-android-favorite-outline"></i>
+											<div><%=post.getReadcount()%></div></a> <a
+											class="btn btn-primary more"
+											href="/pds/content_download.jsp?num=<%=post.getNum()%>">
+											<div>더 보기</div>
+											<div>
+												<i class="ion-ios-arrow-thin-right"></i>
+											</div>
+										</a>
+									</footer>
+								</div>
 							</div>
-							<!-- 						</div> -->
-							<%
-							}
-							%>
+						</article>
+						<%
+						}
+						%>
+						<!-- 						글 목록 끝 -->
 
-						</div>
 
-					</div>
-				</div>
+
+
 			</div>
 		</div>
 	</section>
 	<!-- 					갤러리 끝 -->
+
+
+	<!-- 							</div> -->
 
 
 	<!-- Start footer -->
@@ -171,31 +323,32 @@
 	<script src="/scripts/toast/jquery.toast.min.js"></script>
 	<script src="/js/demo.js"></script>
 	<script src="/js/e-magz.js"></script>
-	
-<!-- 	<script src="http://code.jquery.com/jquery.min.js"></script> -->
-<script src="/js/vegas/vegas.min.js"></script>
-	 
-	<script>
-	$(document).ready(function() 
-			  { 
-			    var imagecollection = [ 
-			    	{src: 'images/bg.jpg'}, 
-			        {src: 'images/bg2.gif'},
-			        {src: 'images/bg3.gif'},
-			    ]; 
 
-			    $("#ShowSlideShowHere").vegas({ 
-			        slides: imagecollection, 
-			        transition: 'fade', 
-			        preloadImage: true, 
-			        timer: true, 
-			        shuffle: true,
-			        delay: 5000, 
-			        animation: 'kenburns', 
-			        cover: true 
-			    }); 
-			  });
-</script>
-	
+	<!-- 	<script src="http://code.jquery.com/jquery.min.js"></script> -->
+	<script src="/js/vegas/vegas.min.js"></script>
+
+	<script>
+		$(document).ready(function() {
+			var imagecollection = [ {
+				src : 'images/bg.jpg'
+			}, {
+				src : 'images/bg2.gif'
+			}, {
+				src : 'images/bg3.gif'
+			}, ];
+
+			$("#ShowSlideShowHere").vegas({
+				slides : imagecollection,
+				transition : 'fade',
+				preloadImage : true,
+				timer : true,
+				shuffle : true,
+				delay : 5000,
+				animation : 'kenburns',
+				cover : true
+			});
+		});
+	</script>
+
 </body>
 </html>
