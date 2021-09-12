@@ -7,4 +7,4 @@ Based on Magz template
 (https://github.com/nauvalazhar/Magz)
 
 최초 커밋된 버전의 디자인 수정은 전적으로 작성자에 의해 이루어졌으며
-이 저장소는 기존 프로젝트(https://github.com/imrutel/FunWeb)를 더욱 발전시키기 위한 버전2의 취지로 만들어졌습니다.
+이 저장소는 기존 프로젝트(https://github.com/imrutel/FunWeb) 를 더욱 발전시키기 위한 버전2의 취지로 만들어졌습니다.
